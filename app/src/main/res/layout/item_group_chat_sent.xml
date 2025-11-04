@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="chatMessage"
+            type="com.pampang.nav.models.GroupChatMessage" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end"
+        android:padding="8dp"
+        android:layout_marginStart="64dp">
+
+        <TextView
+            android:id="@+id/text_view_sender_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:text="@{chatMessage.senderName}"/>
+
+        <TextView
+            android:id="@+id/text_view_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/chat_bubble_sent"
+            android:padding="12dp"
+            android:textColor="@android:color/white"
+            android:text="@{chatMessage.text}"/>
+
+    </LinearLayout>
+</layout>

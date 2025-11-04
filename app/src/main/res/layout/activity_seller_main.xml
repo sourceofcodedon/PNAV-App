@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".screens.buyer.BuyerMainActivity">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/frame_layout"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/navigation_seller" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:itemActiveIndicatorStyle="@style/Theme.BottomNavigationView.ActiveIndicator"
+            app:itemTextAppearanceActive="@style/BottomNavTextAppearanceActive"
+            app:itemRippleColor="@color/white"
+            app:itemTextColor="@color/white"
+            app:itemIconTint="@color/white"
+            android:layout_marginHorizontal="@dimen/margin_padding_size_xxxlarge"
+            android:layout_marginBottom="@dimen/margin_padding_size_xlarge"
+            android:background="@drawable/bg_green_rounded"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/menu_seller_navigation" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

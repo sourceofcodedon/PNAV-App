@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="chatRoom"
+            type="com.pampang.nav.models.ChatRoom" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/text_view_sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{chatRoom.participantInfo.values.isEmpty() ? &quot;&quot; : chatRoom.participantInfo.values.iterator().next().name}"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/text_view_last_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{chatRoom.lastMessage}" />
+
+    </LinearLayout>
+</layout>

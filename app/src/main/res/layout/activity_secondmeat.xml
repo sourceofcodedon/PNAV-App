@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapNav.SecondMeatMapView">
+
+    <!-- 🗺️ Background Map -->
+    <ImageView
+        android:id="@+id/mapImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/secondmeatpath"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY" />
+
+    <!-- 🧭 Path Layer -->
+    <com.pampang.nav.MapNav.SecondMeatPathView
+        android:id="@+id/secondmeatpath"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 🎯 Buttons Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnGo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#6200EE"
+            android:text="Go to Destination"
+            android:textColor="@android:color/white" />
+
+        <!-- 🧹 Clear Button -->
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="#B00020"
+            android:text="Clear Path"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</FrameLayout>
