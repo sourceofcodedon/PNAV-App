@@ -92,4 +92,21 @@ class AuthRepository @Inject constructor(
         firebaseAuth.signOut()
         sharedPrefs.clearAll()
     }
+
+    suspend fun updateUsername(username: String): Result<Unit> {
+        return try {
+            _isLoading.postValue(true)
+            val user = firebaseAuth.currentUser ?: throw Exception("User not logged in")
+            val profileUpdates = userProfileChangeRequest {
+                displayName = username
+            }
+            user.updateProfile(profileUpdates).await()
+            firestore.collection("users").document(user.uid).update("username", username).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        } finally {
+            _isLoading.postValue(false)
+        }
+    }
 }

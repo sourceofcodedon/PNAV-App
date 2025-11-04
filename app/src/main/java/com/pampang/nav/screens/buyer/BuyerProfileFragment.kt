@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.textfield.TextInputEditText
 import com.pampang.nav.utilities.adapters.SimpleDiffUtilAdapter
 import com.pampang.nav.utilities.extension.showToast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -61,7 +63,7 @@ class BuyerProfileFragment : Fragment() {
             it as ProfileMenuModel
             when (it.title) {
                 "Personal Detail" -> {
-                    showToast(it.title)
+                    showEditUsernameDialog()
                 }
                 "Contact Us" -> {
                     showToast(it.title)
@@ -105,6 +107,18 @@ class BuyerProfileFragment : Fragment() {
         authViewModel.currentUser.observe(viewLifecycleOwner) { user ->
             user?.let { mBinding.textViewTitle.text = it.displayName }
         }
+
+        authViewModel.updateUsernameResult.observe(viewLifecycleOwner) { result ->
+            result?.let {
+                if (it.isSuccess) {
+                    showToast("Username updated successfully")
+                    authViewModel.loadUserData()
+                } else {
+                    showToast(it.exceptionOrNull()?.message ?: "Unknown error")
+                }
+                authViewModel.clearUpdateUsernameResult()
+            }
+        }
     }
 
     private fun showLogoutConfirmationDialog() {
@@ -121,6 +135,25 @@ class BuyerProfileFragment : Fragment() {
         authViewModel.logout()
         requireActivity().launchActivity<LoginActivity>()
         requireActivity().finish()
+    }
+
+    private fun showEditUsernameDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_username, null)
+        val usernameEditText = dialogView.findViewById<TextInputEditText>(R.id.edittext_username)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Edit Username")
+            .setView(dialogView)
+            .setPositiveButton("Save") { _, _ ->
+                val newUsername = usernameEditText.text.toString().trim()
+                if (newUsername.isNotEmpty()) {
+                    authViewModel.updateUsername(newUsername)
+                } else {
+                    showToast("Username cannot be empty")
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
 }

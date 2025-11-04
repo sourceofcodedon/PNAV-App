@@ -44,9 +44,13 @@ class SellerListFragment : Fragment() {
         initConfig()
     }
 
+    override fun onResume() {
+        super.onResume()
+        initRequest()
+    }
+
     private fun initConfig() {
         initExtras()
-        initRequest()
         initAdapter()
         initEventListener()
         initLiveData()
