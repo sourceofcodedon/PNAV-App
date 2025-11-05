@@ -36,7 +36,7 @@
                     android:id="@+id/text_view_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add Store"
+                    android:text="@string/add_store_title"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_medium"
                     android:textStyle="bold" />
@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/margin_padding_size_small"
-                    android:hint="Enter a store name"
+                    android:hint="@string/hint_enter_store_name"
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -89,7 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/margin_padding_size_small"
-                    android:hint="Store Category"
+                    android:hint="@string/hint_store_category"
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -111,7 +111,7 @@
                     android:drawablePadding="@dimen/margin_padding_size_small"
                     android:focusable="false"
                     android:clickable="true"
-                    android:hint="Opening Time"
+                    android:hint="@string/hint_opening_time"
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -133,7 +133,7 @@
                     android:drawablePadding="@dimen/margin_padding_size_small"
                     android:focusable="false"
                     android:clickable="true"
-                    android:hint="Closing Time"
+                    android:hint="@string/hint_closing_time"
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:paddingVertical="@dimen/margin_padding_size_small"
                 android:layout_marginTop="@dimen/margin_padding_size_xlarge"
-                android:text="Create"
+                android:text="@string/button_create"
                 android:visibility="@{viewModel.isLoading ? View.INVISIBLE : View.VISIBLE}"
                 android:textAllCaps="true"
                 android:textStyle="bold"

@@ -8,17 +8,17 @@
     <fragment
         android:id="@+id/list"
         android:name="com.pampang.nav.screens.seller.SellerListFragment"
-        android:label="fragment_seller"
+        android:label="@string/fragment_seller"
         tools:layout="@layout/fragment_list"/>
     <fragment
         android:id="@+id/messages"
         android:name="com.pampang.nav.screens.GroupChatFragment"
-        android:label="fragment_group_chat"
+        android:label="@string/fragment_group_chat"
         tools:layout="@layout/fragment_group_chat" />
     <fragment
         android:id="@+id/profile"
         android:name="com.pampang.nav.screens.seller.SellerProfileFragment"
-        android:label="fragment_profile"
+        android:label="@string/fragment_profile"
         tools:layout="@layout/fragment_profile" />
 
 </navigation>

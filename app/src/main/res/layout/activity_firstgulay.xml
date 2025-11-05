@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
-            android:text="Go to Destination"
+            android:text="@string/go_to_destination"
             android:textColor="@android:color/white" />
 
         <!-- 🧹 Clear Path Button -->
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:backgroundTint="#B00020"
-            android:text="Clear Path"
+            android:text="@string/clear_path"
             android:textColor="@android:color/white" />
     </LinearLayout>
 

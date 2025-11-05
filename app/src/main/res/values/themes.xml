@@ -20,5 +20,13 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="BottomNav.Style" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconTint">@color/white</item>
+        <item name="itemTextColor">@color/white</item>
+        <item name="itemIconSize">24dp</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="android:paddingTop">16dp</item>
+    </style>
+
     <style name="Theme.PampangNav" parent="Base.Theme.PampangNav" />
 </resources>

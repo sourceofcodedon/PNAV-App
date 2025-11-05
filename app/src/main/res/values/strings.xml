@@ -4,5 +4,26 @@
     <string name="Entrance">Entrance</string>
     <string name="right_wing">RightWing</string>
     <string name="hallway">Hallway</string>
-
+    <string name="add_store_title">Add Store</string>
+    <string name="hint_enter_store_name">Enter a store name</string>
+    <string name="hint_store_category">Store Category</string>
+    <string name="hint_opening_time">Opening Time</string>
+    <string name="hint_closing_time">Closing Time</string>
+    <string name="button_create">Create</string>
+    <string name="open_time_label">Open Time:</string>
+    <string name="close_time_label">Close Time:</string>
+    <string name="go_to_destination">Go to Destination</string>
+    <string name="clear_path">Clear Path</string>
+    <string name="login">LOGIN</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="buyer">Buyer</string>
+    <string name="seller">Seller</string>
+    <string name="sign_in">Sign in</string>
+    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="register_here">Register Here</string>
+    <string name="fragment_seller">Seller</string>
+    <string name="fragment_group_chat">Group Chat</string>
+    <string name="fragment_profile">Profile</string>
+    <string name="fragment_main">Main</string>
 </resources>
