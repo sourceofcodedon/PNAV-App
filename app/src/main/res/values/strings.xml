@@ -26,4 +26,14 @@
     <string name="fragment_group_chat">Group Chat</string>
     <string name="fragment_profile">Profile</string>
     <string name="fragment_main">Main</string>
+
+    <string name="profile_personal_detail">Personal Detail</string>
+    <string name="profile_contact_us">Contact Us</string>
+    <string name="profile_privacy_security">Privacy and Security</string>
+    <string name="profile_preferences">Preferences</string>
+    <string name="profile_logout">Logout</string>
+    <string name="bottom_nav_list">List</string>
+    <string name="bottom_nav_messages">Messages</string>
+    <string name="view_store">View Store</string>
+    <string name="get_direction">Get Direction</string>
 </resources>

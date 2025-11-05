@@ -25,7 +25,6 @@
         <item name="itemTextColor">@color/white</item>
         <item name="itemIconSize">24dp</item>
         <item name="labelVisibilityMode">labeled</item>
-        <item name="android:paddingTop">16dp</item>
     </style>
 
     <style name="Theme.PampangNav" parent="Base.Theme.PampangNav" />

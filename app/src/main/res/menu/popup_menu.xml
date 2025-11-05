@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/view_store"
-        android:title="View Store" />
+        android:title="@string/view_store" />
     <item
         android:id="@+id/get_direction"
-        android:title="Get Direction" />
+        android:title="@string/get_direction" />
 </menu>

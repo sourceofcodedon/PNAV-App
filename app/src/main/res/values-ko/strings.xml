@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">PampangNav</string>
+    <string name="left_wing">왼쪽 윙</string>
+    <string name="Entrance">입구</string>
+    <string name="right_wing">오른쪽 윙</string>
+    <string name="hallway">복도</string>
+    <string name="add_store_title">가게 추가</string>
+    <string name="hint_enter_store_name">가게 이름을 입력하세요</string>
+    <string name="hint_store_category">가게 카테고리</string>
+    <string name="hint_opening_time">여는 시간</string>
+    <string name="hint_closing_time">닫는 시간</string>
+    <string name="button_create">만들기</string>
+    <string name="open_time_label">여는 시간:</string>
+    <string name="close_time_label">닫는 시간:</string>
+    <string name="go_to_destination">목적지로 가기</string>
+    <string name="clear_path">경로 지우기</string>
+    <string name="login">로그인</string>
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="buyer">구매자</string>
+    <string name="seller">판매자</string>
+    <string name="sign_in">로그인</string>
+    <string name="dont_have_an_account">계정이 없으신가요?</string>
+    <string name="register_here">여기서 등록하세요</string>
+    <string name="fragment_seller">판매자</string>
+    <string name="fragment_group_chat">그룹 채팅</string>
+    <string name="fragment_profile">프로필</string>
+    <string name="fragment_main">메인</string>
+
+    <string name="profile_personal_detail">개인 정보</string>
+    <string name="profile_contact_us">문의하기</string>
+    <string name="profile_privacy_security">개인 정보 및 보안</string>
+    <string name="profile_preferences">환경 설정</string>
+    <string name="profile_logout">로그아웃</string>
+    <string name="bottom_nav_list">목록</string>
+    <string name="bottom_nav_messages">메시지</string>
+    <string name="view_store">가게 보기</string>
+    <string name="get_direction">길찾기</string>
+</resources>

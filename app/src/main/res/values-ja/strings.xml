@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">PampangNav</string>
+    <string name="left_wing">左ウィング</string>
+    <string name="Entrance">エントランス</string>
+    <string name="right_wing">右ウィング</string>
+    <string name="hallway">廊下</string>
+    <string name="add_store_title">ストアを追加</string>
+    <string name="hint_enter_store_name">ストア名を入力</string>
+    <string name="hint_store_category">ストアカテゴリ</string>
+    <string name="hint_opening_time">開店時間</string>
+    <string name="hint_closing_time">閉店時間</string>
+    <string name="button_create">作成</string>
+    <string name="open_time_label">開店時間:</string>
+    <string name="close_time_label">閉店時間:</string>
+    <string name="go_to_destination">目的地へ行く</string>
+    <string name="clear_path">パスを消去</string>
+    <string name="login">ログイン</string>
+    <string name="email">Eメール</string>
+    <string name="password">パスワード</string>
+    <string name="buyer">購入者</string>
+    <string name="seller">販売者</string>
+    <string name="sign_in">サインイン</string>
+    <string name="dont_have_an_account">アカウントをお持ちではありませんか？</string>
+    <string name="register_here">ここで登録</string>
+    <string name="fragment_seller">販売者</string>
+    <string name="fragment_group_chat">グループチャット</string>
+    <string name="fragment_profile">プロフィール</string>
+    <string name="fragment_main">メイン</string>
+
+    <string name="profile_personal_detail">個人情報</string>
+    <string name="profile_contact_us">お問い合わせ</string>
+    <string name="profile_privacy_security">プライバシーとセキュリティ</string>
+    <string name="profile_preferences">設定</string>
+    <string name="profile_logout">ログアウト</string>
+    <string name="bottom_nav_list">リスト</string>
+    <string name="bottom_nav_messages">メッセージ</string>
+    <string name="view_store">ストアを表示</string>
+    <string name="get_direction">道順を取得</string>
+</resources>

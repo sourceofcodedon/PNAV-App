@@ -4,20 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.material.textfield.TextInputEditText
-import com.pampang.nav.utilities.adapters.SimpleDiffUtilAdapter
-import com.pampang.nav.utilities.extension.showToast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 import com.pampang.nav.R
 import com.pampang.nav.databinding.FragmentProfileBinding
 import com.pampang.nav.models.ProfileMenuModel
 import com.pampang.nav.screens.auth.LoginActivity
+import com.pampang.nav.utilities.adapters.SimpleDiffUtilAdapter
 import com.pampang.nav.utilities.extension.RecyclerClick
 import com.pampang.nav.utilities.extension.launchActivity
+import com.pampang.nav.utilities.extension.showToast
 import com.pampang.nav.viewmodels.AuthViewModel
 import com.pampang.nav.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,23 +60,23 @@ class BuyerProfileFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        mAdapter = SimpleDiffUtilAdapter(R.layout.list_item_profile_menu, RecyclerClick {
+        mAdapter = SimpleDiffUtilAdapter(R.layout.list_item_profile_menu, RecyclerClick { 
             it as ProfileMenuModel
-            when (it.title) {
-                "Personal Detail" -> {
+            when (it.titleResId) {
+                R.string.profile_personal_detail -> {
                     showEditUsernameDialog()
                 }
-                "Contact Us" -> {
-                    showToast(it.title)
+                R.string.profile_contact_us -> {
+                    showToast(getString(it.titleResId))
                 }
-                "Privacy and Security" -> {
-                    showToast(it.title)
+                R.string.profile_privacy_security -> {
+                    showToast(getString(it.titleResId))
                 }
-                "Preferences" -> {
-                    showToast(it.title)
+                R.string.profile_preferences -> {
+                    showLanguageSelectionDialog()
                 }
 
-                "Logout" -> {
+                R.string.profile_logout -> {
                     showLogoutConfirmationDialog()
                 }
             }
@@ -123,7 +124,7 @@ class BuyerProfileFragment : Fragment() {
 
     private fun showLogoutConfirmationDialog() {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Logout")
+            .setTitle(getString(R.string.profile_logout))
             .setMessage("Are you sure you want to logout?")
             .setPositiveButton("Yes") { _, _ -> logout() }
             .setNegativeButton("No", null)
@@ -154,6 +155,27 @@ class BuyerProfileFragment : Fragment() {
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    private fun showLanguageSelectionDialog() {
+        val languages = arrayOf("English", "Japanese", "Korean")
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Select Language")
+            .setItems(languages) { _, which ->
+                val selectedLanguage = when (which) {
+                    0 -> "en"
+                    1 -> "ja"
+                    2 -> "ko"
+                    else -> "en"
+                }
+                setLocale(selectedLanguage)
+            }
+            .show()
+    }
+
+    private fun setLocale(languageCode: String) {
+        val appLocale = LocaleListCompat.forLanguageTags(languageCode)
+        AppCompatDelegate.setApplicationLocales(appLocale)
     }
 
 }

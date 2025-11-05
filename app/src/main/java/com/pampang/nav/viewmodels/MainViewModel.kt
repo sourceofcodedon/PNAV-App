@@ -1,11 +1,12 @@
 package com.pampang.nav.viewmodels
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pampang.nav.R
 import com.pampang.nav.models.ProfileMenuModel
-import com.pampang.nav.models.profileMenus
 import com.pampang.nav.repositories.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val mainRepository: MainRepository
+    private val mainRepository: MainRepository,
+    private val application: Application
 ) : ViewModel() {
     private val _profileMenuItems = MutableLiveData<List<ProfileMenuModel>>()
     val profileMenuItems: LiveData<List<ProfileMenuModel>> get() = _profileMenuItems
@@ -25,7 +27,13 @@ class MainViewModel @Inject constructor(
     val isLoading = mainRepository.isLoading
 
     init {
-        _profileMenuItems.value = profileMenus
+        _profileMenuItems.value = listOf(
+            ProfileMenuModel(R.string.profile_personal_detail),
+            ProfileMenuModel(R.string.profile_contact_us),
+            ProfileMenuModel(R.string.profile_privacy_security),
+            ProfileMenuModel(R.string.profile_preferences),
+            ProfileMenuModel(R.string.profile_logout),
+        )
     }
 
     fun getStores() {
