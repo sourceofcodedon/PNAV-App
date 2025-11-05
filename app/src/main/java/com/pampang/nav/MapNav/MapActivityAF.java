@@ -52,8 +52,8 @@ public class MapActivityAF extends AppCompatActivity {
         graph.addEdge("C", "A", 10);
         graph.addEdge("C", "D", 12);
         graph.addEdge("D", "C", 12);
-        graph.addEdge("D", "F", 3);
         graph.addEdge("D", "G", 2);
+        graph.addEdge("D", "H", 3);
         graph.addEdge("E", "B", 4);
         graph.addEdge("E", "H", 10);
         graph.addEdge("F", "H", 0.5);

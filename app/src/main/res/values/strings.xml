@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PampangNav</string>
+    <string name="left_wing">LeftWing</string>
+    <string name="Entrance">Entrance</string>
+    <string name="right_wing">RightWing</string>
+    <string name="hallway">Hallway</string>
+
 </resources>

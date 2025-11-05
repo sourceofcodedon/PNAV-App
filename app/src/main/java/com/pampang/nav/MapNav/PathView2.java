@@ -52,7 +52,7 @@ public class PathView2 extends View {
         pathPaint.setStrokeJoin(Paint.Join.ROUND);
 
         nodePaint = new Paint();
-        nodePaint.setColor(Color.GRAY);
+        nodePaint.setColor(Color.TRANSPARENT);
         nodePaint.setStyle(Paint.Style.FILL);
         nodePaint.setAntiAlias(true);
 
@@ -62,7 +62,7 @@ public class PathView2 extends View {
         movingDotPaint.setAntiAlias(true);
 
         textPaint = new Paint();
-        textPaint.setColor(Color.WHITE);
+        textPaint.setColor(Color.TRANSPARENT);
         textPaint.setTextSize(32f);
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         textPaint.setAntiAlias(true);
@@ -74,26 +74,15 @@ public class PathView2 extends View {
     private void setupBaseNodes() {
         baseNodes = new HashMap<>();
 
-        baseNodes.put("A", new float[]{85f, 1125f});
-        baseNodes.put("B", new float[]{625f, 1125f});
-        baseNodes.put("C", new float[]{940f, 1560f});
-        baseNodes.put("D", new float[]{360f, 1820f});
-        baseNodes.put("E", new float[]{855f, 1700f});
-        baseNodes.put("F", new float[]{85f, 1820f});
-        baseNodes.put("G", new float[]{625f, 1560f});
-        baseNodes.put("H", new float[]{625f, 1820f});
-        baseNodes.put("I", new float[]{800f, 1125f});
-        baseNodes.put("J", new float[]{940f, 1820f});
-        baseNodes.put("K", new float[]{940f, 1700f});
-        baseNodes.put("L", new float[]{900f, 1125f});
-        baseNodes.put("M", new float[]{85f, 1560f});
-        baseNodes.put("N", new float[]{360f, 1560f});
-        baseNodes.put("O", new float[]{360f, 1125f});
-        baseNodes.put("P", new float[]{900f, 1560f});
-        baseNodes.put("Q", new float[]{800f, 1560f});
-        baseNodes.put("R", new float[]{800f, 1700f});
-        baseNodes.put("S", new float[]{800f, 1820f});
-        baseNodes.put("T", new float[]{535f, 1560f});
+        baseNodes.put("A", new float[]{125f, 1125f});
+        baseNodes.put("B", new float[]{295f, 1125f});
+        baseNodes.put("C", new float[]{125f, 1470f});
+        baseNodes.put("D", new float[]{735f, 1125f});
+        baseNodes.put("E", new float[]{735f, 1590f});
+        baseNodes.put("F", new float[]{770f, 1590f});
+        baseNodes.put("G", new float[]{735f, 1460f});
+        baseNodes.put("H", new float[]{295f, 1465f});
+
     }
     // 🔁 Recalculate scaled positions whenever view size changes
     @Override

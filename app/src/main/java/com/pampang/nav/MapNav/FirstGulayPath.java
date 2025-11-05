@@ -53,9 +53,10 @@ public class FirstGulayPath extends View {
 
         // ⚫ Node paint (gray)
         nodePaint = new Paint();
-        nodePaint.setColor(Color.GRAY);
+        nodePaint.setColor(Color.TRANSPARENT);
         nodePaint.setStyle(Paint.Style.FILL);
         nodePaint.setAntiAlias(true);
+        
 
         // ⚪ Moving dot paint
         movingDotPaint = new Paint();
@@ -65,7 +66,7 @@ public class FirstGulayPath extends View {
 
         // 🅰️ Label paint
         textPaint = new Paint();
-        textPaint.setColor(Color.WHITE);
+        textPaint.setColor(Color.TRANSPARENT);
         textPaint.setTextSize(32f);
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         textPaint.setAntiAlias(true);
@@ -77,13 +78,14 @@ public class FirstGulayPath extends View {
     private void setupBaseNodes() {
         baseNodes = new HashMap<>();
         // 🗺 Reference coordinates (based on your design resolution)
+                                     //x      //y
         baseNodes.put("A", new float[]{100f, 1125f});
-        baseNodes.put("B", new float[]{448f, 1125f});
-        baseNodes.put("C", new float[]{100f, 560f});
-        baseNodes.put("D", new float[]{448f, 560f});
-        baseNodes.put("E", new float[]{450f, 250f});
-        baseNodes.put("F", new float[]{100f, 100f});
-        baseNodes.put("H", new float[]{450f, 100f});
+        baseNodes.put("B", new float[]{440f, 1125f});
+        baseNodes.put("C", new float[]{100f, 660f});
+        baseNodes.put("D", new float[]{440f, 660f});
+        baseNodes.put("E", new float[]{440f, 380f});
+        baseNodes.put("F", new float[]{100f, 250f});
+        baseNodes.put("H", new float[]{440f, 250f});
     }
 
     // 🔁 Recalculate scaled positions whenever view size changes

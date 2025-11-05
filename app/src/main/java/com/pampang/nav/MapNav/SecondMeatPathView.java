@@ -60,7 +60,7 @@ public class SecondMeatPathView extends View {
         pathPaint.setStrokeJoin(Paint.Join.ROUND);
 
         nodePaint = new Paint();
-        nodePaint.setColor(Color.GRAY);
+        nodePaint.setColor(Color.TRANSPARENT);
         nodePaint.setStyle(Paint.Style.FILL);
         nodePaint.setAntiAlias(true);
 
@@ -70,7 +70,7 @@ public class SecondMeatPathView extends View {
         movingDotPaint.setAntiAlias(true);
 
         textPaint = new Paint();
-        textPaint.setColor(Color.BLACK);
+        textPaint.setColor(Color.TRANSPARENT);
         textPaint.setTextSize(32f);
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         textPaint.setAntiAlias(true);
@@ -82,32 +82,32 @@ public class SecondMeatPathView extends View {
     private void setupBaseNodes() {
         baseNodes = new HashMap<>();
 
-        baseNodes.put("A", new float[]{85f, 1125f});
-        baseNodes.put("B", new float[]{85f, 1540f});
-        baseNodes.put("C", new float[]{85f, 1820f});
-        baseNodes.put("D", new float[]{280f, 1820f});
-        baseNodes.put("E", new float[]{280f, 1540f});
-        baseNodes.put("F", new float[]{280f, 1125f});
-        baseNodes.put("G", new float[]{360f, 1125f});
-        baseNodes.put("H", new float[]{360f, 1540f});
-        baseNodes.put("I", new float[]{360f, 1820f});
-        baseNodes.put("J", new float[]{455f, 1820f});
-        baseNodes.put("K", new float[]{455f, 1540f});
+        baseNodes.put("A", new float[]{130f, 1125f});
+        baseNodes.put("B", new float[]{130f, 1470f});
+        baseNodes.put("C", new float[]{130f, 1700f});
+        baseNodes.put("D", new float[]{280f, 1700f});
+        baseNodes.put("E", new float[]{300f, 1470f});
+        baseNodes.put("F", new float[]{300f, 1125f});
+        baseNodes.put("G", new float[]{370f, 1125f});
+        baseNodes.put("H", new float[]{370f, 1470f});
+        baseNodes.put("I", new float[]{370f, 1700f});
+        baseNodes.put("J", new float[]{445f, 1700f});
+        baseNodes.put("K", new float[]{445f, 1470f});
         baseNodes.put("L", new float[]{455f, 1125f});
-        baseNodes.put("M", new float[]{535f, 1125f});
-        baseNodes.put("N", new float[]{535f, 1540f});
-        baseNodes.put("O", new float[]{535f, 1820f});
-        baseNodes.put("P", new float[]{623f, 1820f});
-        baseNodes.put("Q", new float[]{623f, 1540f});
-        baseNodes.put("R", new float[]{623f, 1125f});
-        baseNodes.put("S", new float[]{710f, 1820f});
-        baseNodes.put("T", new float[]{710f, 1540f});
-        baseNodes.put("U", new float[]{710f, 1125f});
-        baseNodes.put("V", new float[]{790f, 1125f});
-        baseNodes.put("W", new float[]{790f, 1540f});
-        baseNodes.put("X", new float[]{790f, 1740f});
-        baseNodes.put("Y", new float[]{765f, 1820f});
-        baseNodes.put("Z", new float[]{790f, 1820f});
+        baseNodes.put("M", new float[]{510f, 1125f});
+        baseNodes.put("N", new float[]{510f, 1470f});
+        baseNodes.put("O", new float[]{510f, 1700f});
+        baseNodes.put("P", new float[]{590f, 1700f});
+        baseNodes.put("Q", new float[]{590f, 1470f});
+        baseNodes.put("R", new float[]{590f, 1125f});
+        baseNodes.put("S", new float[]{650f, 1700f});
+        baseNodes.put("T", new float[]{650f, 1470f});
+        baseNodes.put("U", new float[]{650f, 1125f});
+        baseNodes.put("V", new float[]{725f, 1125f});
+        baseNodes.put("W", new float[]{725f, 1470f});
+        baseNodes.put("X", new float[]{725f, 1640f});
+        baseNodes.put("Y", new float[]{700f, 1700f});
+        baseNodes.put("Z", new float[]{725f, 1700f});
 
     }
     // 🔁 Recalculate scaled positions whenever view size changes

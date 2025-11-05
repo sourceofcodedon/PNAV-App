@@ -61,7 +61,7 @@ public class FirstMeatPathView extends View {
 
         // ⚫ Node paint (gray)
         nodePaint = new Paint();
-        nodePaint.setColor(Color.GRAY);
+        nodePaint.setColor(Color.TRANSPARENT);
         nodePaint.setStyle(Paint.Style.FILL);
         nodePaint.setAntiAlias(true);
 
@@ -73,7 +73,7 @@ public class FirstMeatPathView extends View {
 
         // 🅰️ Label paint
         textPaint = new Paint();
-        textPaint.setColor(Color.BLACK);
+        textPaint.setColor(Color.TRANSPARENT);
         textPaint.setTextSize(32f);
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         textPaint.setAntiAlias(true);
@@ -86,16 +86,16 @@ public class FirstMeatPathView extends View {
         baseNodes = new HashMap<>();
         // 🗺 Reference coordinates (based on your design resolution)
         baseNodes.put("A", new float[]{100f, 1125f});
-        baseNodes.put("B", new float[]{365f, 1125f});
-        baseNodes.put("C", new float[]{365f, 1535f});
-        baseNodes.put("D", new float[]{540f, 1535f});
-        baseNodes.put("E", new float[]{540f, 1125f});
-        baseNodes.put("F", new float[]{620f, 1125f});
-        baseNodes.put("G", new float[]{620f, 1535f});
-        baseNodes.put("H", new float[]{680f, 1535f});
-        baseNodes.put("I", new float[]{705f, 1125f});
-        baseNodes.put("J", new float[]{705f, 1500f});
-        baseNodes.put("K", new float[]{705f, 1535f});
+        baseNodes.put("B", new float[]{295f, 1125f});
+        baseNodes.put("C", new float[]{295f, 1470f});
+        baseNodes.put("D", new float[]{440f, 1470f});
+        baseNodes.put("E", new float[]{440f, 1125f});
+        baseNodes.put("F", new float[]{505f, 1125f});
+        baseNodes.put("G", new float[]{505f, 1470f});
+        baseNodes.put("H", new float[]{580f, 1470f});
+        baseNodes.put("I", new float[]{645f, 1125f});
+        baseNodes.put("J", new float[]{645f, 1425f});
+        baseNodes.put("K", new float[]{645f, 1425f});
 
 
     }

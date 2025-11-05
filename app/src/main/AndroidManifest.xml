@@ -31,16 +31,19 @@
             android:name=".MapNav.MapActivityAF"
             android:exported="false">
 
+
         </activity>
         <activity
             android:name=".MapNav.GulayMapOne"
             android:exported="false">
+
 
         </activity>
 
         <activity
             android:name=".MapNav.GulayMapTwo"
             android:exported="false">
+
 
         </activity>
         <activity
@@ -72,6 +75,7 @@
             android:name=".MapNav.MapActivty2"
             android:exported="false">
 
+
         </activity>
         <activity
             android:name=".MapNav.Gulayloc"
@@ -97,10 +101,12 @@
             android:name=".MapNav.FirstMeatMapView"
             android:exported="false">
 
+
         </activity>
         <activity
             android:name=".MapNav.SecondMeatMapView"
             android:exported="false">
+
 
         </activity>
         <activity

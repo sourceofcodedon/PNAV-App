@@ -60,7 +60,7 @@ public class SecondGulayPath extends View {
         pathPaint.setStrokeJoin(Paint.Join.ROUND);
 
         nodePaint = new Paint();
-        nodePaint.setColor(Color.GRAY);
+        nodePaint.setColor(Color.TRANSPARENT);
         nodePaint.setStyle(Paint.Style.FILL);
         nodePaint.setAntiAlias(true);
 
@@ -70,7 +70,7 @@ public class SecondGulayPath extends View {
         movingDotPaint.setAntiAlias(true);
 
         textPaint = new Paint();
-        textPaint.setColor(Color.WHITE);
+        textPaint.setColor(Color.TRANSPARENT);
         textPaint.setTextSize(32f);
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         textPaint.setAntiAlias(true);
@@ -82,16 +82,16 @@ public class SecondGulayPath extends View {
     private void setupBaseNodes() {
         baseNodes = new HashMap<>();
 
-        baseNodes.put("A", new float[]{85f, 1125f});
-        baseNodes.put("B", new float[]{195f, 1125f});
-        baseNodes.put("C", new float[]{280f, 1125f});
+        baseNodes.put("A", new float[]{100f, 1125f});
+        baseNodes.put("B", new float[]{225f, 1125f});
+        baseNodes.put("C", new float[]{300f, 1125f});
         baseNodes.put("D", new float[]{365f, 1125f});
-        baseNodes.put("E", new float[]{365f, 580f});
-        baseNodes.put("F", new float[]{280f, 580f});
-        baseNodes.put("G", new float[]{195f, 580f});
-        baseNodes.put("H", new float[]{85f, 580f});
-        baseNodes.put("M", new float[]{365f, 480f});
-        baseNodes.put("N", new float[]{335f, 580f});
+        baseNodes.put("E", new float[]{365f, 600f});
+        baseNodes.put("F", new float[]{300f, 670f});
+        baseNodes.put("G", new float[]{225f, 670f});
+        baseNodes.put("H", new float[]{100f, 670f});
+        baseNodes.put("M", new float[]{365f, 580f});
+        baseNodes.put("N", new float[]{365f, 670f});
 
     }
     // 🔁 Recalculate scaled positions whenever view size changes

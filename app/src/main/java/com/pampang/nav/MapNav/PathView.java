@@ -53,7 +53,7 @@ public class PathView extends View {
 
         // ⚫ Node paint (gray)
         nodePaint = new Paint();
-        nodePaint.setColor(Color.GRAY);
+        nodePaint.setColor(Color.TRANSPARENT);
         nodePaint.setStyle(Paint.Style.FILL);
         nodePaint.setAntiAlias(true);
 
@@ -65,7 +65,7 @@ public class PathView extends View {
 
         // 🅰️ Label paint
         textPaint = new Paint();
-        textPaint.setColor(Color.WHITE);
+        textPaint.setColor(Color.TRANSPARENT);
         textPaint.setTextSize(32f);
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         textPaint.setAntiAlias(true);
@@ -78,13 +78,13 @@ public class PathView extends View {
         baseNodes = new HashMap<>();
         // 🗺 Reference coordinates (based on your design resolution)
         baseNodes.put("A", new float[]{100f, 1125f});
-        baseNodes.put("B", new float[]{620f, 1125f});
-        baseNodes.put("C", new float[]{100f, 560f});
-        baseNodes.put("D", new float[]{620f, 560f});
-        baseNodes.put("E", new float[]{920f, 1125f});
-        baseNodes.put("F", new float[]{880f, 560f});
-        baseNodes.put("G", new float[]{620f, 800f});
-        baseNodes.put("H", new float[]{920f, 560f});
+        baseNodes.put("B", new float[]{585f, 1125f});
+        baseNodes.put("C", new float[]{100f, 665f});
+        baseNodes.put("D", new float[]{585f, 665f});
+        baseNodes.put("E", new float[]{825f, 1125f});
+        baseNodes.put("F", new float[]{825f, 600f});
+        baseNodes.put("G", new float[]{585f, 800f});
+        baseNodes.put("H", new float[]{825f, 665f});
     }
 
     // 🔁 Recalculate scaled positions whenever view size changes
