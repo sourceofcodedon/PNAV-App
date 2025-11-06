@@ -34,12 +34,11 @@ class MainViewModel @Inject constructor(
             ProfileMenuModel(R.string.profile_preferences),
             ProfileMenuModel(R.string.profile_logout),
         )
+        getStores()
     }
 
     fun getStores() {
-        viewModelScope.launch {
-            mainRepository.getStores()
-        }
+        mainRepository.getStores()
     }
 
     fun addStore(storeName: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?) {

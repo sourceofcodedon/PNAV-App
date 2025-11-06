@@ -13,6 +13,7 @@ import com.pampang.nav.screens.buyer.BuyerMainActivity
 import com.pampang.nav.screens.seller.SellerMainActivity
 import com.pampang.nav.utilities.extension.launchActivity
 import com.pampang.nav.viewmodels.AuthViewModel
+import com.pampang.nav.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityLoginBinding
     private val mAuthViewModel: AuthViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
     private var selectedRole: String? = null
 
 
@@ -83,6 +85,7 @@ class LoginActivity : AppCompatActivity() {
         mAuthViewModel.loginResult.observe(this) { result ->
             result?.let {
                 if (it.isSuccess) {
+                    mainViewModel.getStores()
                     val role = selectedRole
                     when (role) {
                         "buyer" -> launchActivity<BuyerMainActivity>()

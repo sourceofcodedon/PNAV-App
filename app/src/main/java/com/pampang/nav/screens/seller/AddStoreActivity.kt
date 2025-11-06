@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pampang.nav.R
 import com.pampang.nav.databinding.ActivityAddStoreBinding
+import com.pampang.nav.utilities.NetworkUtils
 import com.pampang.nav.utilities.extension.setSafeOnClickListener
 import com.pampang.nav.utilities.extension.showToast
 import com.pampang.nav.viewmodels.MainViewModel
@@ -70,6 +71,11 @@ class AddStoreActivity : AppCompatActivity() {
             }
 
             buttonCreate.setSafeOnClickListener {
+                if (!NetworkUtils.isNetworkAvailable(this@AddStoreActivity)) {
+                    showToast("The network is unstable Try again later")
+                    return@setSafeOnClickListener
+                }
+
                 val storeName = mBinding.edittextStoreName.text.toString().trim()
                 val storeCategory = mBinding.edittextStoreCategory.text.toString().trim()
                 val openingTime = mBinding.edittextOpeningTime.text.toString().trim()

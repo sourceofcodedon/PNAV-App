@@ -78,7 +78,9 @@ class SellerListFragment : Fragment() {
     }
 
     private fun initLiveData() {
-
+        mainViewModel.storeList.observe(viewLifecycleOwner) {
+            mAdapter.submitList(it)
+        }
     }
 
 }

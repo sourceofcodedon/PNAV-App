@@ -21,37 +21,37 @@ class MainRepository @Inject constructor(
 
     private val _stores = MutableLiveData<List<StoreModel>>()
     val stores: LiveData<List<StoreModel>> get() = _stores
-    val currentUser = firebaseAuth.currentUser
 
-
-    suspend fun getStores() {
+    fun getStores() {
         _isLoading.postValue(true)
+        val currentUser = firebaseAuth.currentUser
 
-        try {
-            if (currentUser == null) {
-                _stores.postValue(emptyList())
-                return
-            }
-
-            val snapshot = firestore.collection("stores")
-                .whereEqualTo("owner_id", currentUser.uid)
-                .get()
-                .await()
-
-            val storeList = snapshot.documents.mapNotNull { document ->
-                document.toObject(StoreModel::class.java)?.apply {
-                    id = document.id
-                }
-            }
-
-            _stores.postValue(storeList)
-
-        } catch (e: Exception) {
-            Log.e("MainRepository", "Error getting stores: ${e.message}", e)
+        if (currentUser == null) {
             _stores.postValue(emptyList())
-        } finally {
             _isLoading.postValue(false)
+            return
         }
+
+        firestore.collection("stores")
+            .whereEqualTo("owner_id", currentUser.uid)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.e("MainRepository", "Error getting stores: ${e.message}", e)
+                    _stores.postValue(emptyList())
+                    _isLoading.postValue(false)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    val storeList = snapshot.documents.mapNotNull { document ->
+                        document.toObject(StoreModel::class.java)?.apply {
+                            id = document.id
+                        }
+                    }
+                    _stores.postValue(storeList)
+                }
+                _isLoading.postValue(false)
+            }
     }
 
     suspend fun addStore(storeName: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?): Result<Unit> {
@@ -83,8 +83,6 @@ class MainRepository @Inject constructor(
                 val documentId = querySnapshot.documents.first().id
                 firestore.collection("stores").document(documentId).update(storeData as Map<String, Any>).await()
             }
-
-            getStores()
 
             Result.success(Unit)
 
