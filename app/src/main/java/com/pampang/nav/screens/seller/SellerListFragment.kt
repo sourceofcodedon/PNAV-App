@@ -1,5 +1,6 @@
 package com.pampang.nav.screens.seller
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -60,8 +61,16 @@ class SellerListFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        mAdapter = SimpleDiffUtilAdapter(R.layout.list_item_store, RecyclerClick{
-            it as StoreModel
+        mAdapter = SimpleDiffUtilAdapter(R.layout.list_item_store, RecyclerClick{ store ->
+            store as StoreModel
+            val intent = Intent(requireActivity(), EditStoreActivity::class.java).apply {
+                putExtra("store_id", store.id)
+                putExtra("store_name", store.storeName)
+                putExtra("store_category", store.storeCategory)
+                putExtra("opening_time", store.openingTime)
+                putExtra("closing_time", store.closingTime)
+            }
+            startActivity(intent)
         })
 
         mBinding.recyclerViewStores.adapter = mAdapter

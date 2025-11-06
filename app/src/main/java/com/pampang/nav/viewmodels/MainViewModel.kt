@@ -23,6 +23,9 @@ class MainViewModel @Inject constructor(
     private val _addStoreResult = MutableLiveData<Result<Unit>?>()
     val addStoreResult: LiveData<Result<Unit>?> get() = _addStoreResult
 
+    private val _updateStoreResult = MutableLiveData<Result<Unit>?>()
+    val updateStoreResult: LiveData<Result<Unit>?> get() = _updateStoreResult
+
     val storeList = mainRepository.stores
     val isLoading = mainRepository.isLoading
 
@@ -50,5 +53,16 @@ class MainViewModel @Inject constructor(
 
     fun clearAddStoreResult() {
         _addStoreResult.value = null
+    }
+
+    fun updateStore(storeId: String, storeName: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?) {
+        viewModelScope.launch {
+            val result = mainRepository.updateStore(storeId, storeName, storeCategory, openingTime, closingTime, imageBase64)
+            _updateStoreResult.postValue(result)
+        }
+    }
+
+    fun clearUpdateStoreResult() {
+        _updateStoreResult.value = null
     }
 }

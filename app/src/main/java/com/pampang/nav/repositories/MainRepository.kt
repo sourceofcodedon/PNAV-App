@@ -24,16 +24,8 @@ class MainRepository @Inject constructor(
 
     fun getStores() {
         _isLoading.postValue(true)
-        val currentUser = firebaseAuth.currentUser
-
-        if (currentUser == null) {
-            _stores.postValue(emptyList())
-            _isLoading.postValue(false)
-            return
-        }
 
         firestore.collection("stores")
-            .whereEqualTo("owner_id", currentUser.uid)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     Log.e("MainRepository", "Error getting stores: ${e.message}", e)
@@ -83,6 +75,29 @@ class MainRepository @Inject constructor(
                 val documentId = querySnapshot.documents.first().id
                 firestore.collection("stores").document(documentId).update(storeData as Map<String, Any>).await()
             }
+
+            Result.success(Unit)
+
+        } catch (e: Exception) {
+            Result.failure(e)
+        } finally {
+            _isLoading.postValue(false)
+        }
+    }
+
+    suspend fun updateStore(storeId: String, storeName: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?): Result<Unit> {
+        return try {
+            _isLoading.postValue(true)
+
+            val storeData = hashMapOf(
+                "store_name" to storeName,
+                "store_category" to storeCategory,
+                "opening_time" to openingTime,
+                "closing_time" to closingTime,
+                "image" to imageBase64
+            )
+
+            firestore.collection("stores").document(storeId).update(storeData as Map<String, Any>).await()
 
             Result.success(Unit)
 

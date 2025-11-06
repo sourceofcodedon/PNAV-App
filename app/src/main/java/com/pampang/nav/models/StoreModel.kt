@@ -11,6 +11,10 @@ data class StoreModel(
     @set:PropertyName("store_name")
     var storeName: String = "",
 
+    @get:PropertyName("store_category")
+    @set:PropertyName("store_category")
+    var storeCategory: String = "",
+
     @get:PropertyName("opening_time")
     @set:PropertyName("opening_time")
     var openingTime: String = "",

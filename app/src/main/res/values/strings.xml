@@ -38,4 +38,6 @@
     <string name="get_direction">Get Direction</string>
     <string name="upload_image">Upload Image</string>
     <string name="store_list_title">Store List</string>
+    <string name="edit_store">Edit Store</string>
+    <string name="save_changes">Save Changes</string>
 </resources>
