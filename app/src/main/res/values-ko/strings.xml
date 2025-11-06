@@ -36,4 +36,5 @@
     <string name="bottom_nav_messages">메시지</string>
     <string name="view_store">가게 보기</string>
     <string name="get_direction">길찾기</string>
+    <string name="upload_image">이미지 업로드</string>
 </resources>

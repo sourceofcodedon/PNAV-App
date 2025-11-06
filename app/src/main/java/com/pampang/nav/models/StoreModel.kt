@@ -21,5 +21,9 @@ data class StoreModel(
 
     @get:PropertyName("owner_id")
     @set:PropertyName("owner_id")
-    var ownerId: String = ""
+    var ownerId: String = "",
+
+    @get:PropertyName("image")
+    @set:PropertyName("image")
+    var image: String? = null
 )

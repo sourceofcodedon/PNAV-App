@@ -52,7 +52,7 @@ public class SecondMeatPathView extends View {
 
     private void init() {
         pathPaint = new Paint();
-        pathPaint.setColor(Color.BLUE);
+        pathPaint.setColor(Color.parseColor("#016B61"));
         pathPaint.setStrokeWidth(15f);
         pathPaint.setStyle(Paint.Style.STROKE);
         pathPaint.setAntiAlias(true);

@@ -4,11 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.pampang.nav.constants.SharedPrefsConst
 import com.pampang.nav.models.StoreModel
-import com.pampang.nav.utilities.SharedPrefs
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,7 +14,6 @@ import javax.inject.Singleton
 class MainRepository @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
-    private val sharedPrefs: SharedPrefs
 ) {
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -58,26 +54,35 @@ class MainRepository @Inject constructor(
         }
     }
 
-    suspend fun addStore(storeName: String, storeCategory: String, openingTime: String, closingTime: String): Result<Unit> {
+    suspend fun addStore(storeName: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?): Result<Unit> {
         return try {
             _isLoading.postValue(true)
 
             val currentUser = firebaseAuth.currentUser
-            if (currentUser == null) {
-                return Result.failure(Exception("User not authenticated"))
-            }
+                ?: return Result.failure(Exception("User not authenticated"))
 
             val storeData = hashMapOf(
                 "store_name" to storeName,
                 "store_category" to storeCategory,
                 "opening_time" to openingTime,
                 "closing_time" to closingTime,
-                "owner_id" to currentUser.uid
+                "owner_id" to currentUser.uid,
+                "image" to imageBase64
             )
 
-            firestore.collection("stores")
-                .add(storeData)
+            val querySnapshot = firestore.collection("stores")
+                .whereEqualTo("store_category", storeCategory)
+                .get()
                 .await()
+
+            if (querySnapshot.isEmpty) {
+                // Add new store
+                firestore.collection("stores").add(storeData).await()
+            } else {
+                // Update existing store
+                val documentId = querySnapshot.documents.first().id
+                firestore.collection("stores").document(documentId).update(storeData as Map<String, Any>).await()
+            }
 
             getStores()
 
