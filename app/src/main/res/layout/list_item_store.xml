@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -16,27 +14,76 @@
             type="com.pampang.nav.utilities.extension.RecyclerClick" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="6dp"
         android:onClick="@{() -> onClickCallBack.onClick(model)}"
-        android:background="@drawable/bg_transparent_rounded"
-        android:layout_marginHorizontal="@dimen/margin_padding_size_small"
-        android:layout_marginBottom="@dimen/margin_padding_size_medium"
-        android:padding="@dimen/margin_padding_size_large">
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp">
 
-        <TextView
-            android:id="@+id/text_view_title"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size_medium"
-            android:text="@{model.storeName}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Store Name" />
+            android:padding="16dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/text_view_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{model.storeName}"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Store Name" />
+
+            <TextView
+                android:id="@+id/opening_time_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Opening:"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
+
+            <TextView
+                android:id="@+id/opening_time_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@{model.openingTime}"
+                android:textAppearance="?attr/textAppearanceBody2"
+                app:layout_constraintBaseline_toBaselineOf="@+id/opening_time_label"
+                app:layout_constraintStart_toEndOf="@+id/opening_time_label" />
+
+            <TextView
+                android:id="@+id/closing_time_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Closing:"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/opening_time_label" />
+
+            <TextView
+                android:id="@+id/closing_time_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@{model.closingTime}"
+                android:textAppearance="?attr/textAppearanceBody2"
+                app:layout_constraintBaseline_toBaselineOf="@+id/closing_time_label"
+                app:layout_constraintStart_toEndOf="@+id/closing_time_label" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
 </layout>
