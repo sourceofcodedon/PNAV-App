@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pampang.nav.R
 import com.pampang.nav.databinding.ActivityAddStoreBinding
+import com.pampang.nav.models.StoreModel
 import com.pampang.nav.utilities.NetworkUtils
 import com.pampang.nav.utilities.extension.setSafeOnClickListener
 import com.pampang.nav.utilities.extension.showToast
@@ -53,7 +54,6 @@ class AddStoreActivity : AppCompatActivity() {
         initEventListener()
         setupTimePickerListeners()
         initLiveData()
-        setupStoreDropdown()
     }
 
     private fun initBinding() {
@@ -106,6 +106,11 @@ class AddStoreActivity : AppCompatActivity() {
             }
         }
 
+        mainViewModel.storeList.observe(this) { stores ->
+            stores?.let {
+                setupStoreDropdown(it)
+            }
+        }
     }
 
     private fun setupTimePickerListeners() {
@@ -164,9 +169,11 @@ class AddStoreActivity : AppCompatActivity() {
         }.show()
     }
 
-    private fun setupStoreDropdown() {
-        val stores = arrayOf("FirstFishStore", "SecondFishStore", "FirstGulayStore", "SecondGulayStore", "FirstMeatStore", "SecondMeatStore")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, stores)
+    private fun setupStoreDropdown(stores: List<StoreModel>) {
+        val allStores = arrayOf("FirstFishStore", "SecondFishStore", "FirstGulayStore", "SecondGulayStore", "FirstMeatStore", "SecondMeatStore")
+        val existingStores = stores.map { it.storeCategory }
+        val availableStores = allStores.filter { it !in existingStores }
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, availableStores)
         mBinding.edittextStoreCategory.setAdapter(adapter)
     }
 

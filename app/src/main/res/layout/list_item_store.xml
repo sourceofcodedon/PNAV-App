@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
 
         <variable
             name="model"
@@ -11,6 +12,10 @@
 
         <variable
             name="onClickCallBack"
+            type="com.pampang.nav.utilities.extension.RecyclerClick" />
+
+        <variable
+            name="onDeleteCallBack"
             type="com.pampang.nav.utilities.extension.RecyclerClick" />
     </data>
 
@@ -75,7 +80,7 @@
                 android:id="@+id/closing_time_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android.layout_marginStart="8dp"
+                android:layout_marginStart="8dp"
                 android:text="@{model.closingTime}"
                 android:textAppearance="?attr/textAppearanceBody2"
                 app:layout_constraintBaseline_toBaselineOf="@+id/closing_time_label"
@@ -88,6 +93,17 @@
                 android:layout_height="wrap_content"
                 android:text="Edit"
                 android:onClick="@{() -> onClickCallBack.onClick(model)}"
+                app:layout_constraintEnd_toStartOf="@+id/button_delete"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_delete"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete"
+                android:onClick="@{() -> onDeleteCallBack.onClick(model)}"
+                android:visibility="@{onDeleteCallBack != null ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

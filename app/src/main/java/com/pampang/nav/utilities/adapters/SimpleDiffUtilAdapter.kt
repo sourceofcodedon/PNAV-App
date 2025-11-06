@@ -17,6 +17,7 @@ import javax.inject.Inject
 class SimpleDiffUtilAdapter @Inject constructor(
     @LayoutRes private val layoutRes: Int,
     private val onClickCallBack: Any? = null,
+    private val onDeleteCallBack: Any? = null
 ) : SimpleListAdapter<Any>(DiffCallback) {
 
     companion object DiffCallback : DiffUtil.ItemCallback<Any>() {
@@ -44,12 +45,13 @@ class SimpleDiffUtilAdapter @Inject constructor(
         when (binding) {
             is ListItemProfileMenuBinding -> {
                 binding.model = item as ProfileMenuModel
-                binding.onClickCallBack = onClickCallBack as RecyclerClick
+                binding.onClickCallBack = onClickCallBack as? RecyclerClick
             }
 
             is ListItemStoreBinding -> {
                 binding.model = item as StoreModel
-                binding.onClickCallBack = onClickCallBack as RecyclerClick
+                binding.onClickCallBack = onClickCallBack as? RecyclerClick
+                binding.onDeleteCallBack = onDeleteCallBack as? RecyclerClick
             }
 
         }

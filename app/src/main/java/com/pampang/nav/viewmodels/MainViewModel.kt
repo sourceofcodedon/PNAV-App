@@ -26,6 +26,9 @@ class MainViewModel @Inject constructor(
     private val _updateStoreResult = MutableLiveData<Result<Unit>?>()
     val updateStoreResult: LiveData<Result<Unit>?> get() = _updateStoreResult
 
+    private val _deleteStoreResult = MutableLiveData<Result<Unit>?>()
+    val deleteStoreResult: LiveData<Result<Unit>?> get() = _deleteStoreResult
+
     val storeList = mainRepository.stores
     val isLoading = mainRepository.isLoading
 
@@ -64,5 +67,16 @@ class MainViewModel @Inject constructor(
 
     fun clearUpdateStoreResult() {
         _updateStoreResult.value = null
+    }
+
+    fun deleteStore(storeId: String) {
+        viewModelScope.launch {
+            val result = mainRepository.deleteStore(storeId)
+            _deleteStoreResult.postValue(result)
+        }
+    }
+
+    fun clearDeleteStoreResult() {
+        _deleteStoreResult.value = null
     }
 }

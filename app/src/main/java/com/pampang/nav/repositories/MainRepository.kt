@@ -108,5 +108,17 @@ class MainRepository @Inject constructor(
         }
     }
 
+    suspend fun deleteStore(storeId: String): Result<Unit> {
+        return try {
+            _isLoading.postValue(true)
+            firestore.collection("stores").document(storeId).delete().await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        } finally {
+            _isLoading.postValue(false)
+        }
+    }
+
 
 }
