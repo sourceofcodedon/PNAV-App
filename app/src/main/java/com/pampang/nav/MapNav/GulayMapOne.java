@@ -22,18 +22,16 @@ public class GulayMapOne extends AppCompatActivity {
 
         firstGulayPath = findViewById(R.id.firstgulay);
         Button btnGo = findViewById(R.id.btnGo);
-        Button btnClear = findViewById(R.id.btnClear); // ✅ new button
+        Button btnClear = findViewById(R.id.btnClear);
 
         setupGraph();
         testDijkstra();
 
-        // 🟢 Start Dijkstra Path Animation
         btnGo.setOnClickListener(v -> {
             List<String> path = Dijkstra.findShortestPath(graph, "A", "E");
             firstGulayPath.showAnimatedPath(path);
         });
 
-        // 🔴 Clear / Cancel Path
         btnClear.setOnClickListener(v -> {
             firstGulayPath.clearPath();
         });
@@ -54,7 +52,5 @@ public class GulayMapOne extends AppCompatActivity {
         graph.addEdge("C", "F", 5);
         graph.addEdge("F", "H", 3);
         graph.addEdge("H", "E", 1);
-
-
     }
 }

@@ -23,6 +23,7 @@ class ZoomLayout @JvmOverloads constructor(
     private var posY = 0f
 
     private var onScaleChangedListener: OnScaleChangedListener? = null
+    private var onTransformChangedListener: OnTransformChangedListener? = null
 
     private val scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
 
@@ -30,8 +31,16 @@ class ZoomLayout @JvmOverloads constructor(
         fun onScaleChanged(scaleFactor: Float)
     }
 
+    interface OnTransformChangedListener {
+        fun onTransformChanged(scale: Float, panX: Float, panY: Float)
+    }
+
     fun setOnScaleChangedListener(listener: OnScaleChangedListener) {
         onScaleChangedListener = listener
+    }
+
+    fun setOnTransformChangedListener(listener: OnTransformChangedListener) {
+        onTransformChangedListener = listener
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -50,7 +59,7 @@ class ZoomLayout @JvmOverloads constructor(
                     posX += dx
                     posY += dy
                     clampTranslation()
-                    applyTranslation()
+                    applyTransformations()
                 }
                 lastTouchX = event.x
                 lastTouchY = event.y
@@ -67,10 +76,13 @@ class ZoomLayout @JvmOverloads constructor(
         posY = max(-maxPanY, min(maxPanY, posY))
     }
 
-    private fun applyTranslation() {
+    private fun applyTransformations() {
         val child = getChildAt(0) ?: return
+        child.scaleX = scaleFactor
+        child.scaleY = scaleFactor
         child.translationX = posX
         child.translationY = posY
+        onTransformChangedListener?.onTransformChanged(scaleFactor, posX, posY)
     }
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
@@ -82,21 +94,11 @@ class ZoomLayout @JvmOverloads constructor(
             if (scaleFactor == minScale && previousScaleFactor > minScale) {
                 posX = 0f
                 posY = 0f
-                applyTranslation()
-            } else if (scaleFactor > minScale) {
-                clampTranslation()
-                applyTranslation()
             }
 
-            applyScale()
+            applyTransformations()
             onScaleChangedListener?.onScaleChanged(scaleFactor)
             return true
         }
-    }
-
-    private fun applyScale() {
-        val child = getChildAt(0) ?: return
-        child.scaleX = scaleFactor
-        child.scaleY = scaleFactor
     }
 }

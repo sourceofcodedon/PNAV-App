@@ -203,6 +203,6 @@ public class SecondGulayPath extends View {
             float y = event.getY();
             Log.d("MapTouch2", "Tapped at X=" + x + " Y=" + y);
         }
-        return true;
+        return false;
     }
 }

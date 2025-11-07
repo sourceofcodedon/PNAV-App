@@ -193,6 +193,6 @@ public class PathView2 extends View {
             float y = event.getY();
             Log.d("MapTouch2", "Tapped at X=" + x + " Y=" + y);
         }
-        return true;
+        return false;
     }
 }
