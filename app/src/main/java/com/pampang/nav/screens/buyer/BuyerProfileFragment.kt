@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.databinding.DataBindingUtil
@@ -132,6 +133,16 @@ class BuyerProfileFragment : Fragment() {
                 authViewModel.clearUpdatePasswordResult()
             }
         }
+
+        authViewModel.forgotPasswordResult.observe(viewLifecycleOwner) { result ->
+            result?.let {
+                if (it.isSuccess) {
+                    showToast("A password reset email has been sent to your email address.")
+                } else {
+                    showToast(it.exceptionOrNull()?.message ?: "Unknown error")
+                }
+            }
+        }
     }
 
     private fun showLogoutConfirmationDialog() {
@@ -195,8 +206,9 @@ class BuyerProfileFragment : Fragment() {
         val currentPasswordEditText = dialogView.findViewById<TextInputEditText>(R.id.edittext_current_password)
         val newPasswordEditText = dialogView.findViewById<TextInputEditText>(R.id.edittext_new_password)
         val confirmPasswordEditText = dialogView.findViewById<TextInputEditText>(R.id.edittext_confirm_password)
+        val forgotPasswordTextView = dialogView.findViewById<TextView>(R.id.text_view_forgot_password)
 
-        MaterialAlertDialogBuilder(requireContext())
+        val dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Change Password")
             .setView(dialogView)
             .setPositiveButton("Save") { _, _ ->
@@ -218,5 +230,15 @@ class BuyerProfileFragment : Fragment() {
             }
             .setNegativeButton("Cancel", null)
             .show()
+
+        forgotPasswordTextView.setOnClickListener {
+            dialog.dismiss()
+            val email = authViewModel.currentUser.value?.email
+            if (email != null) {
+                authViewModel.forgotPassword(email)
+            } else {
+                showToast("Could not get your email address.")
+            }
+        }
     }
 }

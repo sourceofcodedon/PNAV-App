@@ -1,6 +1,7 @@
 package com.pampang.nav.screens.auth
 
 import android.os.Bundle
+import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -51,6 +52,10 @@ class LoginActivity : AppCompatActivity() {
                 launchActivity<SignUpActivity>()
             }
 
+            textViewForgotPassword.setOnClickListener {
+                showForgotPasswordDialog()
+            }
+
             // --- ROLE SELECTION ---
             buttonBuyer.setOnClickListener {
                 selectRole("buyer")
@@ -98,6 +103,16 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+
+        mAuthViewModel.forgotPasswordResult.observe(this) { result ->
+            result?.let {
+                if (it.isSuccess) {
+                    showResultDialog("Success", "A password reset email has been sent to your email address.")
+                } else {
+                    showResultDialog("Error", it.exceptionOrNull()?.message ?: "Unknown error")
+                }
+            }
+        }
     }
 
     private fun selectRole(role: String) {
@@ -128,6 +143,25 @@ class LoginActivity : AppCompatActivity() {
             setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
+            setCancelable(false)
+        }.show()
+    }
+
+    private fun showForgotPasswordDialog() {
+        val editText = EditText(this)
+        MaterialAlertDialogBuilder(this).apply {
+            setTitle("Forgot Password")
+            setMessage("Enter your email to reset your password")
+            setView(editText)
+            setPositiveButton("Send") { _, _ ->
+                val email = editText.text.toString().trim()
+                if (email.isNotEmpty()) {
+                    mAuthViewModel.forgotPassword(email)
+                } else {
+                    showToast("Please enter your email")
+                }
+            }
+            setNegativeButton("Cancel", null)
             setCancelable(false)
         }.show()
     }

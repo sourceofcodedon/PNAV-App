@@ -35,6 +35,9 @@ class AuthViewModel @Inject constructor(
     private val _updatePasswordResult = MutableLiveData<Result<Unit>?>()
     val updatePasswordResult: LiveData<Result<Unit>?> get() = _updatePasswordResult
 
+    private val _forgotPasswordResult = MutableLiveData<Result<Unit>?>()
+    val forgotPasswordResult: LiveData<Result<Unit>?> get() = _forgotPasswordResult
+
     fun login(email: String, password: String, role: String) {
         viewModelScope.launch {
             val result = authRepository.login(email, password, role)
@@ -86,5 +89,12 @@ class AuthViewModel @Inject constructor(
 
     fun clearUpdatePasswordResult() {
         _updatePasswordResult.value = null
+    }
+
+    fun forgotPassword(email: String) {
+        viewModelScope.launch {
+            val result = authRepository.forgotPassword(email)
+            _forgotPasswordResult.value = result
+        }
     }
 }

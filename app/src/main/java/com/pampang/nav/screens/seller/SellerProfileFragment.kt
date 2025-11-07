@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.databinding.DataBindingUtil
@@ -71,7 +72,7 @@ class SellerProfileFragment : Fragment() {
                     showToast(getString(it.titleResId))
                 }
                 R.string.profile_privacy_security -> {
-                    showToast(getString(it.titleResId))
+                    showChangePasswordDialog()
                 }
                 R.string.profile_preferences -> {
                     showLanguageSelectionDialog()
@@ -118,6 +119,28 @@ class SellerProfileFragment : Fragment() {
                     showToast(it.exceptionOrNull()?.message ?: "Unknown error")
                 }
                 authViewModel.clearUpdateUsernameResult()
+            }
+        }
+
+        authViewModel.updatePasswordResult.observe(viewLifecycleOwner) { result ->
+            result?.let {
+                if (it.isSuccess) {
+                    showToast("Password updated successfully")
+                    logout()
+                } else {
+                    showToast(it.exceptionOrNull()?.message ?: "Unknown error")
+                }
+                authViewModel.clearUpdatePasswordResult()
+            }
+        }
+
+        authViewModel.forgotPasswordResult.observe(viewLifecycleOwner) { result ->
+            result?.let {
+                if (it.isSuccess) {
+                    showToast("A password reset email has been sent to your email address.")
+                } else {
+                    showToast(it.exceptionOrNull()?.message ?: "Unknown error")
+                }
             }
         }
     }
@@ -178,4 +201,44 @@ class SellerProfileFragment : Fragment() {
         AppCompatDelegate.setApplicationLocales(appLocale)
     }
 
+    private fun showChangePasswordDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_change_password, null)
+        val currentPasswordEditText = dialogView.findViewById<TextInputEditText>(R.id.edittext_current_password)
+        val newPasswordEditText = dialogView.findViewById<TextInputEditText>(R.id.edittext_new_password)
+        val confirmPasswordEditText = dialogView.findViewById<TextInputEditText>(R.id.edittext_confirm_password)
+        val forgotPasswordTextView = dialogView.findViewById<TextView>(R.id.text_view_forgot_password)
+
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Change Password")
+            .setView(dialogView)
+            .setPositiveButton("Save") { _, _ ->
+                val currentPassword = currentPasswordEditText.text.toString().trim()
+                val newPassword = newPasswordEditText.text.toString().trim()
+                val confirmPassword = confirmPasswordEditText.text.toString().trim()
+
+                if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+                    showToast("All fields are required")
+                    return@setPositiveButton
+                }
+
+                if (newPassword != confirmPassword) {
+                    showToast("Passwords do not match")
+                    return@setPositiveButton
+                }
+
+                authViewModel.updatePassword(currentPassword, newPassword)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+
+        forgotPasswordTextView.setOnClickListener {
+            dialog.dismiss()
+            val email = authViewModel.currentUser.value?.email
+            if (email != null) {
+                authViewModel.forgotPassword(email)
+            } else {
+                showToast("Could not get your email address.")
+            }
+        }
+    }
 }

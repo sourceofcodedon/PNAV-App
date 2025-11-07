@@ -128,4 +128,16 @@ class AuthRepository @Inject constructor(
             _isLoading.postValue(false)
         }
     }
+
+    suspend fun forgotPassword(email: String): Result<Unit> {
+        return try {
+            _isLoading.postValue(true)
+            firebaseAuth.sendPasswordResetEmail(email).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        } finally {
+            _isLoading.postValue(false)
+        }
+    }
 }

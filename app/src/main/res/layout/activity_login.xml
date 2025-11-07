@@ -103,6 +103,19 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:id="@+id/text_view_forgot_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/margin_padding_size_small"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:text="@string/forgot_password"
+                    android:textColor="@color/colorPrimaryLightGreen"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_layout_password" />
+
                 <LinearLayout
                     android:id="@+id/layout_selection"
                     android:layout_width="match_parent"
@@ -112,7 +125,7 @@
                     android:weightSum="2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_input_layout_password">
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_forgot_password">
 
                     <Button
                         android:id="@+id/button_buyer"
