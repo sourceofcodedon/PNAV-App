@@ -40,4 +40,8 @@
     <string name="store_list_title">Store List</string>
     <string name="edit_store">Edit Store</string>
     <string name="save_changes">Save Changes</string>
+    <string name="change_password">Change Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

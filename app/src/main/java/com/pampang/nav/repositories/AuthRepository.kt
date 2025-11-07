@@ -2,6 +2,7 @@ package com.pampang.nav.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.userProfileChangeRequest
@@ -102,6 +103,24 @@ class AuthRepository @Inject constructor(
             }
             user.updateProfile(profileUpdates).await()
             firestore.collection("users").document(user.uid).update("username", username).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        } finally {
+            _isLoading.postValue(false)
+        }
+    }
+
+    suspend fun updatePassword(
+        currentPassword: String,
+        newPassword: String,
+    ): Result<Unit> {
+        return try {
+            _isLoading.postValue(true)
+            val user = firebaseAuth.currentUser ?: throw Exception("User not logged in")
+            val credential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
+            user.reauthenticate(credential).await()
+            user.updatePassword(newPassword).await()
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)

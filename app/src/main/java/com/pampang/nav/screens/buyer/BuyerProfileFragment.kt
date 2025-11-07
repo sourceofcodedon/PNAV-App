@@ -70,7 +70,7 @@ class BuyerProfileFragment : Fragment() {
                     showToast(getString(it.titleResId))
                 }
                 R.string.profile_privacy_security -> {
-                    showToast(getString(it.titleResId))
+                    showChangePasswordDialog()
                 }
                 R.string.profile_preferences -> {
                     showLanguageSelectionDialog()
@@ -118,6 +118,18 @@ class BuyerProfileFragment : Fragment() {
                     showToast(it.exceptionOrNull()?.message ?: "Unknown error")
                 }
                 authViewModel.clearUpdateUsernameResult()
+            }
+        }
+        
+        authViewModel.updatePasswordResult.observe(viewLifecycleOwner) { result ->
+            result?.let {
+                if (it.isSuccess) {
+                    showToast("Password updated successfully")
+                    logout()
+                } else {
+                    showToast(it.exceptionOrNull()?.message ?: "Unknown error")
+                }
+                authViewModel.clearUpdatePasswordResult()
             }
         }
     }
@@ -178,4 +190,33 @@ class BuyerProfileFragment : Fragment() {
         AppCompatDelegate.setApplicationLocales(appLocale)
     }
 
+    private fun showChangePasswordDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_change_password, null)
+        val currentPasswordEditText = dialogView.findViewById<TextInputEditText>(R.id.edittext_current_password)
+        val newPasswordEditText = dialogView.findViewById<TextInputEditText>(R.id.edittext_new_password)
+        val confirmPasswordEditText = dialogView.findViewById<TextInputEditText>(R.id.edittext_confirm_password)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Change Password")
+            .setView(dialogView)
+            .setPositiveButton("Save") { _, _ ->
+                val currentPassword = currentPasswordEditText.text.toString().trim()
+                val newPassword = newPasswordEditText.text.toString().trim()
+                val confirmPassword = confirmPasswordEditText.text.toString().trim()
+
+                if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+                    showToast("All fields are required")
+                    return@setPositiveButton
+                }
+
+                if (newPassword != confirmPassword) {
+                    showToast("Passwords do not match")
+                    return@setPositiveButton
+                }
+
+                authViewModel.updatePassword(currentPassword, newPassword)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
 }

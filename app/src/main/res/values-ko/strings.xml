@@ -38,4 +38,10 @@
     <string name="get_direction">길찾기</string>
     <string name="upload_image">이미지 업로드</string>
     <string name="store_list_title">가게 목록</string>
+    <string name="edit_store">상점 편집</string>
+    <string name="save_changes">변경 사항 저장</string>
+    <string name="change_password">비밀번호 변경</string>
+    <string name="current_password">현재 비밀번호</string>
+    <string name="new_password">새 비밀번호</string>
+    <string name="confirm_password">비밀번호 확인</string>
 </resources>
