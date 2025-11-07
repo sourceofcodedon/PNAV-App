@@ -1,59 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pampang.nav.utils.ZoomLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/zoom_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MapNav.SecondMeatMapView">
 
-    <FrameLayout
-        android:id="@+id/main"
+    <com.pampang.nav.utils.ZoomLayout
+        android:id="@+id/zoom_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- 🗺️ Background Map -->
-        <ImageView
-            android:id="@+id/mapImageView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/secondmeatpath" />
+            android:layout_height="match_parent">
 
-        <!-- 🧭 Path Layer -->
-        <com.pampang.nav.MapNav.SecondMeatPathView
-            android:id="@+id/secondmeatpath"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            <!-- 🗺️ Background Map -->
+            <ImageView
+                android:id="@+id/mapImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/secondmeatpath" />
 
-        <!-- 🎯 Buttons Container -->
-        <LinearLayout
-            android:layout_width="match_parent"
+            <!-- 🧭 Path Layer -->
+            <com.pampang.nav.MapNav.SecondMeatPathView
+                android:id="@+id/secondmeatpath"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+    </com.pampang.nav.utils.ZoomLayout>
+
+    <!-- 🎯 Buttons Container -->
+    <LinearLayout
+        android:id="@+id/buttonsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnGo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="32dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Go to Destination"
+            android:textColor="@android:color/white" />
 
-            <Button
-                android:id="@+id/btnGo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="Go to Destination"
-                android:textColor="@android:color/white" />
+        <!-- 🧹 Clear Button -->
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="#B00020"
+            android:text="Clear Path"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
-            <!-- 🧹 Clear Button -->
-            <Button
-                android:id="@+id/btnClear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:backgroundTint="#B00020"
-                android:text="Clear Path"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
-
-    </FrameLayout>
-</com.pampang.nav.utils.ZoomLayout>
+</RelativeLayout>
