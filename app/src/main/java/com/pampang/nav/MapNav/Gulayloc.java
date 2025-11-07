@@ -6,26 +6,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pampang.nav.R;
+import com.pampang.nav.utils.ZoomLayout;
 
-public class Gulayloc extends AppCompatActivity {
+public class Gulayloc extends AppCompatActivity implements ZoomLayout.OnScaleChangedListener {
 
     private ImageView first_gulay;
     private ImageView second_gulay;
+    private ZoomLayout zoomLayout;
+    private TextView textView5, textView6, textView7, textView8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_gulayloc);
 
         // 🐟 Initialize ImageViews
         first_gulay = findViewById(R.id.first_gulay);
         second_gulay = findViewById(R.id.second_gulay);
+
+        zoomLayout = findViewById(R.id.zoom_layout);
+        zoomLayout.setOnScaleChangedListener(this);
+
+        textView5 = findViewById(R.id.textView5);
+        textView6 = findViewById(R.id.textView6);
+        textView7 = findViewById(R.id.textView7);
+        textView8 = findViewById(R.id.textView8);
 
         // 🐠 First gulay click → show popup menu
         first_gulay.setOnClickListener(new View.OnClickListener() {
@@ -78,5 +88,20 @@ public class Gulayloc extends AppCompatActivity {
                 popup.show();
             }
         });
+    }
+
+    @Override
+    public void onScaleChanged(float scaleFactor) {
+        if (scaleFactor > 1) {
+            textView5.setVisibility(View.GONE);
+            textView6.setVisibility(View.GONE);
+            textView7.setVisibility(View.GONE);
+            textView8.setVisibility(View.GONE);
+        } else {
+            textView5.setVisibility(View.VISIBLE);
+            textView6.setVisibility(View.VISIBLE);
+            textView7.setVisibility(View.VISIBLE);
+            textView8.setVisibility(View.VISIBLE);
+        }
     }
 }

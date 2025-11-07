@@ -13,10 +13,11 @@ import com.pampang.nav.MapNav.FirstFishLoc
 import com.pampang.nav.MapNav.Gulayloc
 import com.pampang.nav.MapNav.MeatMapLoc
 import com.pampang.nav.databinding.FragmentMainBinding
+import com.pampang.nav.utils.ZoomLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BuyerMainFragment : Fragment() {
+class BuyerMainFragment : Fragment(), ZoomLayout.OnScaleChangedListener {
 
     private lateinit var mBinding: FragmentMainBinding
     private var isMenuOpen = false
@@ -44,6 +45,7 @@ class BuyerMainFragment : Fragment() {
     private fun initConfig() {
         initExtras()
         initEventListener()
+        mBinding.zoomLayout.setOnScaleChangedListener(this)
     }
 
     private fun initExtras() {
@@ -103,6 +105,26 @@ class BuyerMainFragment : Fragment() {
 
     private fun initRequest() {
 
+    }
+
+    override fun onScaleChanged(scaleFactor: Float) {
+        val isZoomed = scaleFactor > 1f
+        val visibility = if (isZoomed) View.GONE else View.VISIBLE
+
+        mBinding.textView20.visibility = visibility
+        mBinding.textView21.visibility = visibility
+        mBinding.textView22.visibility = visibility
+        mBinding.textView24.visibility = visibility
+        mBinding.fabMain.visibility = visibility
+
+        if (isZoomed) {
+            mBinding.fabMenuLayout.visibility = View.GONE
+            if (isMenuOpen) {
+                // Reset menu state if it was open
+                isMenuOpen = false
+                mBinding.fabMain.setImageResource(R.drawable.ic_add)
+            }
+        }
     }
 
 }

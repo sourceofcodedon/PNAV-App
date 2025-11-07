@@ -2,7 +2,6 @@ package com.pampang.nav.screens.buyer
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -43,23 +42,6 @@ class BuyerMainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         NavigationUI.setupWithNavController(mBinding.bottomNavigation, navController)
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.profile -> {
-                    mBinding.textView20.visibility = View.GONE
-                    mBinding.textView21.visibility = View.GONE
-                    mBinding.textView22.visibility = View.GONE
-                    mBinding.textView24.visibility = View.GONE
-                }
-                else -> {
-                    mBinding.textView20.visibility = View.VISIBLE
-                    mBinding.textView21.visibility = View.VISIBLE
-                    mBinding.textView22.visibility = View.VISIBLE
-                    mBinding.textView24.visibility = View.VISIBLE
-                }
-            }
-        }
 
         mBinding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {

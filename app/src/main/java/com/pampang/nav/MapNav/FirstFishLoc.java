@@ -6,26 +6,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pampang.nav.R;
+import com.pampang.nav.utils.ZoomLayout;
 
-public class FirstFishLoc extends AppCompatActivity {
+public class FirstFishLoc extends AppCompatActivity implements ZoomLayout.OnScaleChangedListener {
 
     private ImageView first_fish;
     private ImageView second_fish;
+    private ZoomLayout zoomLayout;
+    private TextView textView, textView2, textView3, textView4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_firstfishloc);
 
         // 🐟 Initialize ImageViews
         first_fish = findViewById(R.id.first_fish);
         second_fish = findViewById(R.id.second_fish);
+
+        zoomLayout = findViewById(R.id.zoom_layout);
+        zoomLayout.setOnScaleChangedListener(this);
+
+        textView = findViewById(R.id.textView);
+        textView2 = findViewById(R.id.textView2);
+        textView3 = findViewById(R.id.textView3);
+        textView4 = findViewById(R.id.textView4);
 
         // 🐠 First fish click → show popup menu
         first_fish.setOnClickListener(new View.OnClickListener() {
@@ -78,5 +88,20 @@ public class FirstFishLoc extends AppCompatActivity {
                 popup.show();
             }
         });
+    }
+
+    @Override
+    public void onScaleChanged(float scaleFactor) {
+        if (scaleFactor > 1) {
+            textView.setVisibility(View.GONE);
+            textView2.setVisibility(View.GONE);
+            textView3.setVisibility(View.GONE);
+            textView4.setVisibility(View.GONE);
+        } else {
+            textView.setVisibility(View.VISIBLE);
+            textView2.setVisibility(View.VISIBLE);
+            textView3.setVisibility(View.VISIBLE);
+            textView4.setVisibility(View.VISIBLE);
+        }
     }
 }

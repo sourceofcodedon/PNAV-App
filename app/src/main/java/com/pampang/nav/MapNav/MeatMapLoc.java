@@ -6,27 +6,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pampang.nav.R;
+import com.pampang.nav.utils.ZoomLayout;
 
-public class MeatMapLoc extends AppCompatActivity {
+public class MeatMapLoc extends AppCompatActivity implements ZoomLayout.OnScaleChangedListener {
 
     private ImageView first_meat;
     private ImageView second_meat;
+    private ZoomLayout zoomLayout;
+    private TextView textView9, textView10, textView11, textView12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.meatmaploc);
-
 
         first_meat = findViewById(R.id.first_meat);
         second_meat = findViewById(R.id.second_meat);
 
+        zoomLayout = findViewById(R.id.zoom_layout);
+        zoomLayout.setOnScaleChangedListener(this);
+
+        textView9 = findViewById(R.id.textView9);
+        textView10 = findViewById(R.id.textView10);
+        textView11 = findViewById(R.id.textView11);
+        textView12 = findViewById(R.id.textView12);
 
         first_meat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,5 +85,20 @@ public class MeatMapLoc extends AppCompatActivity {
                 popup.show();
             }
         });
+    }
+
+    @Override
+    public void onScaleChanged(float scaleFactor) {
+        if (scaleFactor > 1) {
+            textView9.setVisibility(View.GONE);
+            textView10.setVisibility(View.GONE);
+            textView11.setVisibility(View.GONE);
+            textView12.setVisibility(View.GONE);
+        } else {
+            textView9.setVisibility(View.VISIBLE);
+            textView10.setVisibility(View.VISIBLE);
+            textView11.setVisibility(View.VISIBLE);
+            textView12.setVisibility(View.VISIBLE);
+        }
     }
 }
