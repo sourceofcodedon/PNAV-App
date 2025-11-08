@@ -53,14 +53,14 @@ public class FirstGulayPath extends View {
     private void init() {
         pathPaint = new Paint();
         pathPaint.setColor(Color.parseColor("#016B61"));
-        pathPaint.setStrokeWidth(15f);
+        pathPaint.setStrokeWidth(25f);
         pathPaint.setStyle(Paint.Style.STROKE);
         pathPaint.setAntiAlias(true);
         pathPaint.setStrokeCap(Paint.Cap.ROUND);
         pathPaint.setStrokeJoin(Paint.Join.ROUND);
 
         nodePaint = new Paint();
-        nodePaint.setColor(Color.BLACK);
+        nodePaint.setColor(Color.YELLOW);
         nodePaint.setStyle(Paint.Style.FILL);
         nodePaint.setAntiAlias(true);
 
@@ -70,8 +70,8 @@ public class FirstGulayPath extends View {
         movingDotPaint.setAntiAlias(true);
 
         textPaint = new Paint();
-        textPaint.setColor(Color.TRANSPARENT);
-        textPaint.setTextSize(32f);
+        textPaint.setColor(Color.BLACK);
+        textPaint.setTextSize(50f);
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         textPaint.setAntiAlias(true);
         textPaint.setTextAlign(Paint.Align.CENTER);
@@ -81,38 +81,127 @@ public class FirstGulayPath extends View {
 
     private void setupBaseNodes() {
         baseNodes = new HashMap<>();
-        baseNodes.put("A", new float[]{100f, 1125f});
-        baseNodes.put("B", new float[]{440f, 1125f});
-        baseNodes.put("C", new float[]{100f, 660f});
-        baseNodes.put("D", new float[]{440f, 660f});
-        baseNodes.put("E", new float[]{440f, 380f});
-        baseNodes.put("F", new float[]{100f, 250f});
-        baseNodes.put("H", new float[]{440f, 250f});
+        baseNodes.put("n1", new float[]{100f, 1125f});
+        baseNodes.put("n2", new float[]{440f, 1125f});
+        baseNodes.put("n3", new float[]{100f, 660f});
+        baseNodes.put("n4", new float[]{440f, 660f});
+        baseNodes.put("n5", new float[]{440f, 380f});
+        baseNodes.put("n6", new float[]{100f, 250f});
+        baseNodes.put("n7", new float[]{440f, 250f});
 
         // Add more nodes to fill the screen
-        baseNodes.put("I", new float[]{780f, 1125f});
-        baseNodes.put("J", new float[]{780f, 660f});
-        baseNodes.put("K", new float[]{780f, 380f});
-        baseNodes.put("L", new float[]{780f, 250f});
+        baseNodes.put("n8", new float[]{850f, 1125f});
+        baseNodes.put("n9", new float[]{850f, 660f});
+        baseNodes.put("n10", new float[]{850f, 380f});
+        baseNodes.put("n11", new float[]{850f, 250f});
 
-        baseNodes.put("M", new float[]{100f, 1500f});
-        baseNodes.put("N", new float[]{440f, 1500f});
-        baseNodes.put("O", new float[]{780f, 1500f});
+        baseNodes.put("n12", new float[]{100f, 1480f});
+        baseNodes.put("n13", new float[]{440f, 1480f});
+        baseNodes.put("n14", new float[]{850f, 1480f});
 
-        baseNodes.put("P", new float[]{100f, 1900f});
-        baseNodes.put("Q", new float[]{440f, 1900f});
-        baseNodes.put("R", new float[]{780f, 1900f});
+        baseNodes.put("n15", new float[]{100f, 1900f});
+        baseNodes.put("n16", new float[]{440f, 1900f});
+        baseNodes.put("n17", new float[]{850f, 1900f});
 
-        baseNodes.put("S", new float[]{100f, 890f});
-        baseNodes.put("T", new float[]{440f, 890f});
-        baseNodes.put("U", new float[]{780f, 890f});
+        baseNodes.put("n18", new float[]{100f, 890f});
+        baseNodes.put("n19", new float[]{440f, 890f});
+        baseNodes.put("n20", new float[]{850f, 890f});
 
-        baseNodes.put("V", new float[]{100f, 1700f});
-        baseNodes.put("W", new float[]{440f, 1700f});
-        baseNodes.put("X", new float[]{780f, 1700f});
+        baseNodes.put("n21", new float[]{100f, 1700f});
+        baseNodes.put("n22", new float[]{440f, 1700f});
+        baseNodes.put("n23", new float[]{850f, 1700f});
 
-        baseNodes.put("Y", new float[]{100f, 500f});
-        baseNodes.put("Z", new float[]{780f, 500f});
+        baseNodes.put("n24", new float[]{100f, 500f});
+        baseNodes.put("n25", new float[]{850f, 500f});
+
+        //new nodes
+        baseNodes.put("n26", new float[]{440f, 500f});
+
+        //new nodes from red dots
+        baseNodes.put("n27", new float[]{215f, 250f});
+        baseNodes.put("n28", new float[]{295f, 250f});
+        baseNodes.put("n29", new float[]{590f, 250f});
+
+        baseNodes.put("n30", new float[]{215f, 380f});
+        baseNodes.put("n31", new float[]{295f, 380f});
+        baseNodes.put("n32", new float[]{590f, 380f});
+
+        baseNodes.put("n33", new float[]{215f, 500f});
+        baseNodes.put("n34", new float[]{295f, 500f});
+        baseNodes.put("n35", new float[]{590f, 500f});
+
+        baseNodes.put("n36", new float[]{215f, 660f});
+        baseNodes.put("n37", new float[]{295f, 660f});
+        baseNodes.put("n38", new float[]{590f, 660f});
+
+        baseNodes.put("n39", new float[]{215f, 890f});
+        baseNodes.put("n40", new float[]{295f, 890f});
+        baseNodes.put("n41", new float[]{590f, 890f});
+
+        baseNodes.put("n42", new float[]{215f, 1125f});
+        baseNodes.put("n43", new float[]{295f, 1125f});
+        baseNodes.put("n44", new float[]{590f, 1125f});
+
+        baseNodes.put("n45", new float[]{100f, 1312f});
+        baseNodes.put("n46", new float[]{215f, 1312f});
+        baseNodes.put("n47", new float[]{295f, 1312f});
+        baseNodes.put("n48", new float[]{440f, 1312f});
+        baseNodes.put("n49", new float[]{555f, 1312f});
+        baseNodes.put("n50", new float[]{665f, 1312f});
+        baseNodes.put("n51", new float[]{850f, 1312f});
+
+        baseNodes.put("n52", new float[]{215f, 1480f});
+        baseNodes.put("n53", new float[]{295f, 1480f});
+        baseNodes.put("n54", new float[]{555f, 1480f});
+        baseNodes.put("n55", new float[]{665f, 1480f});
+
+        baseNodes.put("n56", new float[]{215f, 1700f});
+        baseNodes.put("n57", new float[]{295f, 1700f});
+        baseNodes.put("n58", new float[]{555f, 1700f});
+        baseNodes.put("n59", new float[]{665f, 1700f});
+
+        baseNodes.put("n60", new float[]{215f, 1900f});
+        baseNodes.put("n61", new float[]{295f, 1900f});
+        baseNodes.put("n62", new float[]{555f, 1900f});
+        baseNodes.put("n63", new float[]{665f, 1900f});
+
+        baseNodes.put("n64", new float[]{100f, 2100f});
+        baseNodes.put("n65", new float[]{215f, 2100f});
+        baseNodes.put("n66", new float[]{295f, 2100f});
+        baseNodes.put("n67", new float[]{440f, 2100f});
+        baseNodes.put("n68", new float[]{555f, 2100f});
+        baseNodes.put("n69", new float[]{665f, 2100f});
+        baseNodes.put("n70", new float[]{850f, 1800f});
+
+        baseNodes.put("n71", new float[]{900f, 1900f});
+        baseNodes.put("n72", new float[]{900f, 2000f});
+        baseNodes.put("n73", new float[]{900f, 2100f});
+        
+        //new nodes from red dots (second batch)
+        baseNodes.put("n74", new float[]{670f, 250f});
+        baseNodes.put("n75", new float[]{745f, 250f});
+        baseNodes.put("n76", new float[]{670f, 380f});
+        baseNodes.put("n77", new float[]{745f, 380f});
+        baseNodes.put("n78", new float[]{670f, 500f});
+        baseNodes.put("n79", new float[]{745f, 500f});
+        baseNodes.put("n80", new float[]{670f, 660f});
+        baseNodes.put("n81", new float[]{745f, 660f});
+        baseNodes.put("n82", new float[]{670f, 890f});
+        baseNodes.put("n83", new float[]{745f, 890f});
+        baseNodes.put("n84", new float[]{670f, 1125f});
+        baseNodes.put("n85", new float[]{745f, 1125f});
+
+        baseNodes.put("n86", new float[]{745f, 1312f});
+        baseNodes.put("n87", new float[]{745f, 1480f});
+        baseNodes.put("n88", new float[]{745f, 1700f});
+        baseNodes.put("n89", new float[]{745f, 1900f});
+        baseNodes.put("n90", new float[]{745f, 1800f});
+        baseNodes.put("n91", new float[]{740f, 2100f});
+
+        baseNodes.put("n92", new float[]{215f, 2250f});
+        baseNodes.put("n93", new float[]{440f, 2250f});
+        baseNodes.put("n94", new float[]{555f, 2250f});
+        baseNodes.put("n95", new float[]{665f, 2250f});
     }
 
     @Override
@@ -186,7 +275,7 @@ public class FirstGulayPath extends View {
         for (Map.Entry<String, float[]> entry : nodes.entrySet()) {
             float[] point = entry.getValue();
             String label = entry.getKey();
-            canvas.drawCircle(point[0], point[1], 30f * scaleX, nodePaint);
+            canvas.drawCircle(point[0], point[1], 35f * scaleX, nodePaint);
             canvas.drawText(label, point[0], point[1] + (10 * scaleY), textPaint);
         }
 
@@ -215,7 +304,7 @@ public class FirstGulayPath extends View {
                 float dy = y - nodePos[1];
                 float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < 50f * scaleX) {
+                if (distance < 35f * scaleX) {
                     String clickedNode = entry.getKey();
                     Log.d("MapTouch", "Clicked near node: " + clickedNode);
                     if (nodeClickListener != null) {

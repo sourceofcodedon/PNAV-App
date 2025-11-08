@@ -16,7 +16,7 @@ public class GulayMapOne extends AppCompatActivity {
     private FirstGulayPath firstGulayPath;
     private Graph graph;
     private String startNode = null; // No default start node
-    private final String DESTINATION_NODE = "E"; // Fixed destination
+    private final String DESTINATION_NODE = "n5"; // Fixed destination
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,50 +58,29 @@ public class GulayMapOne extends AppCompatActivity {
     private void setupGraph() {
         graph = new Graph();
         // Existing edges
-        graph.addEdge("A", "B", 3);
-        graph.addEdge("A", "C", 8);
-        graph.addEdge("B", "D", 6);
-        graph.addEdge("C", "D", 4);
-        graph.addEdge("D", "E", 3);
-        graph.addEdge("C", "F", 5);
-        graph.addEdge("F", "H", 3);
-        graph.addEdge("H", "E", 1);
 
-        // Connect new nodes
-        graph.addEdge("B", "I", 4);
-        graph.addEdge("D", "J", 4);
-        graph.addEdge("E", "K", 4);
-        graph.addEdge("H", "L", 4);
-        graph.addEdge("I", "J", 6);
-        graph.addEdge("J", "K", 3);
-        graph.addEdge("K", "L", 2);
+        //First column
+        graph.addEdge("n6", "n24", 2);
+        graph.addEdge("n6", "n27", 1);
+        graph.addEdge("n24", "n3", 1);
+        graph.addEdge("n3", "n36", 1);
+        graph.addEdge("n3", "n18", 2);
+        graph.addEdge("n18", "n1", 2);
+        graph.addEdge("n1", "n42", 1);
+        graph.addEdge("n1", "n45", 1.5);
+        graph.addEdge("n45", "n12", 1);
+        graph.addEdge("n12", "n52", 1);
+        graph.addEdge("n21", "n12", 1);
+        graph.addEdge("n21", "n15", 1);
+        graph.addEdge("n21", "n56", 1);
+        graph.addEdge("n15", "n64", 2);
 
-        graph.addEdge("A", "M", 5);
-        graph.addEdge("B", "N", 5);
-        graph.addEdge("I", "O", 5);
-        graph.addEdge("M", "N", 3);
-        graph.addEdge("N", "O", 3);
+        //second column
+        graph.addEdge("n27", "n28", 2);
+        graph.addEdge("n21", "n12", 2);
 
-        graph.addEdge("M", "P", 7);
-        graph.addEdge("N", "Q", 7);
-        graph.addEdge("O", "R", 7);
-        graph.addEdge("P", "Q", 3);
-        graph.addEdge("Q", "R", 3);
 
-        graph.addEdge("C", "S", 2);
-        graph.addEdge("D", "T", 2);
-        graph.addEdge("J", "U", 2);
-        graph.addEdge("S", "T", 3);
-        graph.addEdge("T", "U", 3);
 
-        graph.addEdge("P", "V", 2);
-        graph.addEdge("Q", "W", 2);
-        graph.addEdge("R", "X", 2);
-        graph.addEdge("V", "W", 3);
-        graph.addEdge("W", "X", 3);
 
-        graph.addEdge("F", "Y", 4);
-        graph.addEdge("K", "Z", 4);
-        graph.addEdge("Y", "Z", 10);
     }
 }
