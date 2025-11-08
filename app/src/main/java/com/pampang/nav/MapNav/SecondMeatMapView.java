@@ -1,9 +1,9 @@
 package com.pampang.nav.MapNav;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,8 +15,9 @@ public class SecondMeatMapView extends AppCompatActivity {
 
     private SecondMeatPathView secondMeatPathView;
     private Graph graph;
+    private String startNode = null;
+    private final String DESTINATION_NODE = "Z"; // Fixed destination
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,26 +25,34 @@ public class SecondMeatMapView extends AppCompatActivity {
 
         secondMeatPathView = findViewById(R.id.secondmeatpath);
         Button btnGo = findViewById(R.id.btnGo);
-        Button btnClear = findViewById(R.id.btnClear); // ✅ new button
+        Button btnClear = findViewById(R.id.btnClear);
 
         setupGraph();
-        testDijkstra();
 
-        // 🟢 Start Dijkstra Path Animation
-        btnGo.setOnClickListener(v -> {
-            List<String> path = Dijkstra.findShortestPath(graph, "A", "X");
-            secondMeatPathView.showAnimatedPath(path);
+        secondMeatPathView.setOnNodeClickListener(nodeLabel -> {
+            startNode = nodeLabel;
+            Toast.makeText(this, "Current location set to: " + nodeLabel, Toast.LENGTH_SHORT).show();
+            Log.d("SecondMeatMapView", "Start node set to: " + startNode);
         });
 
-        // 🔴 Clear / Cancel Path
+        btnGo.setOnClickListener(v -> {
+            if (startNode == null) {
+                Toast.makeText(this, "Please select a starting location by tapping on the map", Toast.LENGTH_LONG).show();
+                return;
+            }
+            List<String> path = Dijkstra.findShortestPath(graph, startNode, DESTINATION_NODE);
+            if (path == null || path.isEmpty()) {
+                Toast.makeText(this, "No path found from " + startNode + " to " + DESTINATION_NODE, Toast.LENGTH_SHORT).show();
+            } else {
+                secondMeatPathView.showAnimatedPath(path);
+            }
+        });
+
         btnClear.setOnClickListener(v -> {
             secondMeatPathView.clearPath();
+            startNode = null;
+            Toast.makeText(this, "Path cleared and location reset", Toast.LENGTH_SHORT).show();
         });
-    }
-
-    private void testDijkstra() {
-        List<String> path = Dijkstra.findShortestPath(graph, "A", "X");
-        Log.d("DijkstraResult", "Shortest Path: " + path);
     }
 
     private void setupGraph() {

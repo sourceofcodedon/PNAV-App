@@ -1,11 +1,11 @@
 package com.pampang.nav.MapNav;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.pampang.nav.R;
 
@@ -15,8 +15,9 @@ public class GulayMapTwo extends AppCompatActivity {
 
     private SecondGulayPath secondGulayPath;
     private Graph graph;
+    private String startNode = null; 
+    private final String DESTINATION_NODE = "R";
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,26 +25,34 @@ public class GulayMapTwo extends AppCompatActivity {
 
         secondGulayPath = findViewById(R.id.secondgulay);
         Button btnGo = findViewById(R.id.btnGo);
-        Button btnClear = findViewById(R.id.btnClear); // ✅ new button
+        Button btnClear = findViewById(R.id.btnClear);
 
         setupGraph();
-        testDijkstra();
 
-        // 🟢 Start Dijkstra Path Animation
-        btnGo.setOnClickListener(v -> {
-            List<String> path = Dijkstra.findShortestPath(graph, "A", "M");
-            secondGulayPath.showAnimatedPath(path);
+        secondGulayPath.setOnNodeClickListener(nodeLabel -> {
+            startNode = nodeLabel;
+            Toast.makeText(this, "Current location set to: " + nodeLabel, Toast.LENGTH_SHORT).show();
+            Log.d("GulayMapTwo", "Start node set to: " + startNode);
         });
 
-        // 🔴 Clear / Cancel Path
+        btnGo.setOnClickListener(v -> {
+            if (startNode == null) {
+                Toast.makeText(this, "Please select a starting location by tapping on the map", Toast.LENGTH_LONG).show();
+                return;
+            }
+            List<String> path = Dijkstra.findShortestPath(graph, startNode, DESTINATION_NODE);
+            if (path == null || path.isEmpty()) {
+                Toast.makeText(this, "No path found from " + startNode + " to " + DESTINATION_NODE, Toast.LENGTH_SHORT).show();
+            } else {
+                secondGulayPath.showAnimatedPath(path);
+            }
+        });
+
         btnClear.setOnClickListener(v -> {
             secondGulayPath.clearPath();
+            startNode = null; 
+            Toast.makeText(this, "Path cleared and location reset", Toast.LENGTH_SHORT).show();
         });
-    }
-
-    private void testDijkstra() {
-        List<String> path = Dijkstra.findShortestPath(graph, "A", "M");
-        Log.d("DijkstraResult", "Shortest Path: " + path);
     }
 
     private void setupGraph() {
@@ -61,5 +70,16 @@ public class GulayMapTwo extends AppCompatActivity {
         graph.addEdge("F", "G", 1);
         graph.addEdge("G", "H", 0.5);
 
+        // Additional node connections
+        graph.addEdge("H", "I", 3);
+        graph.addEdge("I", "J", 5);
+        graph.addEdge("J", "K", 2);
+        graph.addEdge("K", "L", 2);
+        graph.addEdge("L", "R", 8);
+        graph.addEdge("M", "O", 4);
+        graph.addEdge("N", "P", 6);
+        graph.addEdge("O", "P", 1);
+        graph.addEdge("P", "Q", 2);
+        graph.addEdge("Q", "R", 1);
     }
 }

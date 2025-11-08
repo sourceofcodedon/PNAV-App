@@ -34,6 +34,17 @@ public class FirstGulayPath extends View {
 
     private float scaleX = 1f, scaleY = 1f;
 
+    // Listener for node clicks
+    public interface OnNodeClickListener {
+        void onNodeClick(String nodeLabel);
+    }
+    private OnNodeClickListener nodeClickListener;
+
+    public void setOnNodeClickListener(OnNodeClickListener listener) {
+        this.nodeClickListener = listener;
+    }
+
+
     public FirstGulayPath(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
@@ -49,7 +60,7 @@ public class FirstGulayPath extends View {
         pathPaint.setStrokeJoin(Paint.Join.ROUND);
 
         nodePaint = new Paint();
-        nodePaint.setColor(Color.TRANSPARENT);
+        nodePaint.setColor(Color.BLACK);
         nodePaint.setStyle(Paint.Style.FILL);
         nodePaint.setAntiAlias(true);
 
@@ -77,6 +88,31 @@ public class FirstGulayPath extends View {
         baseNodes.put("E", new float[]{440f, 380f});
         baseNodes.put("F", new float[]{100f, 250f});
         baseNodes.put("H", new float[]{440f, 250f});
+
+        // Add more nodes to fill the screen
+        baseNodes.put("I", new float[]{780f, 1125f});
+        baseNodes.put("J", new float[]{780f, 660f});
+        baseNodes.put("K", new float[]{780f, 380f});
+        baseNodes.put("L", new float[]{780f, 250f});
+
+        baseNodes.put("M", new float[]{100f, 1500f});
+        baseNodes.put("N", new float[]{440f, 1500f});
+        baseNodes.put("O", new float[]{780f, 1500f});
+
+        baseNodes.put("P", new float[]{100f, 1900f});
+        baseNodes.put("Q", new float[]{440f, 1900f});
+        baseNodes.put("R", new float[]{780f, 1900f});
+
+        baseNodes.put("S", new float[]{100f, 890f});
+        baseNodes.put("T", new float[]{440f, 890f});
+        baseNodes.put("U", new float[]{780f, 890f});
+
+        baseNodes.put("V", new float[]{100f, 1700f});
+        baseNodes.put("W", new float[]{440f, 1700f});
+        baseNodes.put("X", new float[]{780f, 1700f});
+
+        baseNodes.put("Y", new float[]{100f, 500f});
+        baseNodes.put("Z", new float[]{780f, 500f});
     }
 
     @Override
@@ -150,8 +186,8 @@ public class FirstGulayPath extends View {
         for (Map.Entry<String, float[]> entry : nodes.entrySet()) {
             float[] point = entry.getValue();
             String label = entry.getKey();
-            canvas.drawCircle(point[0], point[1], 7f * scaleX, nodePaint);
-            canvas.drawText(label, point[0], point[1] - (18f * scaleY), textPaint);
+            canvas.drawCircle(point[0], point[1], 30f * scaleX, nodePaint);
+            canvas.drawText(label, point[0], point[1] + (10 * scaleY), textPaint);
         }
 
         if (pathMeasure != null) {
@@ -172,7 +208,23 @@ public class FirstGulayPath extends View {
             float x = event.getX();
             float y = event.getY();
             Log.d("MapTouch", "Tapped at X=" + x + " Y=" + y);
+
+            for (Map.Entry<String, float[]> entry : nodes.entrySet()) {
+                float[] nodePos = entry.getValue();
+                float dx = x - nodePos[0];
+                float dy = y - nodePos[1];
+                float distance = (float) Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 50f * scaleX) {
+                    String clickedNode = entry.getKey();
+                    Log.d("MapTouch", "Clicked near node: " + clickedNode);
+                    if (nodeClickListener != null) {
+                        nodeClickListener.onNodeClick(clickedNode);
+                    }
+                    return true; // Event handled
+                }
+            }
         }
-        return false;
+        return super.onTouchEvent(event);
     }
 }

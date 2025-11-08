@@ -1,9 +1,11 @@
 package com.pampang.nav.MapNav;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.pampang.nav.R;
 
@@ -13,6 +15,8 @@ public class MapActivityAF extends AppCompatActivity {
 
     private PathView pathView;
     private Graph graph;
+    private String startNode = null;
+    private final String DESTINATION_NODE = "F";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,26 +25,34 @@ public class MapActivityAF extends AppCompatActivity {
 
         pathView = findViewById(R.id.pathView);
         Button btnGo = findViewById(R.id.btnGo);
-        Button btnClear = findViewById(R.id.btnClear); // ✅ new button
+        Button btnClear = findViewById(R.id.btnClear);
 
         setupGraph();
-        testDijkstra();
 
-        // 🟢 Start Dijkstra Path Animation
-        btnGo.setOnClickListener(v -> {
-            List<String> path = Dijkstra.findShortestPath(graph, "A", "F");
-            pathView.showAnimatedPath(path);
+        pathView.setOnNodeClickListener(nodeLabel -> {
+            startNode = nodeLabel;
+            Toast.makeText(this, "Current location set to: " + nodeLabel, Toast.LENGTH_SHORT).show();
+            Log.d("MapActivityAF", "Start node set to: " + startNode);
         });
 
-        // 🔴 Clear / Cancel Path
+        btnGo.setOnClickListener(v -> {
+            if (startNode == null) {
+                Toast.makeText(this, "Please select a starting location by tapping on the map", Toast.LENGTH_LONG).show();
+                return;
+            }
+            List<String> path = Dijkstra.findShortestPath(graph, startNode, DESTINATION_NODE);
+            if (path == null || path.isEmpty()) {
+                Toast.makeText(this, "No path found from " + startNode + " to " + DESTINATION_NODE, Toast.LENGTH_SHORT).show();
+            } else {
+                pathView.showAnimatedPath(path);
+            }
+        });
+
         btnClear.setOnClickListener(v -> {
             pathView.clearPath();
+            startNode = null;
+            Toast.makeText(this, "Path cleared and location reset", Toast.LENGTH_SHORT).show();
         });
-    }
-
-    private void testDijkstra() {
-        List<String> path = Dijkstra.findShortestPath(graph, "A", "F");
-        Log.d("DijkstraResult", "Shortest Path: " + path);
     }
 
     private void setupGraph() {
@@ -62,5 +74,15 @@ public class MapActivityAF extends AppCompatActivity {
         graph.addEdge("G", "D", 2);
         graph.addEdge("H", "E", 10);
         graph.addEdge("H", "F", 0.5);
+        
+        // Edges for new nodes
+        graph.addEdge("A", "I", 5);
+        graph.addEdge("B", "J", 5);
+        graph.addEdge("E", "K", 5);
+        graph.addEdge("I", "L", 7);
+        graph.addEdge("J", "M", 7);
+        graph.addEdge("K", "N", 7);
+        graph.addEdge("L", "M", 7);
+        graph.addEdge("M", "N", 7);
     }
 }
