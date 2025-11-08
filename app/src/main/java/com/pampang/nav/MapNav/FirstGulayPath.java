@@ -146,36 +146,36 @@ public class FirstGulayPath extends View {
         baseNodes.put("n46", new float[]{215f, 1312f});
         baseNodes.put("n47", new float[]{295f, 1312f});
         baseNodes.put("n48", new float[]{440f, 1312f});
-        baseNodes.put("n49", new float[]{555f, 1312f});
+        baseNodes.put("n49", new float[]{590f, 1312f});
         baseNodes.put("n50", new float[]{665f, 1312f});
         baseNodes.put("n51", new float[]{850f, 1312f});
 
         baseNodes.put("n52", new float[]{215f, 1480f});
         baseNodes.put("n53", new float[]{295f, 1480f});
-        baseNodes.put("n54", new float[]{555f, 1480f});
+        baseNodes.put("n54", new float[]{590f, 1480f});
         baseNodes.put("n55", new float[]{665f, 1480f});
 
         baseNodes.put("n56", new float[]{215f, 1700f});
         baseNodes.put("n57", new float[]{295f, 1700f});
-        baseNodes.put("n58", new float[]{555f, 1700f});
+        baseNodes.put("n58", new float[]{590f, 1700f});
         baseNodes.put("n59", new float[]{665f, 1700f});
 
         baseNodes.put("n60", new float[]{215f, 1900f});
         baseNodes.put("n61", new float[]{295f, 1900f});
-        baseNodes.put("n62", new float[]{555f, 1900f});
+        baseNodes.put("n62", new float[]{590f, 1900f});
         baseNodes.put("n63", new float[]{665f, 1900f});
 
-        baseNodes.put("n64", new float[]{100f, 2100f});
-        baseNodes.put("n65", new float[]{215f, 2100f});
-        baseNodes.put("n66", new float[]{295f, 2100f});
-        baseNodes.put("n67", new float[]{440f, 2100f});
-        baseNodes.put("n68", new float[]{555f, 2100f});
-        baseNodes.put("n69", new float[]{665f, 2100f});
+        baseNodes.put("n64", new float[]{100f, 2150f});
+        baseNodes.put("n65", new float[]{215f, 2150f});
+        baseNodes.put("n66", new float[]{295f, 2150f});
+        baseNodes.put("n67", new float[]{440f, 2150f});
+        baseNodes.put("n68", new float[]{590f, 2150f});
+        baseNodes.put("n69", new float[]{665f, 2150f});
         baseNodes.put("n70", new float[]{850f, 1800f});
 
         baseNodes.put("n71", new float[]{900f, 1900f});
         baseNodes.put("n72", new float[]{900f, 2000f});
-        baseNodes.put("n73", new float[]{900f, 2100f});
+        baseNodes.put("n73", new float[]{900f, 2150f});
         
         //new nodes from red dots (second batch)
         baseNodes.put("n74", new float[]{670f, 250f});
@@ -196,12 +196,9 @@ public class FirstGulayPath extends View {
         baseNodes.put("n88", new float[]{745f, 1700f});
         baseNodes.put("n89", new float[]{745f, 1900f});
         baseNodes.put("n90", new float[]{745f, 1800f});
-        baseNodes.put("n91", new float[]{740f, 2100f});
+        baseNodes.put("n91", new float[]{740f, 2150f});
 
-        baseNodes.put("n92", new float[]{215f, 2250f});
-        baseNodes.put("n93", new float[]{440f, 2250f});
-        baseNodes.put("n94", new float[]{555f, 2250f});
-        baseNodes.put("n95", new float[]{665f, 2250f});
+
     }
 
     @Override
@@ -275,7 +272,7 @@ public class FirstGulayPath extends View {
         for (Map.Entry<String, float[]> entry : nodes.entrySet()) {
             float[] point = entry.getValue();
             String label = entry.getKey();
-            canvas.drawCircle(point[0], point[1], 35f * scaleX, nodePaint);
+            canvas.drawCircle(point[0], point[1], 45f * scaleX, nodePaint);
             canvas.drawText(label, point[0], point[1] + (10 * scaleY), textPaint);
         }
 
@@ -304,7 +301,7 @@ public class FirstGulayPath extends View {
                 float dy = y - nodePos[1];
                 float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < 35f * scaleX) {
+                if (distance < 70f * scaleX) {
                     String clickedNode = entry.getKey();
                     Log.d("MapTouch", "Clicked near node: " + clickedNode);
                     if (nodeClickListener != null) {
