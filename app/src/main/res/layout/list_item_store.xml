@@ -17,6 +17,10 @@
         <variable
             name="onDeleteCallBack"
             type="com.pampang.nav.utilities.extension.RecyclerClick" />
+
+        <variable
+            name="isOwner"
+            type="java.lang.Boolean" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -93,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:text="Edit"
                 android:onClick="@{() -> onClickCallBack.onClick(model)}"
+                android:visibility="@{isOwner ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toStartOf="@+id/button_delete"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -103,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:text="Delete"
                 android:onClick="@{() -> onDeleteCallBack.onClick(model)}"
-                android:visibility="@{onDeleteCallBack != null ? View.VISIBLE : View.GONE}"
+                android:visibility="@{isOwner ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

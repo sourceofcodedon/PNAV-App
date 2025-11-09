@@ -7,6 +7,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
+import com.google.firebase.auth.FirebaseAuth
 import com.pampang.nav.databinding.ListItemProfileMenuBinding
 import com.pampang.nav.databinding.ListItemStoreBinding
 import com.pampang.nav.models.ProfileMenuModel
@@ -49,9 +50,12 @@ class SimpleDiffUtilAdapter @Inject constructor(
             }
 
             is ListItemStoreBinding -> {
-                binding.model = item as StoreModel
+                val store = item as StoreModel
+                val currentUser = FirebaseAuth.getInstance().currentUser
+                binding.model = store
                 binding.onClickCallBack = onClickCallBack as? RecyclerClick
                 binding.onDeleteCallBack = onDeleteCallBack as? RecyclerClick
+                binding.isOwner = currentUser != null && store.ownerId == currentUser.uid
             }
 
         }
