@@ -75,10 +75,6 @@ public class GulayMapTwo extends AppCompatActivity {
         graph.addEdge("n33", "n36", 1);
         graph.addEdge("n39", "n42", 1);
         graph.addEdge("n39", "n36", 1);
-        graph.addEdge("n46", "n52", 1);
-        graph.addEdge("n52", "n56", 1);
-        graph.addEdge("n56", "n60", 1);
-        graph.addEdge("n60", "n65", 1);
         graph.addEdge("n42", "n1", 2);
 
         //third column

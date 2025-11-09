@@ -16,7 +16,7 @@ public class MapActivty2 extends AppCompatActivity {
     private PathView2 pathView2;
     private Graph graph;
     private String startNode = null;
-    private final String DESTINATION_NODE = "n87";
+    private final String DESTINATION_NODE = "n90";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +75,6 @@ public class MapActivty2 extends AppCompatActivity {
         graph.addEdge("n33", "n36", 1);
         graph.addEdge("n39", "n42", 1);
         graph.addEdge("n39", "n36", 1);
-        graph.addEdge("n46", "n52", 1);
-        graph.addEdge("n52", "n56", 1);
-        graph.addEdge("n56", "n60", 1);
-        graph.addEdge("n60", "n65", 1);
         graph.addEdge("n42", "n1", 2);
 
         //third column
@@ -195,8 +191,8 @@ public class MapActivty2 extends AppCompatActivity {
         //Fifth Row
         graph.addEdge("n21", "n56", 1);
         graph.addEdge("n56", "n57", 1);
-        graph.addEdge("n57", "n22", 2);
-        graph.addEdge("n22", "n58", 2);
+        graph.addEdge("n57", "n22", 1);
+        graph.addEdge("n22", "n58", 1);
         graph.addEdge("n58", "n59", 1);
         graph.addEdge("n59", "n88", 1);
         graph.addEdge("n88", "n23", 1);
@@ -213,6 +209,8 @@ public class MapActivty2 extends AppCompatActivity {
         graph.addEdge("n17", "n72", 1);
         graph.addEdge("n72", "n73", 1);
         graph.addEdge("n23", "n87", 1);
+        graph.addEdge("n70", "n90", 1);
+
 
 
     }

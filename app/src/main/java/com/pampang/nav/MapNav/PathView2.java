@@ -195,8 +195,9 @@ public class PathView2 extends View {
         baseNodes.put("n87", new float[]{755f, 1580f});
         baseNodes.put("n88", new float[]{745f, 1700f});
         baseNodes.put("n89", new float[]{745f, 1900f});
-        baseNodes.put("n90", new float[]{745f, 1800f});
+        baseNodes.put("n90", new float[]{780f, 1800f});
         baseNodes.put("n91", new float[]{740f, 2150f});
+
     }
 
     @Override
