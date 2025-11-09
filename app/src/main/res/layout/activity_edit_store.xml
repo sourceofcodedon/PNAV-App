@@ -148,6 +148,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_input_layout_closing_time" />
 
+            <ProgressBar
+                android:id="@+id/image_upload_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@+id/image_view_store"
+                app:layout_constraintBottom_toBottomOf="@+id/image_view_store"
+                app:layout_constraintStart_toStartOf="@+id/image_view_store"
+                app:layout_constraintEnd_toEndOf="@+id/image_view_store"/>
+
             <Button
                 android:id="@+id/button_upload_image"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"

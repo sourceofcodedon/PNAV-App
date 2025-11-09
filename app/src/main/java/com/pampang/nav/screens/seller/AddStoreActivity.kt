@@ -3,18 +3,18 @@ package com.pampang.nav.screens.seller
 import android.app.Activity
 import android.app.TimePickerDialog
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Base64
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.cloudinary.android.MediaManager
+import com.cloudinary.android.callback.ErrorInfo
+import com.cloudinary.android.callback.UploadCallback
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pampang.nav.R
 import com.pampang.nav.databinding.ActivityAddStoreBinding
@@ -24,7 +24,6 @@ import com.pampang.nav.utilities.extension.setSafeOnClickListener
 import com.pampang.nav.utilities.extension.showToast
 import com.pampang.nav.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -33,7 +32,7 @@ import java.util.Locale
 class AddStoreActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityAddStoreBinding
     private val mainViewModel: MainViewModel by viewModels()
-    private var imageBase64: String? = null
+    private var imageUrl: String? = null
 
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -72,7 +71,7 @@ class AddStoreActivity : AppCompatActivity() {
 
             buttonCreate.setSafeOnClickListener {
                 if (!NetworkUtils.isNetworkAvailable(this@AddStoreActivity)) {
-                    showToast("The network is unstable Try again later")
+                    showToast("The network is unstable. Try again later.")
                     return@setSafeOnClickListener
                 }
 
@@ -82,10 +81,10 @@ class AddStoreActivity : AppCompatActivity() {
                 val closingTime = mBinding.edittextClosingTime.text.toString().trim()
 
                 if (storeName.isEmpty() || storeCategory.isEmpty() || openingTime.isEmpty() || closingTime.isEmpty()) {
-                    showToast("Please Fill all Fields")
+                    showToast("Please fill all fields.")
                     return@setSafeOnClickListener
                 } else {
-                    mainViewModel.addStore(storeName, storeCategory, openingTime, closingTime, imageBase64)
+                    mainViewModel.addStore(storeName, storeCategory, openingTime, closingTime, imageUrl)
                 }
 
             }
@@ -96,7 +95,7 @@ class AddStoreActivity : AppCompatActivity() {
         mainViewModel.addStoreResult.observe(this) { result ->
             result?.let {
                 it.onSuccess {
-                    showResultDialog("Success", "Store has been added", true)
+                    showResultDialog("Success", "Store has been added.", true)
                     mainViewModel.clearAddStoreResult()
                 }
                 it.onFailure {
@@ -183,21 +182,31 @@ class AddStoreActivity : AppCompatActivity() {
     }
 
     private fun handleImageSelection(uri: Uri) {
-        val bitmap = if (Build.VERSION.SDK_INT < 28) {
-            MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
-        } else {
-            val source = ImageDecoder.createSource(this.contentResolver, uri)
-            ImageDecoder.decodeBitmap(source)
-        }
-        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 640, 480, true)
-        mBinding.imageViewStore.setImageBitmap(scaledBitmap)
-        imageBase64 = encodeImage(scaledBitmap)
-    }
+        mBinding.imageViewStore.setImageURI(uri)
+        mBinding.imageUploadProgressBar.visibility = View.VISIBLE
 
-    private fun encodeImage(bm: Bitmap): String? {
-        val baos = ByteArrayOutputStream()
-        bm.compress(Bitmap.CompressFormat.JPEG, 80, baos)
-        val b = baos.toByteArray()
-        return Base64.encodeToString(b, Base64.DEFAULT)
+        MediaManager.get().upload(uri).callback(object : UploadCallback {
+            override fun onStart(requestId: String) {
+                // No action needed
+            }
+
+            override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
+                // No action needed
+            }
+
+            override fun onSuccess(requestId: String, resultData: Map<*, *>) {
+                imageUrl = resultData["secure_url"].toString()
+                mBinding.imageUploadProgressBar.visibility = View.GONE
+            }
+
+            override fun onError(requestId: String, error: ErrorInfo) {
+                showToast("Upload error: ${error.description}")
+                mBinding.imageUploadProgressBar.visibility = View.GONE
+            }
+
+            override fun onReschedule(requestId: String, error: ErrorInfo) {
+                // No action needed
+            }
+        }).dispatch()
     }
 }

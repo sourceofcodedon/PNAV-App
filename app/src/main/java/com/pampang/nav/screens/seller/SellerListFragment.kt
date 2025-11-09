@@ -68,6 +68,7 @@ class SellerListFragment : Fragment() {
                     putExtra("store_category", store.storeCategory)
                     putExtra("opening_time", store.openingTime)
                     putExtra("closing_time", store.closingTime)
+                    putExtra("image_url", store.image)
                 }
                 startActivity(intent)
             },
