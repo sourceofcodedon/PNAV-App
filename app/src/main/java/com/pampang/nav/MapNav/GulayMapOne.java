@@ -97,6 +97,7 @@ public class GulayMapOne extends AppCompatActivity {
         graph.addEdge("n5", "n26", 1);
         graph.addEdge("n26", "n4", 1);
         graph.addEdge("n2", "n19", 1);
+        graph.addEdge("n19", "n4", 1);
         graph.addEdge("n2", "n48", 1);
         graph.addEdge("n48", "n13", 1);
         graph.addEdge("n13", "n22", 1);
@@ -207,7 +208,7 @@ public class GulayMapOne extends AppCompatActivity {
         graph.addEdge("n69", "n91", 1);
         graph.addEdge("n91", "n73", 1);
 
-        graph.addEdge("n17", "n72", 1);
+        graph.addEdge("n17", "n72", 0);
         graph.addEdge("n72", "n73", 1);
 
     }

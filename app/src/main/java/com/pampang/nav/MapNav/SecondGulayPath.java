@@ -197,6 +197,16 @@ public class SecondGulayPath extends View {
         baseNodes.put("n89", new float[]{745f, 1900f});
         baseNodes.put("n90", new float[]{745f, 1800f});
         baseNodes.put("n91", new float[]{740f, 2150f});
+        baseNodes.put("n92", new float[]{375f, 560f});
+        baseNodes.put("n93", new float[]{375f, 1110f});
+        baseNodes.put("n94", new float[]{375f, 1900f});
+        baseNodes.put("n95", new float[]{375f, 1780f});
+        baseNodes.put("n96", new float[]{375f, 2150f});
+        baseNodes.put("n97", new float[]{375f, 250f});
+        baseNodes.put("n98", new float[]{375f, 380f});
+        baseNodes.put("n99", new float[]{375f, 890f});
+
+
     }
 
     @Override
@@ -270,7 +280,7 @@ public class SecondGulayPath extends View {
         for (Map.Entry<String, float[]> entry : nodes.entrySet()) {
             float[] point = entry.getValue();
             String label = entry.getKey();
-            canvas.drawCircle(point[0], point[1], 45f * scaleX, nodePaint);
+            canvas.drawCircle(point[0], point[1], 50f * scaleX, nodePaint);
             canvas.drawText(label, point[0], point[1] + (10 * scaleY), textPaint);
         }
 
@@ -299,7 +309,7 @@ public class SecondGulayPath extends View {
                 float dy = y - nodePos[1];
                 float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < 70f * scaleX) {
+                if (distance < 110f * scaleX) {
                     String clickedNode = entry.getKey();
                     Log.d("MapTouch", "Clicked near node: " + clickedNode);
                     if (nodeClickListener != null) {

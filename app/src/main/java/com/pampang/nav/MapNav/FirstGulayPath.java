@@ -60,7 +60,7 @@ public class FirstGulayPath extends View {
         pathPaint.setStrokeJoin(Paint.Join.ROUND);
 
         nodePaint = new Paint();
-        nodePaint.setColor(Color.YELLOW);
+        nodePaint.setColor(Color.TRANSPARENT);
         nodePaint.setStyle(Paint.Style.FILL);
         nodePaint.setAntiAlias(true);
 
@@ -70,7 +70,7 @@ public class FirstGulayPath extends View {
         movingDotPaint.setAntiAlias(true);
 
         textPaint = new Paint();
-        textPaint.setColor(Color.BLACK);
+        textPaint.setColor(Color.TRANSPARENT);
         textPaint.setTextSize(50f);
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         textPaint.setAntiAlias(true);
@@ -272,7 +272,7 @@ public class FirstGulayPath extends View {
         for (Map.Entry<String, float[]> entry : nodes.entrySet()) {
             float[] point = entry.getValue();
             String label = entry.getKey();
-            canvas.drawCircle(point[0], point[1], 45f * scaleX, nodePaint);
+            canvas.drawCircle(point[0], point[1], 60f * scaleX, nodePaint);
             canvas.drawText(label, point[0], point[1] + (10 * scaleY), textPaint);
         }
 
@@ -301,7 +301,7 @@ public class FirstGulayPath extends View {
                 float dy = y - nodePos[1];
                 float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < 70f * scaleX) {
+                if (distance < 80f * scaleX) {
                     String clickedNode = entry.getKey();
                     Log.d("MapTouch", "Clicked near node: " + clickedNode);
                     if (nodeClickListener != null) {

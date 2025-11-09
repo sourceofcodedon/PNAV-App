@@ -16,7 +16,7 @@ public class FirstMeatMapView extends AppCompatActivity {
     private FirstMeatPathView firstMeatPathView;
     private Graph graph;
     private String startNode = null;
-    private final String DESTINATION_NODE = "S";
+    private final String DESTINATION_NODE = "n55";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

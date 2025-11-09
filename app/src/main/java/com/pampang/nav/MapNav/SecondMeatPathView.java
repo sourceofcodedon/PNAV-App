@@ -97,7 +97,7 @@ public class SecondMeatPathView extends View {
 
         baseNodes.put("n12", new float[]{100f, 1480f});
         baseNodes.put("n13", new float[]{440f, 1480f});
-        baseNodes.put("n14", new float[]{850f, 1480f});
+        baseNodes.put("n14", new float[]{850f, 1515f});
 
         baseNodes.put("n15", new float[]{100f, 1900f});
         baseNodes.put("n16", new float[]{440f, 1900f});
@@ -193,7 +193,7 @@ public class SecondMeatPathView extends View {
 
         baseNodes.put("n86", new float[]{745f, 1312f});
         baseNodes.put("n87", new float[]{745f, 1480f});
-        baseNodes.put("n88", new float[]{745f, 1700f});
+        baseNodes.put("n88", new float[]{745f, 1650f});
         baseNodes.put("n89", new float[]{745f, 1900f});
         baseNodes.put("n90", new float[]{745f, 1800f});
         baseNodes.put("n91", new float[]{740f, 2150f});

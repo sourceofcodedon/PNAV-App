@@ -25,6 +25,7 @@
             </intent-filter>
 
 
+
         </activity>
 
         <activity
@@ -44,6 +45,7 @@
         <activity
             android:name=".MapNav.GulayMapTwo"
             android:exported="false">
+
 
 
         </activity>
@@ -103,11 +105,11 @@
             android:exported="false">
 
 
+
         </activity>
         <activity
             android:name=".MapNav.SecondMeatMapView"
             android:exported="false">
-
 
         </activity>
         <activity

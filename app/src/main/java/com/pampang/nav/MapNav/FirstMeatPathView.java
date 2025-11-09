@@ -60,7 +60,7 @@ public class FirstMeatPathView extends View {
         pathPaint.setStrokeJoin(Paint.Join.ROUND);
 
         nodePaint = new Paint();
-        nodePaint.setColor(Color.BLACK);
+        nodePaint.setColor(Color.TRANSPARENT);
         nodePaint.setStyle(Paint.Style.FILL);
         nodePaint.setAntiAlias(true);
 

@@ -16,7 +16,7 @@ public class SecondMeatMapView extends AppCompatActivity {
     private SecondMeatPathView secondMeatPathView;
     private Graph graph;
     private String startNode = null;
-    private final String DESTINATION_NODE = "Z"; // Fixed destination
+    private final String DESTINATION_NODE = "n88"; // Fixed destination
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +147,7 @@ public class SecondMeatMapView extends AppCompatActivity {
         graph.addEdge("n8", "n51", 1);
         graph.addEdge("n51", "n14", 1);
         graph.addEdge("n14", "n23", 1);
+        graph.addEdge("n14", "n88", 1);
         graph.addEdge("n23", "n70", 1);
         graph.addEdge("n70", "n17", 1);
 
@@ -190,8 +191,8 @@ public class SecondMeatMapView extends AppCompatActivity {
         //Fifth Row
         graph.addEdge("n21", "n56", 1);
         graph.addEdge("n56", "n57", 1);
-        graph.addEdge("n57", "n22", 2);
-        graph.addEdge("n22", "n58", 2);
+        graph.addEdge("n57", "n22", 1);
+        graph.addEdge("n22", "n58", 1);
         graph.addEdge("n58", "n59", 1);
         graph.addEdge("n59", "n88", 1);
         graph.addEdge("n88", "n23", 1);
