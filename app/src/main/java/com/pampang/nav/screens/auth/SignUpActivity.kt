@@ -70,6 +70,11 @@ class SignUpActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
+                if (!isValidPassword(password)) {
+                    showToast("Password must be at least 8 characters long, contain one uppercase letter, and one special character.")
+                    return@setOnClickListener
+                }
+
                 if (role.isNullOrEmpty()) {
                     showToast("Please select a role")
                     return@setOnClickListener
@@ -114,6 +119,19 @@ class SignUpActivity : AppCompatActivity() {
                 buttonBuyer.setTextColor(colorPrimary)
             }
         }
+    }
+
+    private fun isValidPassword(password: String): Boolean {
+        if (password.length < 8) {
+            return false
+        }
+        if (!password.matches(Regex(".*[A-Z].*"))) {
+            return false
+        }
+        if (!password.matches(Regex(".*[!@#\$%^&*()_+-=,./?;':\"`~\\\\[\\\\]{}|<>].*"))) {
+            return false
+        }
+        return true
     }
 
     private fun showResultDialog(title: String, message: String, isSuccess: Boolean = false) {
