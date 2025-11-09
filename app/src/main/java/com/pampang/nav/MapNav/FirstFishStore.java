@@ -1,6 +1,7 @@
 package com.pampang.nav.MapNav;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,11 +20,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.pampang.nav.R;
 import com.pampang.nav.screens.seller.EditStoreActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
 public class FirstFishStore extends AppCompatActivity {
 
     private TextView storeNameTextView;
     private TextView openTimeTextView;
     private TextView closeTimeTextView;
+    private TextView storeStatusIndicator;
     private ImageView storeImageView;
     private Button editButton;
     private Button deleteButton;
@@ -41,6 +50,7 @@ public class FirstFishStore extends AppCompatActivity {
         storeNameTextView = findViewById(R.id.store_name);
         openTimeTextView = findViewById(R.id.open_time_value);
         closeTimeTextView = findViewById(R.id.close_time_value);
+        storeStatusIndicator = findViewById(R.id.store_status_indicator);
         storeImageView = findViewById(R.id.store_image);
         editButton = findViewById(R.id.edit_button);
         deleteButton = findViewById(R.id.delete_button);
@@ -64,6 +74,8 @@ public class FirstFishStore extends AppCompatActivity {
                         openTimeTextView.setText(openingTime);
                         closeTimeTextView.setText(closingTime);
 
+                        updateStoreStatus(openingTime, closingTime);
+
                         if (imageUrl != null) {
                             Glide.with(this).load(imageUrl).into(storeImageView);
                         }
@@ -85,6 +97,53 @@ public class FirstFishStore extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void updateStoreStatus(String openingTime, String closingTime) {
+        if (openingTime == null || closingTime == null || openingTime.isEmpty() || closingTime.isEmpty()) {
+            storeStatusIndicator.setText("");
+            return;
+        }
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.US);
+
+            Date openTimeParsed = sdf.parse(openingTime);
+            Date closeTimeParsed = sdf.parse(closingTime);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(openTimeParsed);
+            int openMinutes = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
+
+            cal.setTime(closeTimeParsed);
+            int closeMinutes = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
+
+            Calendar now = Calendar.getInstance(TimeZone.getTimeZone("Asia/Manila"));
+            int nowMinutes = now.get(Calendar.HOUR_OF_DAY) * 60 + now.get(Calendar.MINUTE);
+
+            boolean isOpen;
+            if (openMinutes < closeMinutes) {
+                // Same day opening (e.g. 9am to 5pm)
+                isOpen = nowMinutes >= openMinutes && nowMinutes < closeMinutes;
+            } else if (openMinutes > closeMinutes) {
+                // Overnight opening (e.g. 10pm to 6am)
+                isOpen = nowMinutes >= openMinutes || nowMinutes < closeMinutes;
+            } else {
+                // open 24 hours
+                isOpen = true;
+            }
+
+            if (isOpen) {
+                storeStatusIndicator.setText(R.string.store_status_open);
+                storeStatusIndicator.setTextColor(Color.GREEN);
+            } else {
+                storeStatusIndicator.setText(R.string.store_status_closed);
+                storeStatusIndicator.setTextColor(Color.RED);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            storeStatusIndicator.setText(""); // Clear on error
+        }
     }
 
     private void showDeleteConfirmationDialog() {

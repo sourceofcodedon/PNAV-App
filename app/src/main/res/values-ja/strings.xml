@@ -44,4 +44,8 @@
     <string name="current_password">現在のパスワード</string>
     <string name="new_password">新しいパスワード</string>
     <string name="confirm_password">パスワードを確認</string>
+    <string name="edit">編集</string>
+    <string name="delete">削除</string>
+    <string name="opening_time">開店:</string>
+    <string name="closing_time">閉店:</string>
 </resources>

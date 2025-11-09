@@ -47,4 +47,10 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="opening_time">Opening:</string>
+    <string name="closing_time">Closing:</string>
+    <string name="store_status">Status:</string>
+    <string name="store_status_open">Open</string>
+    <string name="store_status_closed">Closed</string>
+    <string name="first_gulay_store">First Gulay Store</string>
 </resources>

@@ -44,4 +44,8 @@
     <string name="current_password">현재 비밀번호</string>
     <string name="new_password">새 비밀번호</string>
     <string name="confirm_password">비밀번호 확인</string>
+    <string name="edit">편집</string>
+    <string name="delete">삭제</string>
+    <string name="opening_time">여는 시간:</string>
+    <string name="closing_time">닫는 시간:</string>
 </resources>
