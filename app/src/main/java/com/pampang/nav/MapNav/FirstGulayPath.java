@@ -197,6 +197,14 @@ public class FirstGulayPath extends View {
         baseNodes.put("n89", new float[]{745f, 1900f});
         baseNodes.put("n90", new float[]{745f, 1800f});
         baseNodes.put("n91", new float[]{740f, 2150f});
+        baseNodes.put("n92", new float[]{375f, 560f});
+        baseNodes.put("n93", new float[]{375f, 1110f});
+        baseNodes.put("n94", new float[]{375f, 1900f});
+        baseNodes.put("n95", new float[]{375f, 1780f});
+        baseNodes.put("n96", new float[]{375f, 2150f});
+        baseNodes.put("n97", new float[]{375f, 250f});
+        baseNodes.put("n98", new float[]{375f, 380f});
+        baseNodes.put("n99", new float[]{375f, 890f});
 
 
     }

@@ -198,7 +198,7 @@ public class PathView extends View {
         baseNodes.put("n90", new float[]{745f, 1800f});
         baseNodes.put("n91", new float[]{740f, 2150f});
         baseNodes.put("n92", new float[]{375f, 660f});
-        baseNodes.put("n93", new float[]{375f, 1110f});
+        baseNodes.put("n93", new float[]{375f, 1125f});
         baseNodes.put("n94", new float[]{375f, 1900f});
         baseNodes.put("n95", new float[]{375f, 1780f});
         baseNodes.put("n96", new float[]{375f, 2150f});
@@ -278,7 +278,7 @@ public class PathView extends View {
         for (Map.Entry<String, float[]> entry : nodes.entrySet()) {
             float[] point = entry.getValue();
             String label = entry.getKey();
-            canvas.drawCircle(point[0], point[1], 45f * scaleX, nodePaint);
+            canvas.drawCircle(point[0], point[1], 60f * scaleX, nodePaint);
             canvas.drawText(label, point[0], point[1] + (10 * scaleY), textPaint);
         }
 

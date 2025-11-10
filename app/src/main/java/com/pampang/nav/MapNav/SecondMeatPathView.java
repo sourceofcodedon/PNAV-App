@@ -278,7 +278,7 @@ public class SecondMeatPathView extends View {
         for (Map.Entry<String, float[]> entry : nodes.entrySet()) {
             float[] point = entry.getValue();
             String label = entry.getKey();
-            canvas.drawCircle(point[0], point[1], 45f * scaleX, nodePaint);
+            canvas.drawCircle(point[0], point[1], 60f * scaleX, nodePaint);
             canvas.drawText(label, point[0], point[1] + (10 * scaleY), textPaint);
         }
 
@@ -307,7 +307,7 @@ public class SecondMeatPathView extends View {
                 float dy = y - nodePos[1];
                 float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < 70f * scaleX) {
+                if (distance < 80f * scaleX) {
                     String clickedNode = entry.getKey();
                     Log.d("MapTouch", "Clicked near node: " + clickedNode);
                     if (nodeClickListener != null) {

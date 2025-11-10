@@ -43,6 +43,13 @@ class ZoomLayout @JvmOverloads constructor(
         onTransformChangedListener = listener
     }
 
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.pointerCount > 1) {
+            return true
+        }
+        return super.onInterceptTouchEvent(ev)
+    }
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
         scaleGestureDetector.onTouchEvent(event)
         val action = event.action

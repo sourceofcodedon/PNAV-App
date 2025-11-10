@@ -209,7 +209,19 @@ public class GulayMapOne extends AppCompatActivity {
         graph.addEdge("n91", "n73", 1);
 
         graph.addEdge("n17", "n72", 0);
-        graph.addEdge("n72", "n73", 1);
+        graph.addEdge("n72", "n73", 0);
+        graph.addEdge("n97", "n7", 1);
+        graph.addEdge("n97", "n98", 1);
+        graph.addEdge("n98", "n92", 1);
+        graph.addEdge("n92", "n4", 1);
+        graph.addEdge("n92", "n37", 1);
+        graph.addEdge("n99", "n92", 1);
+        graph.addEdge("n99", "n93", 1);
+        graph.addEdge("n93", "n48", 1);
+        graph.addEdge("n93", "n47", 1);
+        graph.addEdge("n93", "n43", 1);
+        graph.addEdge("n93", "n2", 1);
+        graph.addEdge("n97", "n28", 1);
 
     }
 }
