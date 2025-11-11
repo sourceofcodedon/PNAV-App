@@ -5,6 +5,10 @@
         android:icon="@drawable/ic_navigate"
         android:title="@string/fragment_main" />
     <item
+        android:id="@+id/stores"
+        android:icon="@drawable/ic_list"
+        android:title="@string/bottom_nav_stores" />
+    <item
         android:id="@+id/messages"
         android:icon="@android:drawable/ic_dialog_email"
         android:title="@string/bottom_nav_messages" />

@@ -34,6 +34,7 @@
     <string name="profile_logout">Logout</string>
     <string name="bottom_nav_list">List</string>
     <string name="bottom_nav_messages">Messages</string>
+    <string name="bottom_nav_stores">Stores</string>
     <string name="view_store">View Store</string>
     <string name="get_direction">Get Direction</string>
     <string name="upload_image">Upload Image</string>

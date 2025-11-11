@@ -26,6 +26,7 @@ class SellerListFragment : Fragment() {
     private lateinit var mBinding: FragmentListBinding
     private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var mAdapter: SimpleDiffUtilAdapter
+    private var userType: String? = null
 
 
     override fun onCreateView(
@@ -55,12 +56,17 @@ class SellerListFragment : Fragment() {
     }
 
     private fun initExtras() {
+        userType = arguments?.getString("user_type")
+        if (userType == "buyer") {
+            mBinding.fabAddStore.visibility = View.GONE
+        }
     }
 
     private fun initAdapter() {
-        mAdapter = SimpleDiffUtilAdapter(
-            layoutRes = R.layout.list_item_store,
-            onClickCallBack = RecyclerClick { store ->
+        val onClick: RecyclerClick? = if (userType == "buyer") {
+            null
+        } else {
+            RecyclerClick { store ->
                 store as StoreModel
                 val intent = Intent(requireActivity(), EditStoreActivity::class.java).apply {
                     putExtra("store_id", store.id)
@@ -71,11 +77,22 @@ class SellerListFragment : Fragment() {
                     putExtra("image_url", store.image)
                 }
                 startActivity(intent)
-            },
-            onDeleteCallBack = RecyclerClick { store ->
+            }
+        }
+
+        val onDelete: RecyclerClick? = if (userType == "buyer") {
+            null
+        } else {
+            RecyclerClick { store ->
                 store as StoreModel
                 showDeleteConfirmationDialog(store)
             }
+        }
+
+        mAdapter = SimpleDiffUtilAdapter(
+            layoutRes = R.layout.list_item_store,
+            onClickCallBack = onClick,
+            onDeleteCallBack = onDelete
         )
 
         mBinding.recyclerViewStores.adapter = mAdapter

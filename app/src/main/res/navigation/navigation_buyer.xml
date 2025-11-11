@@ -11,6 +11,16 @@
         android:label="@string/fragment_main"
         tools:layout="@layout/fragment_main"/>
     <fragment
+        android:id="@+id/stores"
+        android:name="com.pampang.nav.screens.seller.SellerListFragment"
+        android:label="@string/store_list_title"
+        tools:layout="@layout/fragment_list">
+        <argument
+            android:name="user_type"
+            android:defaultValue="buyer"
+            app:argType="string" />
+    </fragment>
+    <fragment
         android:id="@+id/messages"
         android:name="com.pampang.nav.screens.GroupChatFragment"
         android:label="@string/fragment_group_chat"
