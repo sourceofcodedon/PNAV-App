@@ -183,7 +183,6 @@ public class MapActivty2 extends AppCompatActivity {
         graph.addEdge("n52", "n53", 1);
         graph.addEdge("n53", "n13", 1);
         graph.addEdge("n13", "n54", 1);
-        graph.addEdge("n54", "n55", 1);
         graph.addEdge("n55", "n87", 1);
         graph.addEdge("n87", "n14", 1);
 
@@ -208,23 +207,11 @@ public class MapActivty2 extends AppCompatActivity {
 
         graph.addEdge("n17", "n72", 0);
         graph.addEdge("n72", "n73", 0);
-        graph.addEdge("n23", "n87", 1);
-        graph.addEdge("n70", "n90", 1);
-        graph.addEdge("n97", "n7", 1);
-        graph.addEdge("n97", "n98", 1);
-        graph.addEdge("n98", "n92", 1);
-        graph.addEdge("n92", "n4", 1);
-        graph.addEdge("n92", "n37", 1);
-        graph.addEdge("n99", "n92", 1);
-        graph.addEdge("n99", "n93", 1);
-        graph.addEdge("n93", "n48", 1);
-        graph.addEdge("n93", "n47", 1);
-        graph.addEdge("n93", "n43", 1);
-        graph.addEdge("n93", "n2", 1);
-        graph.addEdge("n97", "n28", 1);
+        graph.addEdge("n90", "n70", 0);
 
-        graph.addEdge("n94", "n22", 1);
-        graph.addEdge("n94", "n93", 1);
+
+
+
 
 
 

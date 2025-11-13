@@ -60,8 +60,8 @@ public class MapActivityAF extends AppCompatActivity {
         //First column
         graph.addEdge("n6", "n24", 2);
         graph.addEdge("n24", "n3", 1);
-        graph.addEdge("n3", "n18", 2);
-        graph.addEdge("n18", "n1", 2);
+        graph.addEdge("n3", "n18", 0);
+        graph.addEdge("n18", "n1", 0);
         graph.addEdge("n1", "n45", 1.5);
         graph.addEdge("n45", "n12", 1);
         graph.addEdge("n12", "n52", 1);
