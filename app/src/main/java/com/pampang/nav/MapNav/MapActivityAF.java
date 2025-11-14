@@ -30,6 +30,7 @@ public class MapActivityAF extends AppCompatActivity {
         Button btnClear = findViewById(R.id.btnClear);
 
         setupGraph();
+        pathView.setClickableNodes(clickableNodes);
 
         pathView.setOnNodeClickListener(nodeLabel -> {
             if (clickableNodes.contains(nodeLabel)) {
@@ -64,7 +65,7 @@ public class MapActivityAF extends AppCompatActivity {
     }
 
     private String getNodeDisplayName(String nodeLabel) {
-        if ("n1".equals(nodeLabel)) {
+        if (Arrays.asList("n1", "n8").contains(nodeLabel)) {
             return "Entrance";
         } else if (Arrays.asList("n6", "n24", "n3", "n18").contains(nodeLabel)) {
             return "Entrance Leftwing";
@@ -74,8 +75,7 @@ public class MapActivityAF extends AppCompatActivity {
             return "LeftWing";
         } else if (Arrays.asList("n42", "n43", "n93", "n2", "n29", "n44", "n84", "n85").contains(nodeLabel)) {
             return "Hallway";
-        } else if (Arrays.asList(
-                "n65", "n66", "n96", "n67", "n68", "n69", "n91", "n73").contains(nodeLabel)) {
+        } else if (Arrays.asList("n65", "n66", "n96", "n67", "n68", "n69", "n91", "n73").contains(nodeLabel)) {
             return "RightWing";
         } else if ("n48".equals(nodeLabel)) {
             return "Pampang Office";

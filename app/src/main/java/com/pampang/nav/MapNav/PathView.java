@@ -34,6 +34,7 @@ public class PathView extends View {
     private ValueAnimator animator;
 
     private String selectedNode = null;
+    private List<String> clickableNodes = new ArrayList<>();
 
     private float scaleX = 1f, scaleY = 1f;
 
@@ -47,6 +48,10 @@ public class PathView extends View {
         this.nodeClickListener = listener;
     }
 
+    public void setClickableNodes(List<String> clickableNodes) {
+        this.clickableNodes = clickableNodes;
+        invalidate();
+    }
 
     public PathView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -290,15 +295,20 @@ public class PathView extends View {
         super.onDraw(canvas);
 
         for (Map.Entry<String, float[]> entry : nodes.entrySet()) {
-            float[] point = entry.getValue();
             String label = entry.getKey();
-            canvas.drawCircle(point[0], point[1], 50f * scaleX, nodePaint);
+            float[] point = entry.getValue();
+            if (clickableNodes.contains(label)) {
+                nodePaint.setColor(Color.GRAY);
+            } else {
+                nodePaint.setColor(Color.TRANSPARENT);
+            }
+            canvas.drawCircle(point[0], point[1], 20f * scaleX, nodePaint);
             canvas.drawText(label, point[0], point[1] + (10 * scaleY), textPaint);
         }
 
         if (selectedNode != null && nodes.containsKey(selectedNode)) {
             float[] point = nodes.get(selectedNode);
-            canvas.drawCircle(point[0], point[1], 25f * scaleX, markerPaint); // Draw marker
+            canvas.drawCircle(point[0], point[1], 15f * scaleX, markerPaint); // Draw marker
         }
 
         if (pathMeasure != null) {
@@ -326,7 +336,7 @@ public class PathView extends View {
                 float dy = y - nodePos[1];
                 float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < 50f * scaleX) {
+                if (distance < 20f * scaleX) { // Adjusted touch radius
                     String clickedNode = entry.getKey();
                     Log.d("MapTouch", "Clicked near node: " + clickedNode);
                     if (nodeClickListener != null) {
