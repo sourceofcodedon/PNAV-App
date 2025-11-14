@@ -18,6 +18,7 @@ public class MapActivityAF extends AppCompatActivity {
     private Graph graph;
     private String startNode = null;
     private final String DESTINATION_NODE = "n63";
+    private final List<String> clickableNodes = Arrays.asList("n1", "n6", "n24", "n3", "n18", "n45", "n12", "n21", "n15", "n64", "n8");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +32,13 @@ public class MapActivityAF extends AppCompatActivity {
         setupGraph();
 
         pathView.setOnNodeClickListener(nodeLabel -> {
-            startNode = nodeLabel;
-            pathView.setSelectedNode(nodeLabel);
-            String displayName = getNodeDisplayName(nodeLabel);
-            Toast.makeText(this, "Current location set to: " + displayName, Toast.LENGTH_SHORT).show();
-            Log.d("MapActivityAF", "Start node set to: " + startNode);
+            if (clickableNodes.contains(nodeLabel)) {
+                startNode = nodeLabel;
+                pathView.setSelectedNode(nodeLabel);
+                String displayName = getNodeDisplayName(nodeLabel);
+                Toast.makeText(this, "Current location set to: " + displayName, Toast.LENGTH_SHORT).show();
+                Log.d("MapActivityAF", "Start node set to: " + startNode);
+            }
         });
 
         btnGo.setOnClickListener(v -> {
@@ -65,11 +68,14 @@ public class MapActivityAF extends AppCompatActivity {
             return "Entrance";
         } else if (Arrays.asList("n6", "n24", "n3", "n18").contains(nodeLabel)) {
             return "Entrance Leftwing";
+        } else if (Arrays.asList("n45", "n12", "n21", "n15", "n64").contains(nodeLabel)) {
+            return "Rightwing Entrance";
         } else if (Arrays.asList("n27", "n28", "n97", "n7", "n29", "n74", "n75", "n11").contains(nodeLabel)) {
             return "LeftWing";
         } else if (Arrays.asList("n42", "n43", "n93", "n2", "n29", "n44", "n84", "n85").contains(nodeLabel)) {
             return "Hallway";
-        } else if (Arrays.asList("n65", "n66", "n96", "n67", "n68", "n69", "n91", "n73").contains(nodeLabel)) {
+        } else if (Arrays.asList(
+                "n65", "n66", "n96", "n67", "n68", "n69", "n91", "n73").contains(nodeLabel)) {
             return "RightWing";
         } else if ("n48".equals(nodeLabel)) {
             return "Pampang Office";
@@ -111,7 +117,8 @@ public class MapActivityAF extends AppCompatActivity {
         graph.addEdge("n40", "n43", 1);
         graph.addEdge("n43", "n47", 1);
         graph.addEdge("n47", "n53", 1);
-        graph.addEdge("n53", "n57", 1);
+        graph.addEdge(
+                "n53", "n57", 1);
         graph.addEdge("n57", "n61", 1);
         graph.addEdge("n61", "n66", 1);
 
@@ -221,7 +228,7 @@ public class MapActivityAF extends AppCompatActivity {
 
         //Fifth Row
         graph.addEdge("n21", "n56", 1);
-        graph.addEdge("n56", "n57", 1);
+        graph.addEdge("n56", "n57", 0);
         graph.addEdge("n57", "n22", 2);
         graph.addEdge("n22", "n58", 2);
         graph.addEdge("n58", "n59", 1);
@@ -254,8 +261,7 @@ public class MapActivityAF extends AppCompatActivity {
 
         graph.addEdge("n95", "n93", 1);
         graph.addEdge("n95", "n22", 1);
-
-
+        graph.addEdge("n95", "n57", 0);
 
     }
 }

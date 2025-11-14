@@ -18,6 +18,7 @@ public class FirstMeatMapView extends AppCompatActivity {
     private Graph graph;
     private String startNode = null;
     private final String DESTINATION_NODE = "n55";
+    private final List<String> clickableNodes = Arrays.asList("n1", "n6", "n24", "n3", "n18", "n45", "n12", "n21", "n15", "n64", "n8");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +32,13 @@ public class FirstMeatMapView extends AppCompatActivity {
         setupGraph();
 
         firstMeatPathView.setOnNodeClickListener(nodeLabel -> {
-            startNode = nodeLabel;
-            firstMeatPathView.setSelectedNode(nodeLabel);
-            String displayName = getNodeDisplayName(nodeLabel);
-            Toast.makeText(this, "Current location set to: " + displayName, Toast.LENGTH_SHORT).show();
-            Log.d("FirstMeatMapView", "Start node set to: " + startNode);
+            if (clickableNodes.contains(nodeLabel)) {
+                startNode = nodeLabel;
+                firstMeatPathView.setSelectedNode(nodeLabel);
+                String displayName = getNodeDisplayName(nodeLabel);
+                Toast.makeText(this, "Current location set to: " + displayName, Toast.LENGTH_SHORT).show();
+                Log.d("FirstMeatMapView", "Start node set to: " + startNode);
+            }
         });
 
         btnGo.setOnClickListener(v -> {
@@ -65,6 +68,8 @@ public class FirstMeatMapView extends AppCompatActivity {
             return "Entrance";
         } else if (Arrays.asList("n6", "n24", "n3", "n18").contains(nodeLabel)) {
             return "Entrance Leftwing";
+        } else if (Arrays.asList("n45", "n12", "n21", "n15", "n64").contains(nodeLabel)) {
+            return "Rightwing Entrance";
         } else if (Arrays.asList("n27", "n28", "n97", "n7", "n29", "n74", "n75", "n11").contains(nodeLabel)) {
             return "LeftWing";
         } else if (Arrays.asList("n42", "n43", "n93", "n2", "n29", "n44", "n84", "n85").contains(nodeLabel)) {
