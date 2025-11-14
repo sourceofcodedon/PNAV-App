@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.pampang.nav.R;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MapActivityAF extends AppCompatActivity {
@@ -16,7 +17,7 @@ public class MapActivityAF extends AppCompatActivity {
     private PathView pathView;
     private Graph graph;
     private String startNode = null;
-    private final String DESTINATION_NODE = "n25";
+    private final String DESTINATION_NODE = "n63";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,9 @@ public class MapActivityAF extends AppCompatActivity {
 
         pathView.setOnNodeClickListener(nodeLabel -> {
             startNode = nodeLabel;
-            Toast.makeText(this, "Current location set to: " + nodeLabel, Toast.LENGTH_SHORT).show();
+            pathView.setSelectedNode(nodeLabel);
+            String displayName = getNodeDisplayName(nodeLabel);
+            Toast.makeText(this, "Current location set to: " + displayName, Toast.LENGTH_SHORT).show();
             Log.d("MapActivityAF", "Start node set to: " + startNode);
         });
 
@@ -42,7 +45,9 @@ public class MapActivityAF extends AppCompatActivity {
             }
             List<String> path = Dijkstra.findShortestPath(graph, startNode, DESTINATION_NODE);
             if (path == null || path.isEmpty()) {
-                Toast.makeText(this, "No path found from " + startNode + " to " + DESTINATION_NODE, Toast.LENGTH_SHORT).show();
+                String startDisplayName = getNodeDisplayName(startNode);
+                String destDisplayName = getNodeDisplayName(DESTINATION_NODE);
+                Toast.makeText(this, "No path found from " + startDisplayName + " to " + destDisplayName, Toast.LENGTH_SHORT).show();
             } else {
                 pathView.showAnimatedPath(path);
             }
@@ -53,6 +58,23 @@ public class MapActivityAF extends AppCompatActivity {
             startNode = null;
             Toast.makeText(this, "Path cleared and location reset", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private String getNodeDisplayName(String nodeLabel) {
+        if ("n1".equals(nodeLabel)) {
+            return "Entrance";
+        } else if (Arrays.asList("n6", "n24", "n3", "n18").contains(nodeLabel)) {
+            return "Entrance Leftwing";
+        } else if (Arrays.asList("n27", "n28", "n97", "n7", "n29", "n74", "n75", "n11").contains(nodeLabel)) {
+            return "LeftWing";
+        } else if (Arrays.asList("n42", "n43", "n93", "n2", "n29", "n44", "n84", "n85").contains(nodeLabel)) {
+            return "Hallway";
+        } else if (Arrays.asList("n65", "n66", "n96", "n67", "n68", "n69", "n91", "n73").contains(nodeLabel)) {
+            return "RightWing";
+        } else if ("n48".equals(nodeLabel)) {
+            return "Pampang Office";
+        }
+        return nodeLabel;
     }
 
     private void setupGraph() {
@@ -225,14 +247,14 @@ public class MapActivityAF extends AppCompatActivity {
         graph.addEdge("n92", "n37", 1);
         graph.addEdge("n99", "n92", 1);
         graph.addEdge("n99", "n93", 1);
-        graph.addEdge("n93", "n48", 1);
         graph.addEdge("n93", "n47", 1);
         graph.addEdge("n93", "n43", 1);
         graph.addEdge("n93", "n2", 1);
         graph.addEdge("n97", "n28", 1);
 
-        graph.addEdge("n94", "n22", 1);
-        graph.addEdge("n94", "n93", 1);
+        graph.addEdge("n95", "n93", 1);
+        graph.addEdge("n95", "n22", 1);
+
 
 
     }

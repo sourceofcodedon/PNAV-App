@@ -21,6 +21,7 @@ public class SecondMeatPathView extends View {
     private Paint nodePaint;
     private Paint textPaint;
     private Paint movingDotPaint;
+    private Paint markerPaint;
 
     private Map<String, float[]> baseNodes;
     private Map<String, float[]> nodes = new HashMap<>();
@@ -31,6 +32,8 @@ public class SecondMeatPathView extends View {
     private float pathLength = 0f;
     private Path animatedPath = new Path();
     private ValueAnimator animator;
+
+    private String selectedNode = null;
 
     private float scaleX = 1f, scaleY = 1f;
 
@@ -68,6 +71,11 @@ public class SecondMeatPathView extends View {
         movingDotPaint.setColor(Color.WHITE);
         movingDotPaint.setStyle(Paint.Style.FILL);
         movingDotPaint.setAntiAlias(true);
+
+        markerPaint = new Paint();
+        markerPaint.setColor(Color.RED);
+        markerPaint.setStyle(Paint.Style.FILL);
+        markerPaint.setAntiAlias(true);
 
         textPaint = new Paint();
         textPaint.setColor(Color.TRANSPARENT);
@@ -207,6 +215,11 @@ public class SecondMeatPathView extends View {
         baseNodes.put("n99", new float[]{375f, 890f});
     }
 
+    public void setSelectedNode(String nodeLabel) {
+        selectedNode = nodeLabel;
+        invalidate();
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -268,6 +281,7 @@ public class SecondMeatPathView extends View {
         pathMeasure = null;
         animatedPath.reset();
         animProgress = 0f;
+        selectedNode = null; // Also clear the selected node
         invalidate();
     }
 
@@ -280,6 +294,11 @@ public class SecondMeatPathView extends View {
             String label = entry.getKey();
             canvas.drawCircle(point[0], point[1], 60f * scaleX, nodePaint);
             canvas.drawText(label, point[0], point[1] + (10 * scaleY), textPaint);
+        }
+
+        if (selectedNode != null && nodes.containsKey(selectedNode)) {
+            float[] point = nodes.get(selectedNode);
+            canvas.drawCircle(point[0], point[1], 30f * scaleX, markerPaint); // Draw marker
         }
 
         if (pathMeasure != null) {
