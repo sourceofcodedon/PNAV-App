@@ -2,17 +2,17 @@ package com.pampang.nav.repositories
 
 import android.content.Context
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.pampang.nav.constants.SharedPrefsConst
 import com.pampang.nav.models.GroupChatMessage
-import com.pampang.nav.utils.sendNotification
 import com.pampang.nav.utilities.SharedPrefs
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import java.util.Date
 import javax.inject.Inject
 
 class GroupChatRepository @Inject constructor(
@@ -29,63 +29,75 @@ class GroupChatRepository @Inject constructor(
                     close(error)
                     return@addSnapshotListener
                 }
-                val messages = snapshot?.toObjects(GroupChatMessage::class.java) ?: emptyList()
+
+                val messages = snapshot?.documents?.mapNotNull { doc ->
+                    try {
+                        val senderId = doc.getString("senderId") ?: ""
+                        val senderName = doc.getString("senderName") ?: ""
+                        val senderRole = doc.getString("senderRole") ?: "user"
+                        val text = doc.getString("text") ?: ""
+
+                        val timestampObject = doc.get("timestamp")
+                        val date = when (timestampObject) {
+                            is Timestamp -> timestampObject.toDate()
+                            is Long -> Date(timestampObject)
+                            else -> null
+                        }
+
+                        GroupChatMessage(senderId, senderName, senderRole, text, date)
+                    } catch (e: Exception) {
+                        Log.e("GROUP_CHAT_REPO", "Error parsing message", e)
+                        null
+                    }
+                } ?: emptyList()
+
                 trySend(messages)
             }
         awaitClose { subscription.remove() }
     }
 
     suspend fun sendGroupChatMessage(text: String, context: Context) {
-        val currentUser = auth.currentUser
-        if (currentUser == null) {
-            Log.e("GROUP_CHAT_REPO", "Cannot send message, user is not authenticated.")
-            return
-        }
+        val currentUser = auth.currentUser ?: return
 
-        var userRole: String
-        try {
+        val userRole = try {
             val userDoc = firestore.collection("users").document(currentUser.uid).get().await()
-            userRole = userDoc.getString("role") ?: "role_not_found"
+            userDoc.getString("role") ?: "role_not_found"
         } catch (e: Exception) {
             Log.e("GROUP_CHAT_REPO", "Error fetching user role", e)
-            userRole = "fetch_failed"
+            "fetch_failed"
         }
 
         val message = GroupChatMessage(
             senderId = currentUser.uid,
             senderName = currentUser.displayName ?: "Anonymous",
             senderRole = userRole,
-            text = text,
-            timestamp = System.currentTimeMillis()
+            text = text
         )
 
         try {
             firestore.collection("global_chat").add(message).await()
         } catch (e: Exception) {
-            Log.e("GROUP_CHAT_REPO", "Error saving message to Firestore", e)
-            return
+            Log.e("GROUP_CHAT_REPO", "Error saving message", e)
         }
+    }
 
-        // Notification logic remains the same
-        try {
-            val usersSnapshot = firestore.collection("users").get().await()
-            val senderName = currentUser.displayName ?: "Anonymous"
-            val notificationTitle = "New Message from $senderName"
-            val notificationBody = text
-
-            for (document in usersSnapshot.documents) {
-                val userId = document.id
-                if (userId == currentUser.uid) continue
-
-                val token = document.getString("fcmToken")
-                if (token != null && token.isNotEmpty()) {
-                    sendNotification(context, token, notificationTitle, notificationBody)
-                } else {
-                    Log.w("GROUP_CHAT_REPO", "No FCM token for user: $userId")
-                }
-            }
+    suspend fun getLastReadTimestamp(): Date? {
+        val currentUser = auth.currentUser ?: return null
+        return try {
+            val userDoc = firestore.collection("users").document(currentUser.uid).get().await()
+            userDoc.getDate("lastReadTimestamp")
         } catch (e: Exception) {
-            Log.e("GROUP_CHAT_REPO", "Error sending notifications", e)
+            null
+        }
+    }
+
+    suspend fun updateLastReadTimestamp(timestamp: Date) {
+        val currentUser = auth.currentUser ?: return
+        try {
+            firestore.collection("users").document(currentUser.uid)
+                .update("lastReadTimestamp", timestamp).await()
+        } catch (e: Exception) {
+            Log.e("GROUP_CHAT_REPO", "Error updating last read timestamp", e)
         }
     }
 }

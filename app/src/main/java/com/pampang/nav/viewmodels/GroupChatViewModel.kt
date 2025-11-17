@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,5 +36,15 @@ class GroupChatViewModel @Inject constructor(
                 _networkError.emit(Unit)
             }
         }
+    }
+
+    fun updateLastReadTimestamp(timestamp: Date) {
+        viewModelScope.launch {
+            groupChatRepository.updateLastReadTimestamp(timestamp)
+        }
+    }
+
+    suspend fun getLastReadTimestamp(): Date? {
+        return groupChatRepository.getLastReadTimestamp()
     }
 }

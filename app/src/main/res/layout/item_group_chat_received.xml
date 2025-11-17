@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -7,30 +8,48 @@
             type="com.pampang.nav.models.GroupChatMessage" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="start"
-        android:padding="8dp"
-        android:layout_marginEnd="64dp">
+        android:padding="8dp">
 
         <TextView
-            android:id="@+id/text_view_sender_name"
+            android:id="@+id/text_view_timestamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@{chatMessage.senderName + ` (` + chatMessage.senderRole + `)`}"/>
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:alpha="0"
+            app:timestamp="@{chatMessage.timestamp}" />
 
-        <TextView
-            android:id="@+id/text_view_message"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/message_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/chat_bubble_received"
-            android:padding="12dp"
-            android:textColor="@android:color/black"
-            android:text="@{chatMessage.text}"/>
+            android:orientation="vertical"
+            android:gravity="start"
+            android:layout_marginEnd="64dp"
+            android:background="@android:color/transparent"> 
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/text_view_sender_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@{chatMessage.senderName + ` (` + chatMessage.senderRole + `)`}"/>
+
+            <TextView
+                android:id="@+id/text_view_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/chat_bubble_received"
+                android:padding="12dp"
+                android:textColor="@android:color/black"
+                android:text="@{chatMessage.text}"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
 </layout>

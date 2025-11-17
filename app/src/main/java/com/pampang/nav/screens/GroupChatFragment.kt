@@ -1,19 +1,27 @@
 package com.pampang.nav.screens
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pampang.nav.adapters.GroupChatAdapter
 import com.pampang.nav.databinding.FragmentGroupChatBinding
 import com.pampang.nav.viewmodels.GroupChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.Date
+import kotlin.math.max
+import kotlin.math.min
+
+private const val MAX_TRANSLATION_X = -250f
 
 @AndroidEntryPoint
 class GroupChatFragment : Fragment() {
@@ -21,6 +29,8 @@ class GroupChatFragment : Fragment() {
     private lateinit var binding: FragmentGroupChatBinding
     private val viewModel: GroupChatViewModel by viewModels()
     private val groupChatAdapter = GroupChatAdapter()
+    private var initialX = 0f
+    private var isSwiping = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +41,7 @@ class GroupChatFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerViewChat.adapter = groupChatAdapter
@@ -41,9 +52,14 @@ class GroupChatFragment : Fragment() {
 
         lifecycleScope.launch {
             viewModel.messages.collect {
-                groupChatAdapter.submitList(it)
-                if (it.isNotEmpty()) {
-                    binding.recyclerViewChat.scrollToPosition(it.size - 1)
+                groupChatAdapter.submitList(it) { 
+                    lifecycleScope.launch {
+                        val lastReadTimestamp = viewModel.getLastReadTimestamp()
+                        val firstUnreadMessageIndex = it.indexOfFirst { message -> (message.timestamp?.after(lastReadTimestamp ?: Date(0)) ?: false) }.takeIf { it != -1 } ?: (it.size - 1)
+                        if (firstUnreadMessageIndex >= 0) {
+                            binding.recyclerViewChat.scrollToPosition(firstUnreadMessageIndex)
+                        }
+                    }
                 }
             }
         }
@@ -60,6 +76,55 @@ class GroupChatFragment : Fragment() {
                 viewModel.sendMessage(message)
                 binding.edittextChatbox.text.clear()
             }
+        }
+
+        binding.recyclerViewChat.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    initialX = event.x
+                    isSwiping = false
+                    false 
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val translationX = event.x - initialX
+                    if (translationX < -50) { 
+                        isSwiping = true
+                    }
+                    if (isSwiping) {
+                        val constrainedTranslationX = max(MAX_TRANSLATION_X, min(0f, translationX))
+                        forEachVisibleHolder { it.revealTimestamp(constrainedTranslationX) }
+                    }
+                    isSwiping
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    if (isSwiping) {
+                        forEachVisibleHolder { it.resetTranslation() }
+                        isSwiping = false
+                        true
+                    } else {
+                        false
+                    }
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun forEachVisibleHolder(action: (GroupChatAdapter.MessageViewHolder) -> Unit) {
+        val layoutManager = binding.recyclerViewChat.layoutManager as LinearLayoutManager
+        val firstVisible = layoutManager.findFirstVisibleItemPosition()
+        val lastVisible = layoutManager.findLastVisibleItemPosition()
+        for (i in firstVisible..lastVisible) {
+            val holder = binding.recyclerViewChat.findViewHolderForAdapterPosition(i) as? GroupChatAdapter.MessageViewHolder
+            holder?.let(action)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val lastMessage = groupChatAdapter.currentList.lastOrNull()
+        if (lastMessage != null) {
+            lastMessage.timestamp?.let { viewModel.updateLastReadTimestamp(it) }
         }
     }
 }

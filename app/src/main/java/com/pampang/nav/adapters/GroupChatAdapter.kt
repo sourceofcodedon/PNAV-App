@@ -1,6 +1,8 @@
 package com.pampang.nav.adapters
 
+import android.animation.ObjectAnimator
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,19 +13,16 @@ import com.pampang.nav.databinding.ItemGroupChatReceivedBinding
 import com.pampang.nav.databinding.ItemGroupChatSentBinding
 import com.pampang.nav.models.GroupChatMessage
 
-private const val VIEW_TYPE_SENT = 1
-private const val VIEW_TYPE_RECEIVED = 2
+const val VIEW_TYPE_SENT = 1
+const val VIEW_TYPE_RECEIVED = 2
+private const val MAX_TRANSLATION_X = -250f
 
 class GroupChatAdapter : ListAdapter<GroupChatMessage, GroupChatAdapter.MessageViewHolder>(MessageDiffCallback()) {
 
     private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position).senderId == currentUserId) {
-            VIEW_TYPE_SENT
-        } else {
-            VIEW_TYPE_RECEIVED
-        }
+        return if (getItem(position).senderId == currentUserId) VIEW_TYPE_SENT else VIEW_TYPE_RECEIVED
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
@@ -32,18 +31,58 @@ class GroupChatAdapter : ListAdapter<GroupChatMessage, GroupChatAdapter.MessageV
         } else {
             ItemGroupChatReceivedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         }
-        return MessageViewHolder(binding)
+        return MessageViewHolder(binding, viewType)
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class MessageViewHolder(private val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MessageViewHolder(private val binding: ViewBinding, private val viewType: Int) : RecyclerView.ViewHolder(binding.root) {
+
+        private val messageContainer: View
+        private val timestampView: View
+
+        init {
+            when (binding) {
+                is ItemGroupChatSentBinding -> {
+                    messageContainer = binding.messageContainer
+                    timestampView = binding.textViewTimestamp
+                }
+                is ItemGroupChatReceivedBinding -> {
+                    messageContainer = binding.messageContainer
+                    timestampView = binding.textViewTimestamp
+                }
+                else -> throw IllegalStateException("Unknown view binding type")
+            }
+        }
+
         fun bind(chatMessage: GroupChatMessage) {
             when (binding) {
                 is ItemGroupChatSentBinding -> binding.chatMessage = chatMessage
                 is ItemGroupChatReceivedBinding -> binding.chatMessage = chatMessage
+            }
+        }
+
+        fun revealTimestamp(translationX: Float) {
+            // Only translate the message container for sent messages
+            if (viewType == VIEW_TYPE_SENT) {
+                messageContainer.translationX = translationX
+            }
+            // Fade in the timestamp for all messages
+            timestampView.alpha = translationX / MAX_TRANSLATION_X
+        }
+
+        fun resetTranslation() {
+            if (viewType == VIEW_TYPE_SENT) {
+                ObjectAnimator.ofFloat(messageContainer, "translationX", 0f).apply {
+                    duration = 200
+                    start()
+                }
+            }
+            ObjectAnimator.ofFloat(timestampView, "alpha", 0f).apply {
+                duration = 200
+                start()
             }
         }
     }
