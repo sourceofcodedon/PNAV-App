@@ -1,5 +1,7 @@
 package com.pampang.nav.screens.buyer
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -68,7 +70,10 @@ class BuyerProfileFragment : Fragment() {
                     showEditUsernameDialog()
                 }
                 R.string.profile_contact_us -> {
-                    showToast(getString(it.titleResId))
+                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = Uri.parse("mailto:pampangnav@gmail.com")
+                    }
+                    requireActivity().startActivity(intent)
                 }
                 R.string.profile_privacy_security -> {
                     showChangePasswordDialog()
@@ -181,7 +186,7 @@ class BuyerProfileFragment : Fragment() {
     }
 
     private fun showLanguageSelectionDialog() {
-        val languages = arrayOf("English", "Japanese", "Korean")
+        val languages = arrayOf("English", "Japanese", "Korean", "Filipino")
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Select Language")
             .setItems(languages) { _, which ->
@@ -189,6 +194,7 @@ class BuyerProfileFragment : Fragment() {
                     0 -> "en"
                     1 -> "ja"
                     2 -> "ko"
+                    3 -> "fil"
                     else -> "en"
                 }
                 setLocale(selectedLanguage)

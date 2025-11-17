@@ -87,7 +87,6 @@ public class GulayMapOne extends AppCompatActivity {
         graph = new Graph();
         // Existing edges
 
-        //First column
         graph.addEdge("n6", "n24", 2);
         graph.addEdge("n24", "n3", 1);
         graph.addEdge("n3", "n18", 2);
@@ -125,7 +124,6 @@ public class GulayMapOne extends AppCompatActivity {
         graph.addEdge("n5", "n26", 1);
         graph.addEdge("n26", "n4", 1);
         graph.addEdge("n2", "n19", 1);
-        graph.addEdge("n19", "n4", 1);
         graph.addEdge("n2", "n48", 1);
         graph.addEdge("n48", "n13", 1);
         graph.addEdge("n13", "n22", 1);
@@ -179,7 +177,7 @@ public class GulayMapOne extends AppCompatActivity {
         graph.addEdge("n51", "n14", 1);
         graph.addEdge("n14", "n23", 1);
         graph.addEdge("n23", "n70", 1);
-        graph.addEdge("n70", "n17", 1);
+        graph.addEdge("n70", "n17", 0);
 
 
         //First Row
@@ -234,11 +232,14 @@ public class GulayMapOne extends AppCompatActivity {
         graph.addEdge("n67", "n68", 1);
         graph.addEdge("n68", "n69", 1);
         graph.addEdge("n69", "n91", 1);
-        graph.addEdge("n91", "n73", 1);
-        graph.addEdge("n17", "n70", 0);
+        graph.addEdge("n91", "n73", 0);
 
+        //Seventh Row
+        graph.addEdge("n71", "n17", 0);
+        graph.addEdge("n71", "n72", 0);
         graph.addEdge("n17", "n72", 0);
-        graph.addEdge("n72", "n73", 0);
+        graph.addEdge("n72", "n73", 1);
+
         graph.addEdge("n97", "n7", 1);
         graph.addEdge("n97", "n98", 1);
         graph.addEdge("n98", "n92", 1);
@@ -251,6 +252,10 @@ public class GulayMapOne extends AppCompatActivity {
         graph.addEdge("n93", "n43", 1);
         graph.addEdge("n93", "n2", 1);
         graph.addEdge("n97", "n28", 1);
+
+        graph.addEdge("n92", "n95", 0);
+
+        graph.addEdge("n94", "n95", 1);
 
     }
 }
