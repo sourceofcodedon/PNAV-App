@@ -28,7 +28,7 @@ class GroupChatViewModel @Inject constructor(
     fun sendMessage(text: String) {
         if (NetworkUtils.isNetworkAvailable(application)) {
             viewModelScope.launch {
-                groupChatRepository.sendGroupChatMessage(text)
+                groupChatRepository.sendGroupChatMessage(text, application)
             }
         } else {
             viewModelScope.launch {
