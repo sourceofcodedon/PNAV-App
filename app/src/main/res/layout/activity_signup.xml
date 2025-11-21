@@ -185,6 +185,26 @@
                         app:strokeWidth="1dp" />
                 </LinearLayout>
 
+                <CheckBox
+                    android:id="@+id/checkbox_terms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I agree to the "
+                    android:layout_marginTop="@dimen/margin_padding_size_medium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_selection" />
+
+                <TextView
+                    android:id="@+id/text_view_terms"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Terms and Conditions"
+                    android:textColor="@color/colorPrimaryLightGreen"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/checkbox_terms"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/checkbox_terms"
+                    app:layout_constraintTop_toTopOf="@+id/checkbox_terms" />
 
                 <Button
                     android:id="@+id/button_register"
@@ -200,13 +220,13 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_selection" />
+                    app:layout_constraintTop_toBottomOf="@+id/checkbox_terms" />
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:indeterminateTint="@color/colorPrimary"
+                    android.R.attr.indeterminateTint="@color/colorPrimary"
                     android:visibility="@{!viewModel.isLoading ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="@+id/button_register"
                     app:layout_constraintEnd_toEndOf="@+id/button_register"

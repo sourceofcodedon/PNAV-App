@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".MyApplication"
@@ -17,7 +18,7 @@
         tools:targetApi="31">
 
         <service
-            android:name=".services.MyFirebaseMessagingService"
+            android:name=".fcm.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -80,7 +81,7 @@
         </activity>
         <activity
             android:name=".MapNav.SecondFishStore"
-            android:exported="false">
+            android.exported="false">
 
         </activity>
         <activity
@@ -130,6 +131,9 @@
             android:name=".screens.auth.SignUpActivity"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".screens.auth.TermsAndConditionsActivity"
+            android:exported="false" />
         <activity
             android:name=".screens.buyer.BuyerMainActivity"
             android:exported="false">

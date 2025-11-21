@@ -1,5 +1,6 @@
 package com.pampang.nav.screens.auth
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -43,6 +44,10 @@ class SignUpActivity : AppCompatActivity() {
                 finish()
             }
 
+            textViewTerms.setOnClickListener {
+                startActivity(Intent(this@SignUpActivity, TermsAndConditionsActivity::class.java))
+            }
+
             // --- ROLE SELECTION ---
             buttonBuyer.setOnClickListener {
                 selectRole("buyer")
@@ -77,6 +82,11 @@ class SignUpActivity : AppCompatActivity() {
 
                 if (role.isNullOrEmpty()) {
                     showToast("Please select a role")
+                    return@setOnClickListener
+                }
+
+                if (!checkboxTerms.isChecked) {
+                    showToast("Please accept the Terms and Conditions")
                     return@setOnClickListener
                 }
 

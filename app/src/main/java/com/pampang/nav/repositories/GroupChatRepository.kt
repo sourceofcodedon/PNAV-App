@@ -6,6 +6,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.pampang.nav.fcm.NotificationSender
 import com.pampang.nav.models.GroupChatMessage
 import com.pampang.nav.utilities.SharedPrefs
 import kotlinx.coroutines.channels.awaitClose
@@ -67,15 +68,25 @@ class GroupChatRepository @Inject constructor(
             "fetch_failed"
         }
 
+        val senderName = currentUser.displayName ?: "Anonymous"
+
         val message = GroupChatMessage(
             senderId = currentUser.uid,
-            senderName = currentUser.displayName ?: "Anonymous",
+            senderName = senderName,
             senderRole = userRole,
             text = text
         )
 
         try {
             firestore.collection("global_chat").add(message).await()
+
+            // --- SEND NOTIFICATION ---
+            val notificationTitle = "New Message"
+            val notificationBody = "$senderName: $text"
+            // Include the sender's ID
+            NotificationSender.sendNotificationToGroup(context, notificationTitle, notificationBody, currentUser.uid)
+            // -------------------------
+
         } catch (e: Exception) {
             Log.e("GROUP_CHAT_REPO", "Error saving message", e)
         }

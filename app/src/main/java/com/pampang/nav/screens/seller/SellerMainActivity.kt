@@ -1,12 +1,17 @@
 package com.pampang.nav.screens.seller
 
+import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
@@ -15,8 +20,8 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
 import com.pampang.nav.R
 import com.pampang.nav.databinding.ActivitySellerMainBinding
+import com.pampang.nav.fcm.MyFirebaseMessagingService
 import com.pampang.nav.screens.ChatActivity
-import com.pampang.nav.services.MyFirebaseMessagingService
 import com.pampang.nav.viewmodels.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,15 +41,26 @@ class SellerMainActivity : AppCompatActivity() {
         }
     }
 
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // FCM SDK (and your app) can post notifications.
+        } else {
+            // Inform user that your app will not show notifications.
+        }
+    }
+
     companion object {
+        @JvmField
         var isForeground: Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initConfig()
-        // Manually update the FCM token every time the main activity is created
-        MyFirebaseMessagingService.getTokenAndUpload()
+        askNotificationPermission()
+        MyFirebaseMessagingService.subscribeToGlobalChatTopic() // Subscribe to the topic
     }
 
     override fun onResume() {
@@ -83,6 +99,22 @@ class SellerMainActivity : AppCompatActivity() {
                     false // Do not select the item
                 }
                 else -> NavigationUI.onNavDestinationSelected(item, navController)
+            }
+        }
+    }
+
+    private fun askNotificationPermission() {
+        // This is only necessary for API level 33 and above.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // FCM SDK (and your app) can post notifications.
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // TODO: Display an educational UI explaining why the permission is needed.
+            } else {
+                // Directly ask for the permission.
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
     }
