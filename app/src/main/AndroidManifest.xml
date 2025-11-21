@@ -81,7 +81,7 @@
         </activity>
         <activity
             android:name=".MapNav.SecondFishStore"
-            android.exported="false">
+            android:exported="false">
 
         </activity>
         <activity
@@ -131,9 +131,6 @@
             android:name=".screens.auth.SignUpActivity"
             android:exported="false">
         </activity>
-        <activity
-            android:name=".screens.auth.TermsAndConditionsActivity"
-            android:exported="false" />
         <activity
             android:name=".screens.buyer.BuyerMainActivity"
             android:exported="false">

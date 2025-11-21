@@ -45,7 +45,7 @@ class SignUpActivity : AppCompatActivity() {
             }
 
             textViewTerms.setOnClickListener {
-                startActivity(Intent(this@SignUpActivity, TermsAndConditionsActivity::class.java))
+                showTermsAndConditionsDialog()
             }
 
             // --- ROLE SELECTION ---
@@ -138,7 +138,7 @@ class SignUpActivity : AppCompatActivity() {
         if (!password.matches(Regex(".*[A-Z].*"))) {
             return false
         }
-        if (!password.matches(Regex(".*[!@#\$%^&*()_+-=,./?;':\"`~\\\\[\\\\]{}|<>].*"))) {
+        if (!password.matches(Regex(".*[!@#\$%^&*()_+-=,./?;\':\\\"`~\\\\\\\\[\\\\\\\\]{}|<>].*"))) {
             return false
         }
         return true
@@ -156,5 +156,13 @@ class SignUpActivity : AppCompatActivity() {
         }.show()
     }
 
-
+    private fun showTermsAndConditionsDialog() {
+        MaterialAlertDialogBuilder(this).apply {
+            setTitle("Terms and Conditions")
+            setMessage(getString(R.string.terms_and_conditions_content))
+            setPositiveButton("Dismiss") { dialog, _ ->
+                dialog.dismiss()
+            }
+        }.show()
+    }
 }
