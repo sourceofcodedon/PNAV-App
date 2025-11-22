@@ -86,16 +86,16 @@ public class SecondMeatMapView extends AppCompatActivity {
     private void setupGraph() {
         graph = new Graph();
         //First column
-        graph.addEdge("n6", "n24", 2);
-        graph.addEdge("n24", "n3", 1);
-        graph.addEdge("n3", "n18", 2);
-        graph.addEdge("n18", "n1", 2);
-        graph.addEdge("n1", "n45", 1.5);
-        graph.addEdge("n45", "n12", 1);
-        graph.addEdge("n12", "n52", 1);
-        graph.addEdge("n21", "n12", 1);
-        graph.addEdge("n21", "n15", 1);
-        graph.addEdge("n15", "n64", 2);
+        graph.addEdge("n6", "n24", 0);
+        graph.addEdge("n24", "n3", 0);
+        graph.addEdge("n3", "n18", 0);
+        graph.addEdge("n18", "n1", 0);
+        graph.addEdge("n1", "n45", 0);
+        graph.addEdge("n45", "n12", 0);
+        graph.addEdge("n12", "n52", 0);
+        graph.addEdge("n21", "n12", 0);
+        graph.addEdge("n21", "n15", 0);
+        graph.addEdge("n15", "n64", 0);
 
         //second column
         graph.addEdge("n27", "n30", 1);
@@ -161,7 +161,7 @@ public class SecondMeatMapView extends AppCompatActivity {
         graph.addEdge("n83", "n85", 1);
         graph.addEdge("n85", "n86", 1);
         graph.addEdge("n86", "n87", 1);
-        graph.addEdge("n87", "n88", 1);
+        graph.addEdge("n87", "n88", 0);
         graph.addEdge("n88", "n90", 1);
         graph.addEdge("n90", "n89", 1);
         graph.addEdge("n89", "n91", 1);
@@ -217,12 +217,12 @@ public class SecondMeatMapView extends AppCompatActivity {
         graph.addEdge("n87", "n14", 1);
 
         //Fifth Row
-        graph.addEdge("n21", "n56", 1);
+        graph.addEdge("n21", "n56", 0);
         graph.addEdge("n56", "n57", 1);
         graph.addEdge("n57", "n22", 1);
         graph.addEdge("n22", "n58", 1);
         graph.addEdge("n58", "n59", 1);
-        graph.addEdge("n59", "n88", 1);
+        graph.addEdge("n59", "n88", 0);
         graph.addEdge("n88", "n23", 1);
 
         //Sixth Row
