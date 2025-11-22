@@ -7,7 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.widget.ArrayAdapter
+import android.widget.AdapterView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +18,8 @@ import com.cloudinary.android.callback.UploadCallback
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pampang.nav.R
 import com.pampang.nav.databinding.ActivityAddStoreBinding
+import com.pampang.nav.models.DropdownItem
+import com.pampang.nav.models.StoreCategories
 import com.pampang.nav.models.StoreModel
 import com.pampang.nav.utilities.NetworkUtils
 import com.pampang.nav.utilities.extension.setSafeOnClickListener
@@ -33,6 +35,7 @@ class AddStoreActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityAddStoreBinding
     private val mainViewModel: MainViewModel by viewModels()
     private var imageUrl: String? = null
+    private var selectedStore: DropdownItem.StoreItem? = null
 
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -76,15 +79,14 @@ class AddStoreActivity : AppCompatActivity() {
                 }
 
                 val storeName = mBinding.edittextStoreName.text.toString().trim()
-                val storeCategory = mBinding.edittextStoreCategory.text.toString().trim()
                 val openingTime = mBinding.edittextOpeningTime.text.toString().trim()
                 val closingTime = mBinding.edittextClosingTime.text.toString().trim()
 
-                if (storeName.isEmpty() || storeCategory.isEmpty() || openingTime.isEmpty() || closingTime.isEmpty()) {
+                if (storeName.isEmpty() || selectedStore == null || openingTime.isEmpty() || closingTime.isEmpty()) {
                     showToast("Please fill all fields.")
                     return@setSafeOnClickListener
                 } else {
-                    mainViewModel.addStore(storeName, storeCategory, openingTime, closingTime, imageUrl)
+                    mainViewModel.addStore(storeName, selectedStore!!.id, openingTime, closingTime, imageUrl)
                 }
 
             }
@@ -169,11 +171,23 @@ class AddStoreActivity : AppCompatActivity() {
     }
 
     private fun setupStoreDropdown(stores: List<StoreModel>) {
-        val allStores = arrayOf("FirstFishStore", "SecondFishStore", "FirstGulayStore", "SecondGulayStore", "FirstMeatStore", "SecondMeatStore")
-        val existingStores = stores.map { it.storeCategory }
-        val availableStores = allStores.filter { it !in existingStores }
-        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, availableStores)
+        val existingStoreIds = stores.map { it.storeCategory }.toSet()
+        val allItems = StoreCategories.getGroupedStores()
+
+        val availableItems = allItems.filter { item ->
+            item !is DropdownItem.StoreItem || item.id !in existingStoreIds
+        }
+
+        val adapter = GroupedArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, availableItems)
         mBinding.edittextStoreCategory.setAdapter(adapter)
+
+        mBinding.edittextStoreCategory.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val item = availableItems[position]
+            if (item is DropdownItem.StoreItem) {
+                selectedStore = item
+                mBinding.edittextStoreCategory.setText(item.displayName, false)
+            }
+        }
     }
 
     private fun openImagePicker() {

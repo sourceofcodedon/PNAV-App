@@ -19,6 +19,7 @@ import com.cloudinary.android.callback.UploadCallback
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pampang.nav.R
 import com.pampang.nav.databinding.ActivityEditStoreBinding
+import com.pampang.nav.models.StoreCategories
 import com.pampang.nav.utilities.NetworkUtils
 import com.pampang.nav.utilities.extension.setSafeOnClickListener
 import com.pampang.nav.utilities.extension.showToast
@@ -222,7 +223,7 @@ class EditStoreActivity : AppCompatActivity() {
         }
 
         mBinding.edittextStoreName.setText(storeName ?: "")
-        mBinding.edittextStoreCategory.setText(storeCategory ?: "")
+        mBinding.edittextStoreCategory.setText(StoreCategories.getDisplayName(storeCategory ?: "") ?: "")
         mBinding.edittextOpeningTime.setText(openingTime ?: "")
         mBinding.edittextClosingTime.setText(closingTime ?: "")
 

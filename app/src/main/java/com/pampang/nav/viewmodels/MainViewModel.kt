@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.pampang.nav.R
 import com.pampang.nav.models.ProfileMenuModel
 import com.pampang.nav.repositories.MainRepository
@@ -49,7 +50,12 @@ class MainViewModel @Inject constructor(
 
     fun addStore(storeName: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?) {
         viewModelScope.launch {
-            val result = mainRepository.addStore(storeName, storeCategory, openingTime, closingTime, imageBase64)
+            val ownerId = FirebaseAuth.getInstance().currentUser?.uid
+            if (ownerId == null) {
+                _addStoreResult.postValue(Result.failure(Exception("User not logged in")))
+                return@launch
+            }
+            val result = mainRepository.addStore(storeName, storeCategory, openingTime, closingTime, imageBase64, ownerId)
             _addStoreResult.postValue(result)
         }
     }

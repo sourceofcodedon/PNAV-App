@@ -46,19 +46,16 @@ class MainRepository @Inject constructor(
             }
     }
 
-    suspend fun addStore(storeName: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?): Result<Unit> {
+    suspend fun addStore(storeName: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?, ownerId: String): Result<Unit> {
         return try {
             _isLoading.postValue(true)
 
-            val currentUser = firebaseAuth.currentUser
-                ?: return Result.failure(Exception("User not authenticated"))
-
-            val storeData = hashMapOf(
+            val storeData = hashMapOf<String, Any?>(
                 "store_name" to storeName,
                 "store_category" to storeCategory,
                 "opening_time" to openingTime,
                 "closing_time" to closingTime,
-                "owner_id" to currentUser.uid,
+                "owner_id" to ownerId,
                 "image" to imageBase64
             )
 
@@ -69,11 +66,11 @@ class MainRepository @Inject constructor(
 
             if (querySnapshot.isEmpty) {
                 // Add new store
-                firestore.collection("stores").add(storeData).await()
+                firestore.collection("stores").add(storeData.filterValues { it != null }).await()
             } else {
                 // Update existing store
                 val documentId = querySnapshot.documents.first().id
-                firestore.collection("stores").document(documentId).update(storeData as Map<String, Any>).await()
+                firestore.collection("stores").document(documentId).update(storeData.filterValues { it != null }).await()
             }
 
             Result.success(Unit)
@@ -119,6 +116,4 @@ class MainRepository @Inject constructor(
             _isLoading.postValue(false)
         }
     }
-
-
 }

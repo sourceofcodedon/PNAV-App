@@ -68,7 +68,7 @@ public class FirstMeatStore extends AppCompatActivity {
                         String openingTime = task.getResult().getDocuments().get(0).getString("opening_time");
                         String closingTime = task.getResult().getDocuments().get(0).getString("closing_time");
                         String imageUrl = task.getResult().getDocuments().get(0).getString("image");
-                        String creatorId = task.getResult().getDocuments().get(0).getString("creatorId");
+                        String ownerId = task.getResult().getDocuments().get(0).getString("owner_id");
 
                         storeNameTextView.setText(storeName);
                         openTimeTextView.setText(openingTime);
@@ -80,7 +80,7 @@ public class FirstMeatStore extends AppCompatActivity {
                             Glide.with(this).load(imageUrl).into(storeImageView);
                         }
 
-                        if (currentUser != null && currentUser.getUid().equals(creatorId)) {
+                        if (currentUser != null && currentUser.getUid().equals(ownerId)) {
                             editButton.setVisibility(View.VISIBLE);
                             deleteButton.setVisibility(View.VISIBLE);
                             editButton.setOnClickListener(v -> {
