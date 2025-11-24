@@ -1,5 +1,6 @@
 package com.pampang.nav.models
 
+import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.PropertyName
 
 data class StoreModel(
@@ -29,5 +30,8 @@ data class StoreModel(
 
     @get:PropertyName("image")
     @set:PropertyName("image")
-    var image: String? = null
+    var image: String? = null,
+
+    @get:Exclude
+    val isBookmarked: Boolean = false
 )

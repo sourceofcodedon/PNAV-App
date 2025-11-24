@@ -2,12 +2,14 @@ package com.pampang.nav.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.pampang.nav.R
 import com.pampang.nav.models.ProfileMenuModel
+import com.pampang.nav.models.StoreModel
 import com.pampang.nav.repositories.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -30,8 +32,16 @@ class MainViewModel @Inject constructor(
     private val _deleteStoreResult = MutableLiveData<Result<Unit>?>()
     val deleteStoreResult: LiveData<Result<Unit>?> get() = _deleteStoreResult
 
-    val storeList = mainRepository.stores
+    private val _addBookmarkResult = MutableLiveData<Result<Unit>?>()
+    val addBookmarkResult: LiveData<Result<Unit>?> get() = _addBookmarkResult
+
+    private val _deleteBookmarkResult = MutableLiveData<Result<Unit>?>()
+    val deleteBookmarkResult: LiveData<Result<Unit>?> get() = _deleteBookmarkResult
+
     val isLoading = mainRepository.isLoading
+
+    private val _storeList = MediatorLiveData<List<StoreModel>>()
+    val storeList: LiveData<List<StoreModel>> get() = _storeList
 
     init {
         _profileMenuItems.value = listOf(
@@ -41,6 +51,19 @@ class MainViewModel @Inject constructor(
             ProfileMenuModel(R.string.profile_preferences),
             ProfileMenuModel(R.string.profile_logout),
         )
+
+        fun mergeData() {
+            val stores = mainRepository.stores.value ?: return
+            val bookmarks = mainRepository.bookmarks.value ?: emptyList()
+            val updatedStores = stores.map { store ->
+                store.copy(isBookmarked = bookmarks.any { it.storeId == store.id })
+            }
+            _storeList.value = updatedStores
+        }
+
+        _storeList.addSource(mainRepository.stores) { mergeData() }
+        _storeList.addSource(mainRepository.bookmarks) { mergeData() }
+
         getStores()
     }
 
@@ -84,5 +107,43 @@ class MainViewModel @Inject constructor(
 
     fun clearDeleteStoreResult() {
         _deleteStoreResult.value = null
+    }
+
+    fun getBookmarks() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        mainRepository.getBookmarks(userId)
+    }
+
+    fun addBookmark(storeId: String) {
+        viewModelScope.launch {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId == null) {
+                _addBookmarkResult.postValue(Result.failure(Exception("User not logged in")))
+                return@launch
+            }
+            val result = mainRepository.addBookmark(storeId, userId)
+            _addBookmarkResult.postValue(result)
+        }
+    }
+
+    fun clearAddBookmarkResult() {
+        _addBookmarkResult.value = null
+    }
+
+    fun deleteBookmark(storeId: String) {
+        viewModelScope.launch {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@launch
+            val bookmark = mainRepository.bookmarks.value?.find { it.storeId == storeId && it.userId == userId }
+            if (bookmark != null) {
+                val result = mainRepository.deleteBookmark(bookmark.id)
+                _deleteBookmarkResult.postValue(result)
+            } else {
+                _deleteBookmarkResult.postValue(Result.failure(Exception("Bookmark not found")))
+            }
+        }
+    }
+
+    fun clearDeleteBookmarkResult() {
+        _deleteBookmarkResult.value = null
     }
 }

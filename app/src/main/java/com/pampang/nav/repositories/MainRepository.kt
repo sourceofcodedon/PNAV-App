@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.pampang.nav.models.BookmarkModel
 import com.pampang.nav.models.StoreModel
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -21,6 +22,9 @@ class MainRepository @Inject constructor(
 
     private val _stores = MutableLiveData<List<StoreModel>>()
     val stores: LiveData<List<StoreModel>> get() = _stores
+
+    private val _bookmarks = MutableLiveData<List<BookmarkModel>>()
+    val bookmarks: LiveData<List<BookmarkModel>> get() = _bookmarks
 
     fun getStores() {
         _isLoading.postValue(true)
@@ -109,6 +113,62 @@ class MainRepository @Inject constructor(
         return try {
             _isLoading.postValue(true)
             firestore.collection("stores").document(storeId).delete().await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        } finally {
+            _isLoading.postValue(false)
+        }
+    }
+
+    fun getBookmarks(userId: String) {
+        _isLoading.postValue(true)
+        firestore.collection("bookmarks")
+            .whereEqualTo("user_id", userId)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.e("MainRepository", "Error getting bookmarks: ${e.message}", e)
+                    _bookmarks.postValue(emptyList())
+                    _isLoading.postValue(false)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    val bookmarkList = snapshot.documents.mapNotNull { document ->
+                        document.toObject(BookmarkModel::class.java)?.apply {
+                            id = document.id
+                        }
+                    }
+                    _bookmarks.postValue(bookmarkList)
+                }
+                _isLoading.postValue(false)
+            }
+    }
+
+    suspend fun addBookmark(storeId: String, userId: String): Result<Unit> {
+        return try {
+            _isLoading.postValue(true)
+
+            val bookmarkData = hashMapOf(
+                "store_id" to storeId,
+                "user_id" to userId
+            )
+
+            firestore.collection("bookmarks").add(bookmarkData).await()
+
+            Result.success(Unit)
+
+        } catch (e: Exception) {
+            Result.failure(e)
+        } finally {
+            _isLoading.postValue(false)
+        }
+    }
+
+    suspend fun deleteBookmark(bookmarkId: String): Result<Unit> {
+        return try {
+            _isLoading.postValue(true)
+            firestore.collection("bookmarks").document(bookmarkId).delete().await()
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)

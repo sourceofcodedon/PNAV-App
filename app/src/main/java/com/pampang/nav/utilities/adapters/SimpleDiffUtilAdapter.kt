@@ -24,8 +24,9 @@ import javax.inject.Inject
 
 class SimpleDiffUtilAdapter @Inject constructor(
     @LayoutRes private val layoutRes: Int,
-    private val onClickCallBack: Any? = null,
-    private val onDeleteCallBack: Any? = null
+    val onClickCallBack: Any? = null,
+    val onDeleteCallBack: Any? = null,
+    val onBookmarkCallBack: Any? = null
 ) : SimpleListAdapter<Any>(DiffCallback) {
 
     companion object DiffCallback : DiffUtil.ItemCallback<Any>() {
@@ -62,7 +63,9 @@ class SimpleDiffUtilAdapter @Inject constructor(
                 binding.model = store
                 binding.onClickCallBack = onClickCallBack as? RecyclerClick
                 binding.onDeleteCallBack = onDeleteCallBack as? RecyclerClick
+                binding.onBookmarkCallBack = onBookmarkCallBack as? RecyclerClick
                 binding.isOwner = currentUser != null && store.ownerId == currentUser.uid
+                binding.isBookmarked = store.isBookmarked
                 updateStoreStatus(binding, store)
             }
 

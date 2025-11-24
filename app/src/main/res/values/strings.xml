@@ -39,6 +39,9 @@
     <string name="get_direction">Get Direction</string>
     <string name="upload_image">Upload Image</string>
     <string name="store_list_title">Store List</string>
+    <string name="bookmark_list_title">Bookmarks</string>
+    <string name="add_to_favorite">Add to favorite</string>
+    <string name="favorite">Favorite</string>
     <string name="edit_store">Edit Store</string>
     <string name="save_changes">Save Changes</string>
     <string name="change_password">Change Password</string>
@@ -62,11 +65,11 @@ You are responsible for your account and anything that happens while you are sig
 
 **2. Using PampangNav**
 
-Don't misuse our services. For example, don’t interfere with our services or try to access them using a method other than the interface and the instructions that we provide. You may use our services only as permitted by law.
+Don\'t misuse our services. For example, don’t interfere with our services or try to access them using a method other than the interface and the instructions that we provide. You may use our services only as permitted by law.
 
 **3. Content in PampangNav**
 
-Our service displays some content that is not PampangNav's. This content is the sole responsibility of the entity that makes it available. We may review content to determine whether it is illegal or violates our policies, and we may remove or refuse to display content that we reasonably believe violates our policies or the law. But that does not necessarily mean that we review content, so please don’t assume that we do.
+Our service displays some content that is not PampangNav\'s. This content is the sole responsibility of the entity that makes it available. We may review content to determine whether it is illegal or violates our policies, and we may remove or refuse to display content that we reasonably believe violates our policies or the law. But that does not necessarily mean that we review content, so please don’t assume that we do.
 
 **4. About Software in our Services**
 

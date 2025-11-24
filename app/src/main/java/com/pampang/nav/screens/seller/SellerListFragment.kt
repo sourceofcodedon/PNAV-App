@@ -27,6 +27,7 @@ class SellerListFragment : Fragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var mAdapter: SimpleDiffUtilAdapter
     private var userType: String? = null
+    private var showFavorites = false
 
 
     override fun onCreateView(
@@ -59,6 +60,8 @@ class SellerListFragment : Fragment() {
         userType = arguments?.getString("user_type")
         if (userType == "buyer") {
             mBinding.fabAddStore.visibility = View.GONE
+        } else {
+            mBinding.buttonFavorite.visibility = View.GONE
         }
     }
 
@@ -89,10 +92,24 @@ class SellerListFragment : Fragment() {
             }
         }
 
+        val onBookmark: RecyclerClick? = if (userType == "buyer") {
+            RecyclerClick { store ->
+                store as StoreModel
+                if (store.isBookmarked) {
+                    mainViewModel.deleteBookmark(store.id)
+                } else {
+                    mainViewModel.addBookmark(store.id)
+                }
+            }
+        } else {
+            null
+        }
+
         mAdapter = SimpleDiffUtilAdapter(
             layoutRes = R.layout.list_item_store,
             onClickCallBack = onClick,
-            onDeleteCallBack = onDelete
+            onDeleteCallBack = onDelete,
+            onBookmarkCallBack = onBookmark
         )
 
         mBinding.recyclerViewStores.adapter = mAdapter
@@ -102,15 +119,30 @@ class SellerListFragment : Fragment() {
         mBinding.fabAddStore.setSafeOnClickListener {
             requireActivity().launchActivity<AddStoreActivity>()
         }
+
+        mBinding.buttonFavorite.setSafeOnClickListener {
+            showFavorites = !showFavorites
+            updateStoreList(mainViewModel.storeList.value ?: emptyList())
+            if (showFavorites) {
+                mBinding.toolbar.title = getString(R.string.favorite)
+                mBinding.buttonFavorite.text = getString(R.string.store_list_title)
+            } else {
+                mBinding.toolbar.title = getString(R.string.store_list_title)
+                mBinding.buttonFavorite.text = getString(R.string.favorite)
+            }
+        }
     }
 
     private fun initRequest() {
         mainViewModel.getStores()
+        if (userType == "buyer") {
+            mainViewModel.getBookmarks()
+        }
     }
 
     private fun initLiveData() {
-        mainViewModel.storeList.observe(viewLifecycleOwner) {
-            mAdapter.submitList(it)
+        mainViewModel.storeList.observe(viewLifecycleOwner) { stores ->
+            updateStoreList(stores)
         }
 
         mainViewModel.deleteStoreResult.observe(viewLifecycleOwner) { result ->
@@ -124,6 +156,40 @@ class SellerListFragment : Fragment() {
                     mainViewModel.clearDeleteStoreResult()
                 }
             }
+        }
+
+        mainViewModel.addBookmarkResult.observe(viewLifecycleOwner) { result: Result<Unit>? ->
+            result?.let {
+                it.onSuccess {
+                    showToast("Store bookmarked successfully")
+                    mainViewModel.clearAddBookmarkResult()
+                }
+                it.onFailure {
+                    showToast("Failed to bookmark store: ${it.message}")
+                    mainViewModel.clearAddBookmarkResult()
+                }
+            }
+        }
+
+        mainViewModel.deleteBookmarkResult.observe(viewLifecycleOwner) { result ->
+            result?.let {
+                it.onSuccess {
+                    showToast("Bookmark removed successfully")
+                    mainViewModel.clearDeleteBookmarkResult()
+                }
+                it.onFailure {
+                    showToast("Failed to remove bookmark: ${it.message}")
+                    mainViewModel.clearDeleteBookmarkResult()
+                }
+            }
+        }
+    }
+
+    private fun updateStoreList(stores: List<StoreModel> = emptyList()) {
+        if (showFavorites) {
+            mAdapter.submitList(stores.filter { it.isBookmarked })
+        } else {
+            mAdapter.submitList(stores)
         }
     }
 

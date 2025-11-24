@@ -19,7 +19,15 @@
             type="com.pampang.nav.utilities.extension.RecyclerClick" />
 
         <variable
+            name="onBookmarkCallBack"
+            type="com.pampang.nav.utilities.extension.RecyclerClick" />
+
+        <variable
             name="isOwner"
+            type="java.lang.Boolean" />
+
+        <variable
+            name="isBookmarked"
             type="java.lang.Boolean" />
     </data>
 
@@ -43,7 +51,7 @@
                 android:text="@{model.storeName}"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/button_edit"
+                app:layout_constraintEnd_toStartOf="@+id/barrier"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Store Name" />
@@ -57,7 +65,7 @@
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
+                app:layout_constraintTop_toBottomOf="@id/text_view_title" />
 
             <TextView
                 android:id="@+id/opening_time_value"
@@ -66,8 +74,8 @@
                 android:layout_marginStart="8dp"
                 android:text="@{model.openingTime}"
                 android:textAppearance="?attr/textAppearanceBody2"
-                app:layout_constraintBaseline_toBaselineOf="@+id/opening_time_label"
-                app:layout_constraintStart_toEndOf="@+id/opening_time_label" />
+                app:layout_constraintBaseline_toBaselineOf="@id/opening_time_label"
+                app:layout_constraintStart_toEndOf="@id/opening_time_label" />
 
             <TextView
                 android:id="@+id/closing_time_label"
@@ -78,7 +86,7 @@
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/opening_time_label" />
+                app:layout_constraintTop_toBottomOf="@id/opening_time_label" />
 
             <TextView
                 android:id="@+id/closing_time_value"
@@ -87,8 +95,8 @@
                 android:layout_marginStart="8dp"
                 android:text="@{model.closingTime}"
                 android:textAppearance="?attr/textAppearanceBody2"
-                app:layout_constraintBaseline_toBaselineOf="@+id/closing_time_label"
-                app:layout_constraintStart_toEndOf="@+id/closing_time_label" />
+                app:layout_constraintBaseline_toBaselineOf="@id/closing_time_label"
+                app:layout_constraintStart_toEndOf="@id/closing_time_label" />
 
             <TextView
                 android:id="@+id/store_status_label"
@@ -99,7 +107,7 @@
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/closing_time_label" />
+                app:layout_constraintTop_toBottomOf="@id/closing_time_label" />
 
             <TextView
                 android:id="@+id/store_status_indicator"
@@ -107,8 +115,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:textAppearance="?attr/textAppearanceBody2"
-                app:layout_constraintBaseline_toBaselineOf="@+id/store_status_label"
-                app:layout_constraintStart_toEndOf="@+id/store_status_label" />
+                app:layout_constraintBaseline_toBaselineOf="@id/store_status_label"
+                app:layout_constraintStart_toEndOf="@id/store_status_label" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_bookmark"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_to_favorite"
+                android:onClick="@{() -> onBookmarkCallBack.onClick(model)}"
+                android:visibility="@{(isOwner || isBookmarked) ? View.GONE : View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_edit"
@@ -118,7 +137,7 @@
                 android:text="@string/edit"
                 android:onClick="@{() -> onClickCallBack.onClick(model)}"
                 android:visibility="@{isOwner ? View.VISIBLE : View.GONE}"
-                app:layout_constraintEnd_toStartOf="@+id/button_delete"
+                app:layout_constraintEnd_toStartOf="@id/button_delete"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
@@ -131,6 +150,24 @@
                 android:visibility="@{isOwner ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_direction"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/go_to_destination"
+                android:onClick="@{() -> onClickCallBack.onClick(model)}"
+                android:visibility="@{isOwner ? View.GONE : View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/button_bookmark" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="start"
+                app:constraint_referenced_ids="button_edit,button_bookmark,button_direction" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
