@@ -148,6 +148,9 @@
             android:exported="false">
         </activity>
         <activity
+            android:name=".screens.InboxActivity"
+            android:exported="false" />
+        <activity
             android:name=".screens.ChatActivity"
             android:exported="false" />
     </application>
