@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.pampang.nav.models.BookmarkModel
 import com.pampang.nav.models.StoreModel
 import kotlinx.coroutines.tasks.await
@@ -28,29 +29,56 @@ class MainRepository @Inject constructor(
 
     fun getStores() {
         _isLoading.postValue(true)
+        val userId = firebaseAuth.currentUser?.uid
 
-        firestore.collection("stores")
-            .addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Log.e("MainRepository", "Error getting stores: ${e.message}", e)
-                    _stores.postValue(emptyList())
-                    _isLoading.postValue(false)
-                    return@addSnapshotListener
+        val storesQuery = if (userId != null) {
+            firestore.collection("users").document(userId).get().addOnSuccessListener { userDocument ->
+                val role = userDocument.getString("role")
+                val query = if (role == "admin") {
+                    firestore.collection("stores")
+                } else {
+                    firestore.collection("stores").whereEqualTo("status", "approved")
                 }
-
-                if (snapshot != null) {
-                    val storeList = snapshot.documents.mapNotNull { document ->
-                        document.toObject(StoreModel::class.java)?.apply {
-                            id = document.id
-                        }
-                    }
-                    _stores.postValue(storeList)
-                }
-                _isLoading.postValue(false)
+                query.addSnapshotListener(getStoresSnapshotListener())
+            }.addOnFailureListener {
+                firestore.collection("stores").whereEqualTo("status", "approved")
+                    .addSnapshotListener(getStoresSnapshotListener())
             }
+        } else {
+            firestore.collection("stores").whereEqualTo("status", "approved")
+                .addSnapshotListener(getStoresSnapshotListener())
+        }
     }
 
-    suspend fun addStore(storeName: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?, ownerId: String): Result<Unit> {
+    private fun getStoresSnapshotListener() =
+        com.google.firebase.firestore.EventListener<com.google.firebase.firestore.QuerySnapshot> { snapshot, e ->
+            if (e != null) {
+                Log.e("MainRepository", "Error getting stores: ${e.message}", e)
+                _stores.postValue(emptyList())
+                _isLoading.postValue(false)
+                return@EventListener
+            }
+
+            if (snapshot != null) {
+                val storeList = snapshot.documents.mapNotNull { document ->
+                    document.toObject(StoreModel::class.java)?.apply {
+                        id = document.id
+                    }
+                }
+                _stores.postValue(storeList)
+            }
+            _isLoading.postValue(false)
+        }
+
+
+    suspend fun addStore(
+        storeName: String,
+        storeCategory: String,
+        openingTime: String,
+        closingTime: String,
+        imageBase64: String?,
+        ownerId: String
+    ): Result<Unit> {
         return try {
             _isLoading.postValue(true)
 
@@ -60,7 +88,8 @@ class MainRepository @Inject constructor(
                 "opening_time" to openingTime,
                 "closing_time" to closingTime,
                 "owner_id" to ownerId,
-                "image" to imageBase64
+                "image" to imageBase64,
+                "status" to "pending"
             )
 
             val querySnapshot = firestore.collection("stores")
@@ -86,7 +115,14 @@ class MainRepository @Inject constructor(
         }
     }
 
-    suspend fun updateStore(storeId: String, storeName: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?): Result<Unit> {
+    suspend fun updateStore(
+        storeId: String,
+        storeName: String,
+        storeCategory: String,
+        openingTime: String,
+        closingTime: String,
+        imageBase64: String?
+    ): Result<Unit> {
         return try {
             _isLoading.postValue(true)
 
