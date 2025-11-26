@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.pampang.nav.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class FirstMeatMapView extends AppCompatActivity {
     private Graph graph;
     private String startNode = null;
     private final String DESTINATION_NODE = "n55";
-    private final List<String> clickableNodes = Arrays.asList("n1", "n6", "n24", "n3", "n18", "n45", "n12", "n21", "n15", "n64", "n8");
+    private List<String> clickableNodes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +31,15 @@ public class FirstMeatMapView extends AppCompatActivity {
         Button btnClear = findViewById(R.id.btnClear);
 
         setupGraph();
+        clickableNodes = new ArrayList<>(graph.getAdjList().keySet());
         firstMeatPathView.setClickableNodes(clickableNodes);
 
         firstMeatPathView.setOnNodeClickListener(nodeLabel -> {
-            if (clickableNodes.contains(nodeLabel)) {
-                startNode = nodeLabel;
-                firstMeatPathView.setSelectedNode(nodeLabel);
-                String displayName = getNodeDisplayName(nodeLabel);
-                Toast.makeText(this, "Current location set to: " + displayName, Toast.LENGTH_SHORT).show();
-                Log.d("FirstMeatMapView", "Start node set to: " + startNode);
-            }
+            startNode = nodeLabel;
+            firstMeatPathView.setSelectedNode(nodeLabel);
+            String displayName = getNodeDisplayName(nodeLabel);
+            Toast.makeText(this, "Current location set to: " + displayName, Toast.LENGTH_SHORT).show();
+            Log.d("FirstMeatMapView", "Start node set to: " + startNode);
         });
 
         btnGo.setOnClickListener(v -> {

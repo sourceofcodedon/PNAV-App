@@ -78,7 +78,7 @@ public class SecondMeatPathView extends View {
         movingDotPaint.setAntiAlias(true);
 
         markerPaint = new Paint();
-        markerPaint.setColor(Color.RED);
+        markerPaint.setColor(Color.BLUE);
         markerPaint.setStyle(Paint.Style.FILL);
         markerPaint.setAntiAlias(true);
 

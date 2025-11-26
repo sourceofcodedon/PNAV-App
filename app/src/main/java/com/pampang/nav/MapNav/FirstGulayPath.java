@@ -300,7 +300,7 @@ public class FirstGulayPath extends View {
             String label = entry.getKey();
             float[] point = entry.getValue();
             if (clickableNodes.contains(label)) {
-                nodePaint.setColor(Color.GRAY);
+                nodePaint.setColor(Color.TRANSPARENT);
             } else {
                 nodePaint.setColor(Color.TRANSPARENT);
             }

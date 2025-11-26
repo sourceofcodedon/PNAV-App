@@ -78,7 +78,7 @@ public class PathView extends View {
         movingDotPaint.setAntiAlias(true);
 
         markerPaint = new Paint();
-        markerPaint.setColor(Color.RED);
+        markerPaint.setColor(Color.BLUE);
         markerPaint.setStyle(Paint.Style.FILL);
         markerPaint.setAntiAlias(true);
 
@@ -297,11 +297,7 @@ public class PathView extends View {
         for (Map.Entry<String, float[]> entry : nodes.entrySet()) {
             String label = entry.getKey();
             float[] point = entry.getValue();
-            if (clickableNodes.contains(label)) {
-                nodePaint.setColor(Color.GRAY);
-            } else {
-                nodePaint.setColor(Color.TRANSPARENT);
-            }
+            nodePaint.setColor(Color.TRANSPARENT);
             canvas.drawCircle(point[0], point[1], 20f * scaleX, nodePaint);
             canvas.drawText(label, point[0], point[1] + (10 * scaleY), textPaint);
         }
