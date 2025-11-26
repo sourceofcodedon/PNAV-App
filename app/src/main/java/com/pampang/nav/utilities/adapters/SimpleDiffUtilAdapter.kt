@@ -3,6 +3,7 @@ package com.pampang.nav.utilities.adapters
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
@@ -66,6 +67,15 @@ class SimpleDiffUtilAdapter @Inject constructor(
                 binding.onBookmarkCallBack = onBookmarkCallBack as? RecyclerClick
                 binding.isOwner = currentUser != null && store.ownerId == currentUser.uid
                 binding.isBookmarked = store.isBookmarked
+
+                if (store.isBookmarked) {
+                    binding.buttonBookmark.visibility = View.GONE
+                    binding.buttonRemoveBookmark.visibility = View.VISIBLE
+                } else {
+                    binding.buttonBookmark.visibility = View.VISIBLE
+                    binding.buttonRemoveBookmark.visibility = View.GONE
+                }
+
                 updateStoreStatus(binding, store)
             }
 

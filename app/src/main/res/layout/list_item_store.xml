@@ -142,6 +142,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/button_view_store" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_remove_bookmark"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="@{() -> onBookmarkCallBack.onClick(model)}"
+                android:text="@string/remove_from_favorite"
+                android:textColor="@color/red"
+                android:visibility="@{isBookmarked &amp;&amp; !isOwner ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_view_store" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_edit"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
@@ -168,7 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="start"
-                app:constraint_referenced_ids="button_edit,button_view_store,button_bookmark" />
+                app:constraint_referenced_ids="button_edit,button_view_store,button_bookmark,button_remove_bookmark" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
