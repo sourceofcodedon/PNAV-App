@@ -10,6 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pampang.nav.R
+import com.pampang.nav.MapNav.FirstFishStore
+import com.pampang.nav.MapNav.FirstGulayStore
+import com.pampang.nav.MapNav.FirstMeatStore
+import com.pampang.nav.MapNav.SecondFishStore
+import com.pampang.nav.MapNav.SecondGulayStore
+import com.pampang.nav.MapNav.SecondMeatStore
 import com.pampang.nav.databinding.FragmentListBinding
 import com.pampang.nav.models.StoreModel
 import com.pampang.nav.utilities.adapters.SimpleDiffUtilAdapter
@@ -67,7 +73,25 @@ class SellerListFragment : Fragment() {
 
     private fun initAdapter() {
         val onClick: RecyclerClick? = if (userType == "buyer") {
-            null
+            RecyclerClick { store ->
+                store as StoreModel
+                val intent = when (store.storeCategory) {
+                    "FirstMeatStore" -> Intent(requireActivity(), FirstMeatStore::class.java)
+                    "SecondMeatStore" -> Intent(requireActivity(), SecondMeatStore::class.java)
+                    "FirstGulayStore" -> Intent(requireActivity(), FirstGulayStore::class.java)
+                    "SecondGulayStore" -> Intent(requireActivity(), SecondGulayStore::class.java)
+                    "FirstFishStore" -> Intent(requireActivity(), FirstFishStore::class.java)
+                    "SecondFishStore" -> Intent(requireActivity(), SecondFishStore::class.java)
+
+                    else -> null
+                }
+                if (intent != null) {
+                    intent.putExtra("storeName", store.storeName)
+                    startActivity(intent)
+                } else {
+                    showToast("Unable to open store")
+                }
+            }
         } else {
             RecyclerClick { store ->
                 store as StoreModel

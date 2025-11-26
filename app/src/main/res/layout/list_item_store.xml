@@ -86,7 +86,7 @@
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/opening_time_label" />
+                app:layout_constraintTop_toBottomOf="@+id/opening_time_label" />
 
             <TextView
                 android:id="@+id/closing_time_value"
@@ -119,23 +119,35 @@
                 app:layout_constraintStart_toEndOf="@id/store_status_label" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_view_store"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> onClickCallBack.onClick(model)}"
+                android:text="View Store"
+                android:visibility="@{!isOwner ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_bookmark"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/add_to_favorite"
+                android:layout_marginTop="8dp"
                 android:onClick="@{() -> onBookmarkCallBack.onClick(model)}"
+                android:text="@string/add_to_favorite"
                 android:visibility="@{(isOwner || isBookmarked) ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/button_view_store" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_edit"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/edit"
                 android:onClick="@{() -> onClickCallBack.onClick(model)}"
+                android:text="@string/edit"
                 android:visibility="@{isOwner ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toStartOf="@id/button_delete"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -145,8 +157,8 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/delete"
                 android:onClick="@{() -> onDeleteCallBack.onClick(model)}"
+                android:text="@string/delete"
                 android:visibility="@{isOwner ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -156,7 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="start"
-                app:constraint_referenced_ids="button_edit,button_bookmark" />
+                app:constraint_referenced_ids="button_edit,button_view_store,button_bookmark" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
