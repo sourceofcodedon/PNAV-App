@@ -97,7 +97,7 @@ class AddStoreActivity : AppCompatActivity() {
         mainViewModel.addStoreResult.observe(this) { result ->
             result?.let {
                 it.onSuccess {
-                    showResultDialog("Success", "Store has been added.", true)
+                    showResultDialog("Success", "Store has been created, wait for the admin approval.", true)
                     mainViewModel.clearAddStoreResult()
                 }
                 it.onFailure {
