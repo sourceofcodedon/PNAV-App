@@ -36,6 +36,7 @@ public class SecondGulayStore extends AppCompatActivity {
     private ImageView storeImageView;
     private Button editButton;
     private Button deleteButton;
+    private Button getDirectionButton;
 
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
@@ -54,9 +55,15 @@ public class SecondGulayStore extends AppCompatActivity {
         storeImageView = findViewById(R.id.store_image);
         editButton = findViewById(R.id.edit_button);
         deleteButton = findViewById(R.id.delete_button);
+        getDirectionButton = findViewById(R.id.get_direction_button);
 
         db = FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        getDirectionButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SecondGulayStore.this, GulayMapTwo.class);
+            startActivity(intent);
+        });
 
         db.collection("stores")
                 .whereEqualTo("store_category", "SecondGulayStore")
