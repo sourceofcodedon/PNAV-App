@@ -71,14 +71,14 @@ class MainViewModel @Inject constructor(
         mainRepository.getStores()
     }
 
-    fun addStore(storeName: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?) {
+    fun addStore(storeName: String, storeNumber: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?) {
         viewModelScope.launch {
             val ownerId = FirebaseAuth.getInstance().currentUser?.uid
             if (ownerId == null) {
                 _addStoreResult.postValue(Result.failure(Exception("User not logged in")))
                 return@launch
             }
-            val result = mainRepository.addStore(storeName, storeCategory, openingTime, closingTime, imageBase64, ownerId)
+            val result = mainRepository.addStore(storeName, storeNumber, storeCategory, openingTime, closingTime, imageBase64, ownerId)
             _addStoreResult.postValue(result)
         }
     }
@@ -87,9 +87,9 @@ class MainViewModel @Inject constructor(
         _addStoreResult.value = null
     }
 
-    fun updateStore(storeId: String, storeName: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?) {
+    fun updateStore(storeId: String, storeName: String, storeNumber: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?) {
         viewModelScope.launch {
-            val result = mainRepository.updateStore(storeId, storeName, storeCategory, openingTime, closingTime, imageBase64)
+            val result = mainRepository.updateStore(storeId, storeName, storeNumber, storeCategory, openingTime, closingTime, imageBase64)
             _updateStoreResult.postValue(result)
         }
     }

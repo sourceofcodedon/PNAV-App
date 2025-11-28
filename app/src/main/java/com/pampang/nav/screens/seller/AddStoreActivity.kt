@@ -1,6 +1,5 @@
 package com.pampang.nav.screens.seller
 
-import android.app.Activity
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.net.Uri
@@ -38,7 +37,7 @@ class AddStoreActivity : AppCompatActivity() {
     private var selectedStore: DropdownItem.StoreItem? = null
 
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             val data: Intent? = result.data
             data?.data?.let {
                 handleImageSelection(it)
@@ -79,14 +78,15 @@ class AddStoreActivity : AppCompatActivity() {
                 }
 
                 val storeName = mBinding.edittextStoreName.text.toString().trim()
+                val storeNumber = mBinding.edittextStoreNumber.text.toString().trim()
                 val openingTime = mBinding.edittextOpeningTime.text.toString().trim()
                 val closingTime = mBinding.edittextClosingTime.text.toString().trim()
 
-                if (storeName.isEmpty() || selectedStore == null || openingTime.isEmpty() || closingTime.isEmpty()) {
+                if (storeName.isEmpty() || storeNumber.isEmpty() || selectedStore == null || openingTime.isEmpty() || closingTime.isEmpty()) {
                     showToast("Please fill all fields.")
                     return@setSafeOnClickListener
                 } else {
-                    mainViewModel.addStore(storeName, selectedStore!!.id, openingTime, closingTime, imageUrl)
+                    mainViewModel.addStore(storeName, storeNumber, selectedStore!!.id, openingTime, closingTime, imageUrl)
                 }
 
             }
@@ -95,13 +95,13 @@ class AddStoreActivity : AppCompatActivity() {
 
     private fun initLiveData() {
         mainViewModel.addStoreResult.observe(this) { result ->
-            result?.let {
-                it.onSuccess {
+            result?.let { res ->
+                res.onSuccess {
                     showResultDialog("Success", "Store has been created, wait for the admin approval.", true)
                     mainViewModel.clearAddStoreResult()
                 }
-                it.onFailure {
-                    showResultDialog("Error", it.message ?: "Unknown error")
+                res.onFailure { throwable ->
+                    showResultDialog("Error", throwable.message ?: "Unknown error")
                     mainViewModel.clearAddStoreResult()
                 }
             }

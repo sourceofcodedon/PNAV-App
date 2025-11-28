@@ -1,6 +1,5 @@
 package com.pampang.nav.screens.seller
 
-import android.app.Activity
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.net.Uri
@@ -37,7 +36,7 @@ class EditStoreActivity : AppCompatActivity() {
     private var storeId: String? = null
 
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             val data: Intent? = result.data
             data?.data?.let {
                 handleImageSelection(it)
@@ -80,16 +79,17 @@ class EditStoreActivity : AppCompatActivity() {
                 }
 
                 val storeName = mBinding.edittextStoreName.text.toString().trim()
+                val storeNumber = mBinding.edittextStoreNumber.text.toString().trim()
                 val storeCategory = mBinding.edittextStoreCategory.text.toString().trim()
                 val openingTime = mBinding.edittextOpeningTime.text.toString().trim()
                 val closingTime = mBinding.edittextClosingTime.text.toString().trim()
 
-                if (storeName.isEmpty() || storeCategory.isEmpty() || openingTime.isEmpty() || closingTime.isEmpty()) {
+                if (storeName.isEmpty() || storeNumber.isEmpty() || storeCategory.isEmpty() || openingTime.isEmpty() || closingTime.isEmpty()) {
                     showToast("Please fill all fields.")
                     return@setSafeOnClickListener
                 } else {
                     storeId?.let {
-                        mainViewModel.updateStore(it, storeName, storeCategory, openingTime, closingTime, imageUrl)
+                        mainViewModel.updateStore(it, storeName, storeNumber, storeCategory, openingTime, closingTime, imageUrl)
                     }
                 }
 
@@ -99,13 +99,13 @@ class EditStoreActivity : AppCompatActivity() {
 
     private fun initLiveData() {
         mainViewModel.updateStoreResult.observe(this) { result ->
-            result?.let {
-                it.onSuccess {
+            result?.let { res ->
+                res.onSuccess {
                     showResultDialog("Success", "Store has been updated.", true)
                     mainViewModel.clearUpdateStoreResult()
                 }
-                it.onFailure {
-                    showResultDialog("Error", it.message ?: "Unknown error")
+                res.onFailure { throwable ->
+                    showResultDialog("Error", throwable.message ?: "Unknown error")
                     mainViewModel.clearUpdateStoreResult()
                 }
             }
@@ -211,6 +211,7 @@ class EditStoreActivity : AppCompatActivity() {
     private fun initIntent() {
         storeId = intent.getStringExtra("store_id")
         val storeName = intent.getStringExtra("store_name")
+        val storeNumber = intent.getStringExtra("store_number")
         val storeCategory = intent.getStringExtra("store_category")
         val openingTime = intent.getStringExtra("opening_time")
         val closingTime = intent.getStringExtra("closing_time")
@@ -223,6 +224,7 @@ class EditStoreActivity : AppCompatActivity() {
         }
 
         mBinding.edittextStoreName.setText(storeName ?: "")
+        mBinding.edittextStoreNumber.setText(storeNumber ?: "")
         mBinding.edittextStoreCategory.setText(StoreCategories.getDisplayName(storeCategory ?: "") ?: "")
         mBinding.edittextOpeningTime.setText(openingTime ?: "")
         mBinding.edittextClosingTime.setText(closingTime ?: "")

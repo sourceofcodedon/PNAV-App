@@ -74,6 +74,26 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_store_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
+                app:errorEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_input_layout_store_name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edittext_store_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/margin_padding_size_small"
+                    android:hint="Store Number"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_layout_store_category"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
@@ -82,7 +102,7 @@
                 app:errorEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_input_layout_store_name">
+                app:layout_constraintTop_toBottomOf="@id/text_input_layout_store_number">
 
                 <AutoCompleteTextView
                     android:id="@+id/edittext_store_category"
@@ -153,10 +173,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:layout_constraintTop_toTopOf="@+id/image_view_store"
-                app:layout_constraintBottom_toBottomOf="@+id/image_view_store"
-                app:layout_constraintStart_toStartOf="@+id/image_view_store"
-                app:layout_constraintEnd_toEndOf="@+id/image_view_store"/>
+                app:layout_constraintTop_toTopOf="@id/image_view_store"
+                app:layout_constraintBottom_toBottomOf="@id/image_view_store"
+                app:layout_constraintStart_toStartOf="@id/image_view_store"
+                app:layout_constraintEnd_toEndOf="@id/image_view_store"/>
 
             <Button
                 android:id="@+id/button_upload_image"

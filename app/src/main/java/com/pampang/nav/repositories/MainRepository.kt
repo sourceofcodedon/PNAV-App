@@ -73,6 +73,7 @@ class MainRepository @Inject constructor(
 
     suspend fun addStore(
         storeName: String,
+        storeNumber: String,
         storeCategory: String,
         openingTime: String,
         closingTime: String,
@@ -84,6 +85,7 @@ class MainRepository @Inject constructor(
 
             val storeData = hashMapOf<String, Any?>(
                 "store_name" to storeName,
+                "store_number" to storeNumber,
                 "store_category" to storeCategory,
                 "opening_time" to openingTime,
                 "closing_time" to closingTime,
@@ -118,6 +120,7 @@ class MainRepository @Inject constructor(
     suspend fun updateStore(
         storeId: String,
         storeName: String,
+        storeNumber: String,
         storeCategory: String,
         openingTime: String,
         closingTime: String,
@@ -128,6 +131,7 @@ class MainRepository @Inject constructor(
 
             val storeData = hashMapOf(
                 "store_name" to storeName,
+                "store_number" to storeNumber,
                 "store_category" to storeCategory,
                 "opening_time" to openingTime,
                 "closing_time" to closingTime,
