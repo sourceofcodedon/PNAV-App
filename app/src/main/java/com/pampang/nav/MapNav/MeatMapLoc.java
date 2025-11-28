@@ -48,10 +48,6 @@ public class MeatMapLoc extends AppCompatActivity implements ZoomLayout.OnScaleC
                             intent.putExtra("storeName", "FirstMeatStore");
                             startActivity(intent);
                             return true;
-                        } else if (item.getItemId() == R.id.get_direction) {
-                            Intent intent = new Intent(MeatMapLoc.this, FirstMeatMapView.class);
-                            startActivity(intent);
-                            return true;
                         } else {
                             return false;
                         }
@@ -71,10 +67,6 @@ public class MeatMapLoc extends AppCompatActivity implements ZoomLayout.OnScaleC
                         if (item.getItemId() == R.id.view_store) {
                             Intent intent = new Intent(MeatMapLoc.this, SecondMeatStore.class);
                             intent.putExtra("storeName", "SecondMeatStore");
-                            startActivity(intent);
-                            return true;
-                        } else if (item.getItemId() == R.id.get_direction) {
-                            Intent intent = new Intent(MeatMapLoc.this, SecondMeatMapView.class);
                             startActivity(intent);
                             return true;
                         } else {

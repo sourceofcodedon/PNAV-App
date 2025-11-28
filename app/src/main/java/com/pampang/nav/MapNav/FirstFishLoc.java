@@ -50,10 +50,6 @@ public class FirstFishLoc extends AppCompatActivity implements ZoomLayout.OnScal
                             intent.putExtra("storeName", "FirstFishStore");
                             startActivity(intent);
                             return true;
-                        } else if (item.getItemId() == R.id.get_direction) {
-                            Intent intent = new Intent(FirstFishLoc.this, MapActivityAF.class);
-                            startActivity(intent);
-                            return true;
                         } else {
                             return false;
                         }
@@ -74,10 +70,6 @@ public class FirstFishLoc extends AppCompatActivity implements ZoomLayout.OnScal
                         if (item.getItemId() == R.id.view_store) {
                             Intent intent = new Intent(FirstFishLoc.this, SecondFishStore.class);
                             intent.putExtra("storeName", "SecondFishStore");
-                            startActivity(intent);
-                            return true;
-                        } else if (item.getItemId() == R.id.get_direction) {
-                            Intent intent = new Intent(FirstFishLoc.this, MapActivty2.class);
                             startActivity(intent);
                             return true;
                         } else {

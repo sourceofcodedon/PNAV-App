@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -100,6 +101,14 @@ class BuyerMainActivity : AppCompatActivity() {
                     false // Do not select the item
                 }
                 else -> NavigationUI.onNavDestinationSelected(item, navController)
+            }
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.navigationHistoryFragment) {
+                mBinding.bottomNavigation.visibility = View.GONE
+            } else {
+                mBinding.bottomNavigation.visibility = View.VISIBLE
             }
         }
     }

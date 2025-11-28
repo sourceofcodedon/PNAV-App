@@ -12,6 +12,7 @@ import androidx.core.os.LocaleListCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.pampang.nav.R
@@ -68,6 +69,9 @@ class BuyerProfileFragment : Fragment() {
             when (it.titleResId) {
                 R.string.profile_personal_detail -> {
                     showEditUsernameDialog()
+                }
+                R.string.profile_navigation_history -> {
+                    findNavController().navigate(R.id.action_profile_to_navigationHistoryFragment)
                 }
                 R.string.profile_contact_us -> {
                     val intent = Intent(Intent.ACTION_SENDTO).apply {

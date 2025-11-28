@@ -50,10 +50,6 @@ public class Gulayloc extends AppCompatActivity implements ZoomLayout.OnScaleCha
                             intent.putExtra("storeName", "FirstGulayStore");
                             startActivity(intent);
                             return true;
-                        } else if (item.getItemId() == R.id.get_direction) {
-                            Intent intent = new Intent(Gulayloc.this, GulayMapOne.class);
-                            startActivity(intent);
-                            return true;
                         } else {
                             return false;
                         }
@@ -74,10 +70,6 @@ public class Gulayloc extends AppCompatActivity implements ZoomLayout.OnScaleCha
                         if (item.getItemId() == R.id.view_store) {
                             Intent intent = new Intent(Gulayloc.this, SecondGulayStore.class);
                             intent.putExtra("storeName", "SecondGulayStore");
-                            startActivity(intent);
-                            return true;
-                        } else if (item.getItemId() == R.id.get_direction) {
-                            Intent intent = new Intent(Gulayloc.this, GulayMapTwo.class);
                             startActivity(intent);
                             return true;
                         } else {

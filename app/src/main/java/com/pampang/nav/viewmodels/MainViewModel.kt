@@ -46,6 +46,7 @@ class MainViewModel @Inject constructor(
     init {
         _profileMenuItems.value = listOf(
             ProfileMenuModel(R.string.profile_personal_detail),
+            ProfileMenuModel(R.string.profile_navigation_history),
             ProfileMenuModel(R.string.profile_contact_us),
             ProfileMenuModel(R.string.profile_privacy_security),
             ProfileMenuModel(R.string.profile_preferences),

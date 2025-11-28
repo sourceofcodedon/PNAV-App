@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,7 +25,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class FirstGulayStore extends AppCompatActivity {
@@ -61,6 +64,25 @@ public class FirstGulayStore extends AppCompatActivity {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         getDirectionButton.setOnClickListener(v -> {
+            if (currentUser != null) {
+                String storeName = storeNameTextView.getText().toString();
+                String userId = currentUser.getUid();
+
+                Map<String, Object> navigationHistory = new HashMap<>();
+                navigationHistory.put("user_id", userId);
+                navigationHistory.put("store_name", storeName);
+                navigationHistory.put("timestamp", Timestamp.now());
+
+                db.collection("navigationHistory")
+                        .add(navigationHistory)
+                        .addOnSuccessListener(documentReference -> {
+                            Toast.makeText(FirstGulayStore.this, "Added to history", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(FirstGulayStore.this, "Failed to add to history", Toast.LENGTH_SHORT).show();
+                        });
+            }
+
             Intent intent = new Intent(FirstGulayStore.this, GulayMapOne.class);
             startActivity(intent);
         });
@@ -90,7 +112,7 @@ public class FirstGulayStore extends AppCompatActivity {
                         if (currentUser != null && currentUser.getUid().equals(ownerId)) {
                             editButton.setVisibility(View.VISIBLE);
                             deleteButton.setVisibility(View.VISIBLE);
-                            editButton.setOnClickListener(v -> {
+                            editButton.setOnClickListener(v1 -> {
                                 Intent intent = new Intent(FirstGulayStore.this, EditStoreActivity.class);
                                 intent.putExtra("store_id", storeId);
                                 intent.putExtra("store_name", storeName);
@@ -100,7 +122,7 @@ public class FirstGulayStore extends AppCompatActivity {
                                 intent.putExtra("image_url", imageUrl);
                                 startActivity(intent);
                             });
-                            deleteButton.setOnClickListener(v -> showDeleteConfirmationDialog());
+                            deleteButton.setOnClickListener(v1 -> showDeleteConfirmationDialog());
                         }
                     }
                 });

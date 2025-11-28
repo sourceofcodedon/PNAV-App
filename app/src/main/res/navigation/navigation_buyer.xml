@@ -29,6 +29,16 @@
         android:id="@+id/profile"
         android:name="com.pampang.nav.screens.buyer.BuyerProfileFragment"
         android:label="@string/fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profile_to_navigationHistoryFragment"
+            app:destination="@id/navigationHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigationHistoryFragment"
+        android:name="com.pampang.nav.screens.buyer.NavigationHistoryFragment"
+        android:label="Navigation History"
+        tools:layout="@layout/fragment_navigation_history" />
 
 </navigation>
