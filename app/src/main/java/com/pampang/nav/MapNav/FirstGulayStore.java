@@ -3,6 +3,7 @@ package com.pampang.nav.MapNav;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -79,7 +80,8 @@ public class FirstGulayStore extends AppCompatActivity {
                             Toast.makeText(FirstGulayStore.this, "Added to history", Toast.LENGTH_SHORT).show();
                         })
                         .addOnFailureListener(e -> {
-                            Toast.makeText(FirstGulayStore.this, "Failed to add to history", Toast.LENGTH_SHORT).show();
+                            Log.e("FirestoreError", "Failed to add navigation history", e);
+                            Toast.makeText(FirstGulayStore.this, "Failed to add to history: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         });
             }
 
