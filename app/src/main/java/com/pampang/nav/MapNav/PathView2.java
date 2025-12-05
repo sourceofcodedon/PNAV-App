@@ -45,6 +45,7 @@ public class PathView2 extends View {
     public interface OnNodeClickListener {
         void onNodeClick(String nodeLabel);
     }
+
     private OnNodeClickListener nodeClickListener;
 
     public void setOnNodeClickListener(OnNodeClickListener listener) {
@@ -228,6 +229,7 @@ public class PathView2 extends View {
         selectedNode = nodeLabel;
         invalidate();
     }
+
 
     public float[] getNodeCoordinates(String nodeLabel) {
         return nodes.get(nodeLabel);

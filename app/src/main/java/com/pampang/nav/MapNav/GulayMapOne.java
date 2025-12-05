@@ -55,7 +55,7 @@ public class GulayMapOne extends AppCompatActivity {
         firstGulayPath.setOnNodeClickListener(nodeLabel -> {
             startNode = nodeLabel;
             firstGulayPath.setSelectedNode(nodeLabel);
-            String displayName = getNodeDisplayName(nodeLabel);
+            String displayName = NodeDisplayNames.getDisplayName(nodeLabel);
             Toast.makeText(this, "Current location set to: " + displayName, Toast.LENGTH_SHORT).show();
             Log.d("GulayMapOne", "Start node set to: " + startNode);
         });
@@ -67,8 +67,8 @@ public class GulayMapOne extends AppCompatActivity {
             }
             List<String> path = Dijkstra.findShortestPath(graph, startNode, DESTINATION_NODE);
             if (path == null || path.isEmpty()) {
-                String startDisplayName = getNodeDisplayName(startNode);
-                String destDisplayName = getNodeDisplayName(DESTINATION_NODE);
+                String startDisplayName = NodeDisplayNames.getDisplayName(startNode);
+                String destDisplayName = NodeDisplayNames.getDisplayName(DESTINATION_NODE);
                 Toast.makeText(this, "No path found from " + startDisplayName + " to " + destDisplayName, Toast.LENGTH_SHORT).show();
             } else {
                 firstGulayPath.showAnimatedPath(path);
@@ -117,7 +117,7 @@ public class GulayMapOne extends AppCompatActivity {
             return instructions;
         }
 
-        instructions.add("Start moving towards " + getNodeDisplayName(path.get(1)));
+        instructions.add("Start moving towards " + NodeDisplayNames.getDisplayName(path.get(1)));
 
         for (int i = 1; i < path.size() - 1; i++) {
             String prevNode = path.get(i - 1);
@@ -133,15 +133,15 @@ public class GulayMapOne extends AppCompatActivity {
             double angle = calculateAngle(pPrev, pCurr, pNext);
 
             if (angle > 45 && angle < 135) {
-                instructions.add("Turn right towards " + getNodeDisplayName(nextNode));
+                instructions.add("Turn right towards " + NodeDisplayNames.getDisplayName(nextNode));
             } else if (angle < -45 && angle > -135) {
-                instructions.add("Turn left towards " + getNodeDisplayName(nextNode));
+                instructions.add("Turn left towards " + NodeDisplayNames.getDisplayName(nextNode));
             } else {
-                instructions.add("Continue straight towards " + getNodeDisplayName(nextNode));
+                instructions.add("Continue straight towards " + NodeDisplayNames.getDisplayName(nextNode));
             }
         }
 
-        instructions.add("You will arrive at " + getNodeDisplayName(path.get(path.size() - 1)));
+        instructions.add("You will arrive at " + NodeDisplayNames.getDisplayName(path.get(path.size() - 1)));
         return instructions;
     }
 
@@ -156,25 +156,6 @@ public class GulayMapOne extends AppCompatActivity {
             angle += 360;
         }
         return angle;
-    }
-
-    private String getNodeDisplayName(String nodeLabel) {
-        if (Arrays.asList("n1", "n8").contains(nodeLabel)) {
-            return "Entrance";
-        } else if (Arrays.asList("n6", "n24", "n3", "n18").contains(nodeLabel)) {
-            return "Entrance Leftwing";
-        } else if (Arrays.asList("n45", "n12", "n21", "n15", "n64").contains(nodeLabel)) {
-            return "Rightwing Entrance";
-        } else if (Arrays.asList("n27", "n28", "n97", "n7", "n29", "n74", "n75", "n11").contains(nodeLabel)) {
-            return "LeftWing";
-        } else if (Arrays.asList("n42", "n43", "n93", "n2", "n29", "n44", "n84", "n85").contains(nodeLabel)) {
-            return "Hallway";
-        } else if (Arrays.asList("n65", "n66", "n96", "n67", "n68", "n69", "n91", "n73").contains(nodeLabel)) {
-            return "RightWing";
-        } else if ("n48".equals(nodeLabel)) {
-            return "Pampang Office";
-        }
-        return nodeLabel;
     }
 
     private void setupGraph() {

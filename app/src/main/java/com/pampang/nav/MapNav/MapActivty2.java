@@ -53,7 +53,7 @@ public class MapActivty2 extends AppCompatActivity {
         pathView2.setOnNodeClickListener(nodeLabel -> {
             startNode = nodeLabel;
             pathView2.setSelectedNode(nodeLabel);
-            String displayName = getNodeDisplayName(nodeLabel);
+            String displayName = NodeDisplayNames.getDisplayName(nodeLabel);
             Toast.makeText(this, "Current location set to: " + displayName, Toast.LENGTH_SHORT).show();
             Log.d("MapActivity", "Start node set to: " + startNode);
         });
@@ -65,8 +65,8 @@ public class MapActivty2 extends AppCompatActivity {
             }
             List<String> path = Dijkstra.findShortestPath(graph, startNode, DESTINATION_NODE);
             if (path == null || path.isEmpty()) {
-                String startDisplayName = getNodeDisplayName(startNode);
-                String destDisplayName = getNodeDisplayName(DESTINATION_NODE);
+                String startDisplayName = NodeDisplayNames.getDisplayName(startNode);
+                String destDisplayName = NodeDisplayNames.getDisplayName(DESTINATION_NODE);
                 Toast.makeText(this, "No path found from " + startDisplayName + " to " + destDisplayName, Toast.LENGTH_SHORT).show();
             } else {
                 pathView2.showAnimatedPath(path);
@@ -111,31 +111,50 @@ public class MapActivty2 extends AppCompatActivity {
 
     private List<String> generateInstructions(List<String> path) {
         List<String> instructions = new ArrayList<>();
-        for (int i = 0; i < path.size() - 1; i++) {
-            String from = path.get(i);
-            String to = path.get(i + 1);
-            instructions.add("Go from " + getNodeDisplayName(from) + " to " + getNodeDisplayName(to));
+        if (path.size() < 2) {
+            instructions.add("You have arrived.");
+            return instructions;
         }
+
+        instructions.add("Start moving towards " + NodeDisplayNames.getDisplayName(path.get(1)));
+
+        for (int i = 1; i < path.size() - 1; i++) {
+            String prevNode = path.get(i - 1);
+            String currNode = path.get(i);
+            String nextNode = path.get(i + 1);
+
+            float[] pPrev = pathView2.getNodeCoordinates(prevNode);
+            float[] pCurr = pathView2.getNodeCoordinates(currNode);
+            float[] pNext = pathView2.getNodeCoordinates(nextNode);
+
+            if (pPrev == null || pCurr == null || pNext == null) continue;
+
+            double angle = calculateAngle(pPrev, pCurr, pNext);
+
+            if (angle > 45 && angle < 135) {
+                instructions.add("Turn right towards " + NodeDisplayNames.getDisplayName(nextNode));
+            } else if (angle < -45 && angle > -135) {
+                instructions.add("Turn left towards " + NodeDisplayNames.getDisplayName(nextNode));
+            } else {
+                instructions.add("Continue straight towards " + NodeDisplayNames.getDisplayName(nextNode));
+            }
+        }
+
+        instructions.add("You will arrive at " + NodeDisplayNames.getDisplayName(path.get(path.size() - 1)));
         return instructions;
     }
 
-    private String getNodeDisplayName(String nodeLabel) {
-        if (Arrays.asList("n1", "n8").contains(nodeLabel)) {
-            return "Entrance";
-        } else if (Arrays.asList("n6", "n24", "n3", "n18").contains(nodeLabel)) {
-            return "Entrance Leftwing";
-        } else if (Arrays.asList("n45", "n12", "n21", "n15", "n64").contains(nodeLabel)) {
-            return "Rightwing Entrance";
-        } else if (Arrays.asList("n27", "n28", "n97", "n7", "n29", "n74", "n75", "n11").contains(nodeLabel)) {
-            return "LeftWing";
-        } else if (Arrays.asList("n42", "n43", "n93", "n2", "n29", "n44", "n84", "n85").contains(nodeLabel)) {
-            return "Hallway";
-        } else if (Arrays.asList("n65", "n66", "n96", "n67", "n68", "n69", "n91", "n73").contains(nodeLabel)) {
-            return "RightWing";
-        } else if ("n48".equals(nodeLabel)) {
-            return "Pampang Office";
+    private double calculateAngle(float[] p1, float[] p2, float[] p3) {
+        double angle1 = Math.toDegrees(Math.atan2(p2[1] - p1[1], p2[0] - p1[0]));
+        double angle2 = Math.toDegrees(Math.atan2(p3[1] - p2[1], p3[0] - p2[0]));
+        double angle = angle2 - angle1;
+
+        if (angle > 180) {
+            angle -= 360;
+        } else if (angle < -180) {
+            angle += 360;
         }
-        return nodeLabel;
+        return angle;
     }
 
     private void setupGraph() {

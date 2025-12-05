@@ -223,6 +223,10 @@ public class SecondMeatPathView extends View {
         baseNodes.put("n99", new float[]{375f, 890f});
     }
 
+    public float[] getNodeCoordinates(String nodeLabel) {
+        return nodes.get(nodeLabel);
+    }
+
     public void setSelectedNode(String nodeLabel) {
         selectedNode = nodeLabel;
         invalidate();
