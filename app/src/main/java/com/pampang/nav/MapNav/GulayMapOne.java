@@ -1,11 +1,19 @@
 package com.pampang.nav.MapNav;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.pampang.nav.R;
 
@@ -20,6 +28,12 @@ public class GulayMapOne extends AppCompatActivity {
     private String startNode = null; // No default start node
     private final String DESTINATION_NODE = "n5"; // Fixed destination
     private List<String> clickableNodes;
+    private List<String> currentInstructions = new ArrayList<>();
+
+    private ImageView userMarker;
+    private CardView instructionBanner;
+    private TextView instructionText;
+    private ImageButton guideButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +43,10 @@ public class GulayMapOne extends AppCompatActivity {
         firstGulayPath = findViewById(R.id.firstgulay);
         Button btnGo = findViewById(R.id.btnGo);
         Button btnClear = findViewById(R.id.btnClear);
+        userMarker = findViewById(R.id.user_marker);
+        instructionBanner = findViewById(R.id.instruction_banner);
+        instructionText = findViewById(R.id.instruction_text);
+        guideButton = findViewById(R.id.guide_button);
 
         setupGraph();
         clickableNodes = new ArrayList<>(graph.getAdjList().keySet());
@@ -54,14 +72,90 @@ public class GulayMapOne extends AppCompatActivity {
                 Toast.makeText(this, "No path found from " + startDisplayName + " to " + destDisplayName, Toast.LENGTH_SHORT).show();
             } else {
                 firstGulayPath.showAnimatedPath(path);
+                currentInstructions = generateInstructions(path);
+                instructionBanner.setVisibility(View.VISIBLE);
+                userMarker.setVisibility(View.VISIBLE);
+                guideButton.setVisibility(View.VISIBLE);
+                firstGulayPath.startPathAnimation(path, userMarker, instructionText, currentInstructions, graph);
             }
         });
 
         btnClear.setOnClickListener(v -> {
             firstGulayPath.clearPath();
-            startNode = null; // Reset start node
+            startNode = null;
+            instructionBanner.setVisibility(View.GONE);
+            userMarker.setVisibility(View.GONE);
+            guideButton.setVisibility(View.GONE);
+            currentInstructions.clear();
             Toast.makeText(this, "Path cleared and location reset", Toast.LENGTH_SHORT).show();
         });
+
+        guideButton.setOnClickListener(v -> {
+            showInstructionsDialog();
+        });
+    }
+
+    private void showInstructionsDialog() {
+        if (currentInstructions.isEmpty()) {
+            Toast.makeText(this, "No instructions to show.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, currentInstructions);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Navigation Instructions")
+                .setAdapter(adapter, null)
+                .setPositiveButton("Close", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    private List<String> generateInstructions(List<String> path) {
+        List<String> instructions = new ArrayList<>();
+        if (path.size() < 2) {
+            instructions.add("You have arrived.");
+            return instructions;
+        }
+
+        instructions.add("Start moving towards " + getNodeDisplayName(path.get(1)));
+
+        for (int i = 1; i < path.size() - 1; i++) {
+            String prevNode = path.get(i - 1);
+            String currNode = path.get(i);
+            String nextNode = path.get(i + 1);
+
+            float[] pPrev = firstGulayPath.getNodeCoordinates(prevNode);
+            float[] pCurr = firstGulayPath.getNodeCoordinates(currNode);
+            float[] pNext = firstGulayPath.getNodeCoordinates(nextNode);
+
+            if (pPrev == null || pCurr == null || pNext == null) continue;
+
+            double angle = calculateAngle(pPrev, pCurr, pNext);
+
+            if (angle > 45 && angle < 135) {
+                instructions.add("Turn right towards " + getNodeDisplayName(nextNode));
+            } else if (angle < -45 && angle > -135) {
+                instructions.add("Turn left towards " + getNodeDisplayName(nextNode));
+            } else {
+                instructions.add("Continue straight towards " + getNodeDisplayName(nextNode));
+            }
+        }
+
+        instructions.add("You will arrive at " + getNodeDisplayName(path.get(path.size() - 1)));
+        return instructions;
+    }
+
+    private double calculateAngle(float[] p1, float[] p2, float[] p3) {
+        double angle1 = Math.toDegrees(Math.atan2(p2[1] - p1[1], p2[0] - p1[0]));
+        double angle2 = Math.toDegrees(Math.atan2(p3[1] - p2[1], p3[0] - p2[0]));
+        double angle = angle2 - angle1;
+
+        if (angle > 180) {
+            angle -= 360;
+        } else if (angle < -180) {
+            angle += 360;
+        }
+        return angle;
     }
 
     private String getNodeDisplayName(String nodeLabel) {
@@ -208,7 +302,7 @@ public class GulayMapOne extends AppCompatActivity {
         graph.addEdge("n85", "n8", 1);
 
         //Fourth Row
-        graph.addEdge("n12", "52", 1);
+        graph.addEdge("n12", "n52", 1);
         graph.addEdge("n52", "n53", 1);
         graph.addEdge("n53", "n13", 1);
         graph.addEdge("n13", "n54", 1);

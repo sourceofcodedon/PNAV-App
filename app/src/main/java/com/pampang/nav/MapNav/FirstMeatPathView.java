@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -32,6 +34,7 @@ public class FirstMeatPathView extends View {
     private float pathLength = 0f;
     private Path animatedPath = new Path();
     private ValueAnimator animator;
+    private ValueAnimator markerAnimator;
 
     private String selectedNode = null;
     private List<String> clickableNodes = new ArrayList<>();
@@ -226,6 +229,10 @@ public class FirstMeatPathView extends View {
         invalidate();
     }
 
+    public float[] getNodeCoordinates(String nodeLabel) {
+        return nodes.get(nodeLabel);
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -262,7 +269,7 @@ public class FirstMeatPathView extends View {
         pathLength = pathMeasure.getLength();
         animProgress = 0f;
         animator = ValueAnimator.ofFloat(0f, 1f);
-        animator.setDuration(1000);
+        animator.setDuration(1000); // This animator is for drawing the path
         animator.setInterpolator(new LinearInterpolator());
         animator.addUpdateListener(a -> {
             animProgress = (float) a.getAnimatedValue();
@@ -281,8 +288,73 @@ public class FirstMeatPathView extends View {
         animator.start();
     }
 
+    public void startPathAnimation(List<String> nodePath, ImageView userMarker, TextView instructionText, List<String> instructions, Graph graph) {
+        if (markerAnimator != null) {
+            markerAnimator.cancel();
+        }
+
+        Path fullPath = new Path();
+        List<Float> segmentLengths = new ArrayList<>();
+        if (nodePath.size() >= 2) {
+            float[] startPoint = nodes.get(nodePath.get(0));
+            fullPath.moveTo(startPoint[0], startPoint[1]);
+            float totalLength = 0;
+            for (int i = 1; i < nodePath.size(); i++) {
+                float[] prevPoint = nodes.get(nodePath.get(i-1));
+                float[] nextPoint = nodes.get(nodePath.get(i));
+                fullPath.lineTo(nextPoint[0], nextPoint[1]);
+                float segmentLength = (float) Math.sqrt(Math.pow(nextPoint[0] - prevPoint[0], 2) + Math.pow(nextPoint[1] - prevPoint[1], 2));
+                totalLength += segmentLength;
+                segmentLengths.add(totalLength);
+            }
+        }
+
+        PathMeasure pathMeasure = new PathMeasure(fullPath, false);
+        float pathLength = pathMeasure.getLength();
+
+        markerAnimator = ValueAnimator.ofFloat(0f, 1f);
+        markerAnimator.setDuration(15000); // 15-second animation for the marker
+        markerAnimator.setInterpolator(new LinearInterpolator());
+
+        float[] pos = new float[2];
+        final int[] currentInstructionIndex = {0};
+
+        markerAnimator.addUpdateListener(animation -> {
+            float progress = (float) animation.getAnimatedValue();
+            float distance = pathLength * progress;
+            pathMeasure.getPosTan(distance, pos, null);
+
+            // Update marker position
+            userMarker.setTranslationX(pos[0] - (userMarker.getWidth() / 2f));
+            userMarker.setTranslationY(pos[1] - (userMarker.getHeight() / 2f));
+
+            // Update instruction text
+            for (int i = 0; i < segmentLengths.size(); i++) {
+                if (distance < segmentLengths.get(i)) {
+                    if (currentInstructionIndex[0] != i) {
+                        currentInstructionIndex[0] = i;
+                        instructionText.setText(instructions.get(i));
+                    }
+                    break;
+                }
+            }
+        });
+
+        markerAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                instructionText.setText("You have arrived!");
+            }
+        });
+
+        markerAnimator.start();
+    }
+
+
     public void clearPath() {
         if (animator != null) animator.cancel();
+        if (markerAnimator != null) markerAnimator.cancel();
         activePath.clear();
         pathMeasure = null;
         animatedPath.reset();
@@ -299,7 +371,6 @@ public class FirstMeatPathView extends View {
             String label = entry.getKey();
             float[] point = entry.getValue();
             if (clickableNodes.contains(label)) {
-                nodePaint.setColor(Color.GRAY);
             } else {
                 nodePaint.setColor(Color.TRANSPARENT);
             }
@@ -317,10 +388,6 @@ public class FirstMeatPathView extends View {
             float stop = pathLength * animProgress;
             pathMeasure.getSegment(0, stop, animatedPath, true);
             canvas.drawPath(animatedPath, pathPaint);
-            float[] pos = new float[2];
-            if (pathMeasure.getPosTan(stop, pos, null)) {
-                canvas.drawCircle(pos[0], pos[1], 12f * scaleX, movingDotPaint);
-            }
         }
     }
 
@@ -329,21 +396,21 @@ public class FirstMeatPathView extends View {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             float x = event.getX();
             float y = event.getY();
-            Log.d("MapTouch", "Tapped at X=" + x + " Y=" + y);
+
+            float clickRadius = 30f * scaleX;
 
             for (Map.Entry<String, float[]> entry : nodes.entrySet()) {
+                String nodeLabel = entry.getKey();
                 float[] nodePos = entry.getValue();
-                float dx = x - nodePos[0];
-                float dy = y - nodePos[1];
-                float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < 20f * scaleX) { // Adjusted touch radius
-                    String clickedNode = entry.getKey();
-                    Log.d("MapTouch", "Clicked near node: " + clickedNode);
-                    if (nodeClickListener != null) {
-                        nodeClickListener.onNodeClick(clickedNode);
+                if (clickableNodes.contains(nodeLabel)) {
+                    double distance = Math.sqrt(Math.pow(x - nodePos[0], 2) + Math.pow(y - nodePos[1], 2));
+                    if (distance <= clickRadius) {
+                        if (nodeClickListener != null) {
+                            nodeClickListener.onNodeClick(nodeLabel);
+                        }
+                        return true;
                     }
-                    return true; // Event handled
                 }
             }
         }

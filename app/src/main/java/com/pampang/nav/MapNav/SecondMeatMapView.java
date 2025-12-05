@@ -2,11 +2,15 @@ package com.pampang.nav.MapNav;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.card.MaterialCardView;
 import com.pampang.nav.R;
 
 import java.util.ArrayList;
@@ -20,6 +24,9 @@ public class SecondMeatMapView extends AppCompatActivity {
     private String startNode = null;
     private final String DESTINATION_NODE = "n88"; // Fixed destination
     private List<String> clickableNodes;
+    private ImageView userMarker;
+    private TextView instructionText;
+    private MaterialCardView instructionBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +36,9 @@ public class SecondMeatMapView extends AppCompatActivity {
         secondMeatPathView = findViewById(R.id.secondmeatpath);
         Button btnGo = findViewById(R.id.btnGo);
         Button btnClear = findViewById(R.id.btnClear);
+        userMarker = findViewById(R.id.user_marker);
+        instructionText = findViewById(R.id.instruction_text);
+        instructionBanner = findViewById(R.id.instruction_banner);
 
         setupGraph();
         clickableNodes = new ArrayList<>(graph.getAdjList().keySet());
@@ -53,15 +63,30 @@ public class SecondMeatMapView extends AppCompatActivity {
                 String destDisplayName = getNodeDisplayName(DESTINATION_NODE);
                 Toast.makeText(this, "No path found from " + startDisplayName + " to " + destDisplayName, Toast.LENGTH_SHORT).show();
             } else {
-                secondMeatPathView.showAnimatedPath(path);
+                userMarker.setVisibility(View.VISIBLE);
+                instructionBanner.setVisibility(View.VISIBLE);
+                List<String> instructions = generateInstructions(path);
+                secondMeatPathView.startPathAnimation(path, userMarker, instructionText, instructions, graph);
             }
         });
 
         btnClear.setOnClickListener(v -> {
             secondMeatPathView.clearPath();
             startNode = null;
+            userMarker.setVisibility(View.GONE);
+            instructionBanner.setVisibility(View.GONE);
             Toast.makeText(this, "Path cleared and location reset", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private List<String> generateInstructions(List<String> path) {
+        List<String> instructions = new ArrayList<>();
+        for (int i = 0; i < path.size() - 1; i++) {
+            String from = path.get(i);
+            String to = path.get(i + 1);
+            instructions.add("Go from " + getNodeDisplayName(from) + " to " + getNodeDisplayName(to));
+        }
+        return instructions;
     }
 
     private String getNodeDisplayName(String nodeLabel) {

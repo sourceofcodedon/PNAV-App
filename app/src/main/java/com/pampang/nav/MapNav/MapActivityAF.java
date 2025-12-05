@@ -1,12 +1,19 @@
 package com.pampang.nav.MapNav;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.android.material.card.MaterialCardView;
 import com.pampang.nav.R;
 
 import java.util.ArrayList;
@@ -20,6 +27,11 @@ public class MapActivityAF extends AppCompatActivity {
     private String startNode = null;
     private final String DESTINATION_NODE = "n63";
     private List<String> clickableNodes;
+    private ImageView userMarker;
+    private TextView instructionText;
+    private MaterialCardView instructionBanner;
+    private ImageButton guideButton;
+    private List<String> currentInstructions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +41,10 @@ public class MapActivityAF extends AppCompatActivity {
         pathView = findViewById(R.id.pathView);
         Button btnGo = findViewById(R.id.btnGo);
         Button btnClear = findViewById(R.id.btnClear);
+        userMarker = findViewById(R.id.user_marker);
+        instructionText = findViewById(R.id.instruction_text);
+        instructionBanner = findViewById(R.id.instruction_banner);
+        guideButton = findViewById(R.id.guide_button);
 
         setupGraph();
         clickableNodes = new ArrayList<>(graph.getAdjList().keySet());
@@ -54,14 +70,53 @@ public class MapActivityAF extends AppCompatActivity {
                 Toast.makeText(this, "No path found from " + startDisplayName + " to " + destDisplayName, Toast.LENGTH_SHORT).show();
             } else {
                 pathView.showAnimatedPath(path);
+                currentInstructions = generateInstructions(path);
+                userMarker.setVisibility(View.VISIBLE);
+                instructionBanner.setVisibility(View.VISIBLE);
+                guideButton.setVisibility(View.VISIBLE);
+                currentInstructions = generateInstructions(path);
+                pathView.startPathAnimation(path, userMarker, instructionText, currentInstructions, graph);
             }
         });
 
         btnClear.setOnClickListener(v -> {
             pathView.clearPath();
             startNode = null;
+            userMarker.setVisibility(View.GONE);
+            instructionBanner.setVisibility(View.GONE);
+            guideButton.setVisibility(View.GONE);
+            currentInstructions.clear();
             Toast.makeText(this, "Path cleared and location reset", Toast.LENGTH_SHORT).show();
         });
+
+        guideButton.setOnClickListener(v -> {
+            showInstructionsDialog();
+        });
+    }
+
+    private void showInstructionsDialog() {
+        if (currentInstructions.isEmpty()) {
+            Toast.makeText(this, "No instructions to show.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, currentInstructions);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Navigation Instructions")
+                .setAdapter(adapter, null)
+                .setPositiveButton("Close", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    private List<String> generateInstructions(List<String> path) {
+        List<String> instructions = new ArrayList<>();
+        for (int i = 0; i < path.size() - 1; i++) {
+            String from = path.get(i);
+            String to = path.get(i + 1);
+            instructions.add("Go from " + getNodeDisplayName(from) + " to " + getNodeDisplayName(to));
+        }
+        return instructions;
     }
 
     private String getNodeDisplayName(String nodeLabel) {

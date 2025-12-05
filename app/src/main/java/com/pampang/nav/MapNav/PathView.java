@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -32,6 +34,7 @@ public class PathView extends View {
     private float pathLength = 0f;
     private Path animatedPath = new Path();
     private ValueAnimator animator;
+    private ValueAnimator markerAnimator;
 
     private String selectedNode = null;
     private List<String> clickableNodes = new ArrayList<>();
@@ -279,6 +282,70 @@ public class PathView extends View {
         });
         animator.start();
     }
+
+     public void startPathAnimation(List<String> nodePath, ImageView userMarker, TextView instructionText, List<String> instructions, Graph graph) {
+        if (markerAnimator != null) {
+            markerAnimator.cancel();
+        }
+
+        Path fullPath = new Path();
+        List<Float> segmentLengths = new ArrayList<>();
+        if (nodePath.size() >= 2) {
+            float[] startPoint = nodes.get(nodePath.get(0));
+            fullPath.moveTo(startPoint[0], startPoint[1]);
+            float totalLength = 0;
+            for (int i = 1; i < nodePath.size(); i++) {
+                float[] prevPoint = nodes.get(nodePath.get(i-1));
+                float[] nextPoint = nodes.get(nodePath.get(i));
+                fullPath.lineTo(nextPoint[0], nextPoint[1]);
+                float segmentLength = (float) Math.sqrt(Math.pow(nextPoint[0] - prevPoint[0], 2) + Math.pow(nextPoint[1] - prevPoint[1], 2));
+                totalLength += segmentLength;
+                segmentLengths.add(totalLength);
+            }
+        }
+
+        PathMeasure pathMeasure = new PathMeasure(fullPath, false);
+        float pathLength = pathMeasure.getLength();
+
+        markerAnimator = ValueAnimator.ofFloat(0f, 1f);
+        markerAnimator.setDuration(15000); // 15-second animation for the marker
+        markerAnimator.setInterpolator(new LinearInterpolator());
+
+        float[] pos = new float[2];
+        final int[] currentInstructionIndex = {0};
+
+        markerAnimator.addUpdateListener(animation -> {
+            float progress = (float) animation.getAnimatedValue();
+            float distance = pathLength * progress;
+            pathMeasure.getPosTan(distance, pos, null);
+
+            // Update marker position
+            userMarker.setTranslationX(pos[0] - (userMarker.getWidth() / 2f));
+            userMarker.setTranslationY(pos[1] - (userMarker.getHeight() / 2f));
+
+            // Update instruction text
+            for (int i = 0; i < segmentLengths.size(); i++) {
+                if (distance < segmentLengths.get(i)) {
+                    if (currentInstructionIndex[0] != i) {
+                        currentInstructionIndex[0] = i;
+                        instructionText.setText(instructions.get(i));
+                    }
+                    break;
+                }
+            }
+        });
+
+        markerAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                instructionText.setText("You have arrived!");
+            }
+        });
+
+        markerAnimator.start();
+    }
+
 
     public void clearPath() {
         if (animator != null) animator.cancel();
