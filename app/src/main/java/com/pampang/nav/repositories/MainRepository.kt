@@ -78,7 +78,8 @@ class MainRepository @Inject constructor(
         openingTime: String,
         closingTime: String,
         imageBase64: String?,
-        ownerId: String
+        ownerId: String,
+        description: String
     ): Result<Unit> {
         return try {
             _isLoading.postValue(true)
@@ -91,7 +92,8 @@ class MainRepository @Inject constructor(
                 "closing_time" to closingTime,
                 "owner_id" to ownerId,
                 "image" to imageBase64,
-                "status" to "pending"
+                "status" to "pending",
+                "description" to description
             )
 
             val querySnapshot = firestore.collection("stores")
@@ -124,7 +126,8 @@ class MainRepository @Inject constructor(
         storeCategory: String,
         openingTime: String,
         closingTime: String,
-        imageBase64: String?
+        imageBase64: String?,
+        description: String
     ): Result<Unit> {
         return try {
             _isLoading.postValue(true)
@@ -135,7 +138,8 @@ class MainRepository @Inject constructor(
                 "store_category" to storeCategory,
                 "opening_time" to openingTime,
                 "closing_time" to closingTime,
-                "image" to imageBase64
+                "image" to imageBase64,
+                "description" to description
             )
 
             firestore.collection("stores").document(storeId).update(storeData as Map<String, Any>).await()

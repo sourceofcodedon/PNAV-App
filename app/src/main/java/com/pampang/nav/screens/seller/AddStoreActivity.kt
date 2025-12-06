@@ -81,12 +81,13 @@ class AddStoreActivity : AppCompatActivity() {
                 val storeNumber = mBinding.edittextStoreNumber.text.toString().trim()
                 val openingTime = mBinding.edittextOpeningTime.text.toString().trim()
                 val closingTime = mBinding.edittextClosingTime.text.toString().trim()
+                val description = mBinding.edittextDescription.text.toString().trim()
 
-                if (storeName.isEmpty() || storeNumber.isEmpty() || selectedStore == null || openingTime.isEmpty() || closingTime.isEmpty()) {
+                if (storeName.isEmpty() || storeNumber.isEmpty() || selectedStore == null || openingTime.isEmpty() || closingTime.isEmpty() || description.isEmpty()) {
                     showToast("Please fill all fields.")
                     return@setSafeOnClickListener
                 } else {
-                    mainViewModel.addStore(storeName, storeNumber, selectedStore!!.id, openingTime, closingTime, imageUrl)
+                    mainViewModel.addStore(storeName, storeNumber, selectedStore!!.id, openingTime, closingTime, imageUrl, description)
                 }
 
             }

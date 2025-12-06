@@ -83,13 +83,14 @@ class EditStoreActivity : AppCompatActivity() {
                 val storeCategory = mBinding.edittextStoreCategory.text.toString().trim()
                 val openingTime = mBinding.edittextOpeningTime.text.toString().trim()
                 val closingTime = mBinding.edittextClosingTime.text.toString().trim()
+                val description = mBinding.edittextDescription.text.toString().trim()
 
-                if (storeName.isEmpty() || storeNumber.isEmpty() || storeCategory.isEmpty() || openingTime.isEmpty() || closingTime.isEmpty()) {
+                if (storeName.isEmpty() || storeNumber.isEmpty() || storeCategory.isEmpty() || openingTime.isEmpty() || closingTime.isEmpty() || description.isEmpty()) {
                     showToast("Please fill all fields.")
                     return@setSafeOnClickListener
                 } else {
                     storeId?.let {
-                        mainViewModel.updateStore(it, storeName, storeNumber, storeCategory, openingTime, closingTime, imageUrl)
+                        mainViewModel.updateStore(it, storeName, storeNumber, storeCategory, openingTime, closingTime, imageUrl, description)
                     }
                 }
 
@@ -215,6 +216,7 @@ class EditStoreActivity : AppCompatActivity() {
         val storeCategory = intent.getStringExtra("store_category")
         val openingTime = intent.getStringExtra("opening_time")
         val closingTime = intent.getStringExtra("closing_time")
+        val description = intent.getStringExtra("description")
         imageUrl = intent.getStringExtra("image_url")
 
         if (storeId == null) {
@@ -228,6 +230,7 @@ class EditStoreActivity : AppCompatActivity() {
         mBinding.edittextStoreCategory.setText(StoreCategories.getDisplayName(storeCategory ?: "") ?: "")
         mBinding.edittextOpeningTime.setText(openingTime ?: "")
         mBinding.edittextClosingTime.setText(closingTime ?: "")
+        mBinding.edittextDescription.setText(description ?: "")
 
         if (imageUrl != null) {
             Glide.with(this).load(imageUrl).into(mBinding.imageViewStore)

@@ -36,6 +36,10 @@ data class StoreModel(
     @set:PropertyName("image")
     var image: String? = null,
 
+    @get:PropertyName("description")
+    @set:PropertyName("description")
+    var description: String = "",
+
     @get:Exclude
     val isBookmarked: Boolean = false
 )

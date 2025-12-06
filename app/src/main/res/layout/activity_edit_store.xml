@@ -158,6 +158,26 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_small"
+                app:errorEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_input_layout_closing_time">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edittext_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/margin_padding_size_small"
+                    android:hint="Description or new update"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <ImageView
                 android:id="@+id/image_view_store"
                 android:layout_width="100dp"
@@ -166,7 +186,7 @@
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_input_layout_closing_time" />
+                app:layout_constraintTop_toBottomOf="@id/text_input_layout_description" />
 
             <ProgressBar
                 android:id="@+id/image_upload_progress_bar"

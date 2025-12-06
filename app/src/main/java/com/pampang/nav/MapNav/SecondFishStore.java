@@ -37,6 +37,7 @@ public class SecondFishStore extends AppCompatActivity {
     private TextView openTimeTextView;
     private TextView closeTimeTextView;
     private TextView storeStatusIndicator;
+    private TextView descriptionTextView;
     private ImageView storeImageView;
     private Button editButton;
     private Button deleteButton;
@@ -56,6 +57,7 @@ public class SecondFishStore extends AppCompatActivity {
         openTimeTextView = findViewById(R.id.open_time_value);
         closeTimeTextView = findViewById(R.id.close_time_value);
         storeStatusIndicator = findViewById(R.id.store_status_indicator);
+        descriptionTextView = findViewById(R.id.description_value);
         storeImageView = findViewById(R.id.store_image);
         editButton = findViewById(R.id.edit_button);
         deleteButton = findViewById(R.id.delete_button);
@@ -98,12 +100,14 @@ public class SecondFishStore extends AppCompatActivity {
                         String storeName = task.getResult().getDocuments().get(0).getString("store_name");
                         String openingTime = task.getResult().getDocuments().get(0).getString("opening_time");
                         String closingTime = task.getResult().getDocuments().get(0).getString("closing_time");
+                        String description = task.getResult().getDocuments().get(0).getString("description");
                         String imageUrl = task.getResult().getDocuments().get(0).getString("image");
                         String ownerId = task.getResult().getDocuments().get(0).getString("owner_id");
 
                         storeNameTextView.setText(storeName);
                         openTimeTextView.setText(openingTime);
                         closeTimeTextView.setText(closingTime);
+                        descriptionTextView.setText(description);
 
                         updateStoreStatus(openingTime, closingTime);
 
@@ -121,6 +125,7 @@ public class SecondFishStore extends AppCompatActivity {
                                 intent.putExtra("store_category", "SecondFishStore");
                                 intent.putExtra("opening_time", openingTime);
                                 intent.putExtra("closing_time", closingTime);
+                                intent.putExtra("description", description);
                                 intent.putExtra("image_url", imageUrl);
                                 startActivity(intent);
                             });
