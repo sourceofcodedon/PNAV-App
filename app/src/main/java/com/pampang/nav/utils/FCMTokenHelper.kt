@@ -12,6 +12,7 @@ object FCMTokenHelper {
     private var cachedToken: String? = null
     private var tokenExpiryTime: Long = 0
 
+    @JvmStatic
     fun getAccessToken(context: Context): String? {
         try {
             // Check in-memory cache
