@@ -31,13 +31,13 @@ class MainRepository @Inject constructor(
         _isLoading.postValue(true)
         val userId = firebaseAuth.currentUser?.uid
 
-        val storesQuery = if (userId != null) {
+        if (userId != null) {
             firestore.collection("users").document(userId).get().addOnSuccessListener { userDocument ->
                 val role = userDocument.getString("role")
-                val query = if (role == "admin") {
-                    firestore.collection("stores")
-                } else {
-                    firestore.collection("stores").whereEqualTo("status", "approved")
+                val query = when (role) {
+                    "admin" -> firestore.collection("stores")
+                    "seller" -> firestore.collection("stores").whereEqualTo("owner_id", userId)
+                    else -> firestore.collection("stores").whereEqualTo("status", "approved")
                 }
                 query.addSnapshotListener(getStoresSnapshotListener())
             }.addOnFailureListener {

@@ -41,5 +41,8 @@ data class StoreModel(
     var description: String = "",
 
     @get:Exclude
-    val isBookmarked: Boolean = false
+    val isBookmarked: Boolean = false,
+
+    @get:Exclude
+    val isOwner: Boolean = false
 )

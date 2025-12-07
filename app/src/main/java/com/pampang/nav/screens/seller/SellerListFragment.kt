@@ -72,52 +72,44 @@ class SellerListFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        val onClick: RecyclerClick? = if (userType == "buyer") {
-            RecyclerClick { store ->
+        mAdapter = SimpleDiffUtilAdapter(
+            layoutRes = R.layout.list_item_store,
+            onClickCallBack = RecyclerClick { store ->
                 store as StoreModel
-                val intent = when (store.storeCategory) {
-                    "FirstMeatStore" -> Intent(requireActivity(), FirstMeatStore::class.java)
-                    "SecondMeatStore" -> Intent(requireActivity(), SecondMeatStore::class.java)
-                    "FirstGulayStore" -> Intent(requireActivity(), FirstGulayStore::class.java)
-                    "SecondGulayStore" -> Intent(requireActivity(), SecondGulayStore::class.java)
-                    "FirstFishStore" -> Intent(requireActivity(), FirstFishStore::class.java)
-                    "SecondFishStore" -> Intent(requireActivity(), SecondFishStore::class.java)
+                if (userType == "buyer") {
+                    val intent = when (store.storeCategory) {
+                        "FirstMeatStore" -> Intent(requireActivity(), FirstMeatStore::class.java)
+                        "SecondMeatStore" -> Intent(requireActivity(), SecondMeatStore::class.java)
+                        "FirstGulayStore" -> Intent(requireActivity(), FirstGulayStore::class.java)
+                        "SecondGulayStore" -> Intent(requireActivity(), SecondGulayStore::class.java)
+                        "FirstFishStore" -> Intent(requireActivity(), FirstFishStore::class.java)
+                        "SecondFishStore" -> Intent(requireActivity(), SecondFishStore::class.java)
 
-                    else -> null
-                }
-                if (intent != null) {
-                    intent.putExtra("storeName", store.storeName)
-                    startActivity(intent)
+                        else -> null
+                    }
+                    if (intent != null) {
+                        intent.putExtra("storeName", store.storeName)
+                        startActivity(intent)
+                    } else {
+                        showToast("Unable to open store")
+                    }
                 } else {
-                    showToast("Unable to open store")
+                    val intent = Intent(requireActivity(), EditStoreActivity::class.java).apply {
+                        putExtra("store_id", store.id)
+                        putExtra("store_name", store.storeName)
+                        putExtra("store_category", store.storeCategory)
+                        putExtra("opening_time", store.openingTime)
+                        putExtra("closing_time", store.closingTime)
+                        putExtra("image_url", store.image)
+                    }
+                    startActivity(intent)
                 }
-            }
-        } else {
-            RecyclerClick { store ->
-                store as StoreModel
-                val intent = Intent(requireActivity(), EditStoreActivity::class.java).apply {
-                    putExtra("store_id", store.id)
-                    putExtra("store_name", store.storeName)
-                    putExtra("store_category", store.storeCategory)
-                    putExtra("opening_time", store.openingTime)
-                    putExtra("closing_time", store.closingTime)
-                    putExtra("image_url", store.image)
-                }
-                startActivity(intent)
-            }
-        }
-
-        val onDelete: RecyclerClick? = if (userType == "buyer") {
-            null
-        } else {
-            RecyclerClick { store ->
+            },
+            onDeleteCallBack = RecyclerClick { store ->
                 store as StoreModel
                 showDeleteConfirmationDialog(store)
-            }
-        }
-
-        val onBookmark: RecyclerClick? = if (userType == "buyer") {
-            RecyclerClick { store ->
+            },
+            onBookmarkCallBack = RecyclerClick { store ->
                 store as StoreModel
                 if (store.isBookmarked) {
                     mainViewModel.deleteBookmark(store.id)
@@ -125,15 +117,6 @@ class SellerListFragment : Fragment() {
                     mainViewModel.addBookmark(store.id)
                 }
             }
-        } else {
-            null
-        }
-
-        mAdapter = SimpleDiffUtilAdapter(
-            layoutRes = R.layout.list_item_store,
-            onClickCallBack = onClick,
-            onDeleteCallBack = onDelete,
-            onBookmarkCallBack = onBookmark
         )
 
         mBinding.recyclerViewStores.adapter = mAdapter
@@ -210,10 +193,13 @@ class SellerListFragment : Fragment() {
     }
 
     private fun updateStoreList(stores: List<StoreModel> = emptyList()) {
+        val storeList = stores.map {
+            it.copy(isOwner = (userType != "buyer"))
+        }
         if (showFavorites) {
-            mAdapter.submitList(stores.filter { it.isBookmarked })
+            mAdapter.submitList(storeList.filter { it.isBookmarked })
         } else {
-            mAdapter.submitList(stores)
+            mAdapter.submitList(storeList)
         }
     }
 
