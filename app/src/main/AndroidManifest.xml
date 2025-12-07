@@ -153,6 +153,9 @@
         <activity
             android:name=".screens.ChatActivity"
             android:exported="false" />
+        <activity
+            android:name=".screens.AnnouncementsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

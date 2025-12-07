@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="20dp"
+    android:padding="5dp"
+
     android:layout_height="match_parent"
     tools:context=".screens.InboxActivity">
 
@@ -35,6 +36,7 @@
             android:orientation="horizontal"
             android:padding="16dp">
 
+
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -46,6 +48,39 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="Group Chat"
+                android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/announcementCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/groupChatCard"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="16dp"
+                android:src="@android:drawable/ic_dialog_info"
+                app:tint="?attr/colorOnSurface" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Announcements"
                 android:textAppearance="?attr/textAppearanceSubtitle1" />
 
         </LinearLayout>
