@@ -63,9 +63,11 @@ public class SecondMeatMapView extends AppCompatActivity {
                 String destDisplayName = NodeDisplayNames.getDisplayName(DESTINATION_NODE);
                 Toast.makeText(this, "No path found from " + startDisplayName + " to " + destDisplayName, Toast.LENGTH_SHORT).show();
             } else {
+                secondMeatPathView.showAnimatedPath(path);
                 userMarker.setVisibility(View.VISIBLE);
                 instructionBanner.setVisibility(View.VISIBLE);
                 List<String> instructions = generateInstructions(path);
+                userMarker.setVisibility(View.VISIBLE);
                 secondMeatPathView.startPathAnimation(path, userMarker, instructionText, instructions, graph);
             }
         });
