@@ -28,7 +28,9 @@ class GroupChatFragment : Fragment() {
 
     private lateinit var binding: FragmentGroupChatBinding
     private val viewModel: GroupChatViewModel by viewModels()
-    private val groupChatAdapter = GroupChatAdapter()
+    private val groupChatAdapter = GroupChatAdapter {
+        viewModel.setReplyToMessage(it)
+    }
     private var initialX = 0f
     private var isSwiping = false
 
@@ -52,7 +54,7 @@ class GroupChatFragment : Fragment() {
 
         lifecycleScope.launch {
             viewModel.messages.collect {
-                groupChatAdapter.submitList(it) { 
+                groupChatAdapter.submitList(it) {
                     lifecycleScope.launch {
                         val lastReadTimestamp = viewModel.getLastReadTimestamp()
                         val firstUnreadMessageIndex = it.indexOfFirst { message -> (message.timestamp?.after(lastReadTimestamp ?: Date(0)) ?: false) }.takeIf { it != -1 } ?: (it.size - 1)
@@ -62,6 +64,22 @@ class GroupChatFragment : Fragment() {
                     }
                 }
             }
+        }
+
+        lifecycleScope.launch {
+            viewModel.replyToMessage.collect { message ->
+                if (message != null) {
+                    binding.replyingToLayout.visibility = View.VISIBLE
+                    binding.replyingToSender.text = message.senderName
+                    binding.replyingToText.text = message.text
+                } else {
+                    binding.replyingToLayout.visibility = View.GONE
+                }
+            }
+        }
+
+        binding.cancelReplyButton.setOnClickListener {
+            viewModel.setReplyToMessage(null)
         }
 
         lifecycleScope.launch {
@@ -83,11 +101,11 @@ class GroupChatFragment : Fragment() {
                 MotionEvent.ACTION_DOWN -> {
                     initialX = event.x
                     isSwiping = false
-                    false 
+                    false
                 }
                 MotionEvent.ACTION_MOVE -> {
                     val translationX = event.x - initialX
-                    if (translationX < -50) { 
+                    if (translationX < -50) {
                         isSwiping = true
                     }
                     if (isSwiping) {

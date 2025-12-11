@@ -17,7 +17,9 @@ const val VIEW_TYPE_SENT = 1
 const val VIEW_TYPE_RECEIVED = 2
 private const val MAX_TRANSLATION_X = -250f
 
-class GroupChatAdapter : ListAdapter<GroupChatMessage, GroupChatAdapter.MessageViewHolder>(MessageDiffCallback()) {
+class GroupChatAdapter(
+    private val onMessageLongClickListener: (GroupChatMessage) -> Unit
+) : ListAdapter<GroupChatMessage, GroupChatAdapter.MessageViewHolder>(MessageDiffCallback()) {
 
     private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -35,7 +37,12 @@ class GroupChatAdapter : ListAdapter<GroupChatMessage, GroupChatAdapter.MessageV
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val message = getItem(position)
+        holder.bind(message)
+        holder.itemView.setOnLongClickListener {
+            onMessageLongClickListener(message)
+            true
+        }
     }
 
     class MessageViewHolder(private val binding: ViewBinding, private val viewType: Int) : RecyclerView.ViewHolder(binding.root) {
@@ -59,8 +66,26 @@ class GroupChatAdapter : ListAdapter<GroupChatMessage, GroupChatAdapter.MessageV
 
         fun bind(chatMessage: GroupChatMessage) {
             when (binding) {
-                is ItemGroupChatSentBinding -> binding.chatMessage = chatMessage
-                is ItemGroupChatReceivedBinding -> binding.chatMessage = chatMessage
+                is ItemGroupChatSentBinding -> {
+                    binding.chatMessage = chatMessage
+                    if (chatMessage.repliedToMessageId != null) {
+                        binding.replyLayout.visibility = View.VISIBLE
+                        binding.repliedToSender.text = chatMessage.repliedToMessageSender
+                        binding.repliedToText.text = chatMessage.repliedToMessageText
+                    } else {
+                        binding.replyLayout.visibility = View.GONE
+                    }
+                }
+                is ItemGroupChatReceivedBinding -> {
+                    binding.chatMessage = chatMessage
+                    if (chatMessage.repliedToMessageId != null) {
+                        binding.replyLayout.visibility = View.VISIBLE
+                        binding.repliedToSender.text = chatMessage.repliedToMessageSender
+                        binding.repliedToText.text = chatMessage.repliedToMessageText
+                    } else {
+                        binding.replyLayout.visibility = View.GONE
+                    }
+                }
             }
         }
 

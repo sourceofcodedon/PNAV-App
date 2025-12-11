@@ -29,7 +29,7 @@
             android:orientation="vertical"
             android:gravity="end"
             android:layout_marginStart="64dp"
-            android.background="@android:color/transparent">
+            android:background="@android:color/transparent">
 
             <TextView
                 android:id="@+id/text_view_sender_name"
@@ -37,6 +37,29 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:text="@{chatMessage.senderName + ` (` + chatMessage.senderRole + `)`}"/>
+
+            <LinearLayout
+                android:id="@+id/reply_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/reply_background"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/replied_to_sender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/replied_to_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/text_view_message"

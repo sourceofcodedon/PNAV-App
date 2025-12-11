@@ -44,8 +44,21 @@ class GroupChatRepository @Inject constructor(
                             is Long -> Date(timestampObject)
                             else -> null
                         }
+                        
+                        val repliedToMessageId = doc.getString("repliedToMessageId")
+                        val repliedToMessageSender = doc.getString("repliedToMessageSender")
+                        val repliedToMessageText = doc.getString("repliedToMessageText")
 
-                        GroupChatMessage(senderId, senderName, senderRole, text, date)
+                        GroupChatMessage(
+                            senderId,
+                            senderName,
+                            senderRole,
+                            text,
+                            date,
+                            repliedToMessageId,
+                            repliedToMessageSender,
+                            repliedToMessageText
+                        )
                     } catch (e: Exception) {
                         Log.e("GROUP_CHAT_REPO", "Error parsing message", e)
                         null
@@ -57,7 +70,13 @@ class GroupChatRepository @Inject constructor(
         awaitClose { subscription.remove() }
     }
 
-    suspend fun sendGroupChatMessage(text: String, context: Context) {
+    suspend fun sendGroupChatMessage(
+        text: String,
+        context: Context,
+        repliedToMessageId: String? = null,
+        repliedToMessageSender: String? = null,
+        repliedToMessageText: String? = null
+    ) {
         val currentUser = auth.currentUser ?: return
 
         val userRole = try {
@@ -74,7 +93,10 @@ class GroupChatRepository @Inject constructor(
             senderId = currentUser.uid,
             senderName = senderName,
             senderRole = userRole,
-            text = text
+            text = text,
+            repliedToMessageId = repliedToMessageId,
+            repliedToMessageSender = repliedToMessageSender,
+            repliedToMessageText = repliedToMessageText
         )
 
         try {

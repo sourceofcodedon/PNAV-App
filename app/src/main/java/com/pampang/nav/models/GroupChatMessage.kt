@@ -9,5 +9,8 @@ data class GroupChatMessage(
     val senderRole: String = "",
     val text: String = "",
     @ServerTimestamp
-    val timestamp: Date? = null
+    val timestamp: Date? = null,
+    val repliedToMessageId: String? = null,
+    val repliedToMessageSender: String? = null,
+    val repliedToMessageText: String? = null
 )
