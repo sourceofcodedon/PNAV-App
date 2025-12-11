@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
@@ -33,6 +35,7 @@ class EditStoreActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityEditStoreBinding
     private val mainViewModel: MainViewModel by viewModels()
     private var imageUrl: String? = null
+    private var businessPermitUrl: String? = null
     private var storeId: String? = null
 
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -40,6 +43,15 @@ class EditStoreActivity : AppCompatActivity() {
             val data: Intent? = result.data
             data?.data?.let {
                 handleImageSelection(it)
+            }
+        }
+    }
+
+    private val businessPermitPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val data: Intent? = result.data
+            data?.data?.let {
+                handleBusinessPermitSelection(it)
             }
         }
     }
@@ -72,6 +84,16 @@ class EditStoreActivity : AppCompatActivity() {
                 openImagePicker()
             }
 
+            buttonUploadBusinessPermit.setOnClickListener {
+                openBusinessPermitPicker()
+            }
+
+            buttonViewPermit.setOnClickListener {
+                businessPermitUrl?.let {
+                    showImageDialog(it)
+                }
+            }
+
             buttonSave.setSafeOnClickListener {
                 if (!NetworkUtils.isNetworkAvailable(this@EditStoreActivity)) {
                     showToast("The network is unstable. Try again later.")
@@ -90,7 +112,7 @@ class EditStoreActivity : AppCompatActivity() {
                     return@setSafeOnClickListener
                 } else {
                     storeId?.let {
-                        mainViewModel.updateStore(it, storeName, storeNumber, storeCategory, openingTime, closingTime, imageUrl, description)
+                        mainViewModel.updateStore(it, storeName, storeNumber, storeCategory, openingTime, closingTime, imageUrl, description, businessPermitUrl)
                     }
                 }
 
@@ -180,6 +202,12 @@ class EditStoreActivity : AppCompatActivity() {
         imagePickerLauncher.launch(intent)
     }
 
+    private fun openBusinessPermitPicker() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        businessPermitPickerLauncher.launch(intent)
+    }
+
     private fun handleImageSelection(uri: Uri) {
         mBinding.imageViewStore.setImageURI(uri)
         mBinding.imageUploadProgressBar.visibility = View.VISIBLE
@@ -209,6 +237,46 @@ class EditStoreActivity : AppCompatActivity() {
         }).dispatch()
     }
 
+    private fun handleBusinessPermitSelection(uri: Uri) {
+        mBinding.imageViewBusinessPermit.setImageURI(uri)
+        mBinding.imageUploadProgressBar.visibility = View.VISIBLE
+
+        MediaManager.get().upload(uri).callback(object : UploadCallback {
+            override fun onStart(requestId: String) {
+                // No action needed
+            }
+
+            override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
+                // No action needed
+            }
+
+            override fun onSuccess(requestId: String, resultData: Map<*, *>) {
+                businessPermitUrl = resultData["secure_url"].toString()
+                mBinding.imageUploadProgressBar.visibility = View.GONE
+                mBinding.imageViewBusinessPermit.visibility = View.VISIBLE
+                mBinding.buttonViewPermit.visibility = View.VISIBLE
+                mBinding.buttonUploadBusinessPermit.visibility = View.GONE
+            }
+
+            override fun onError(requestId: String, error: ErrorInfo) {
+                showToast("Upload error: ${error.description}")
+                mBinding.imageUploadProgressBar.visibility = View.GONE
+            }
+
+            override fun onReschedule(requestId: String, error: ErrorInfo) {
+                // No action needed
+            }
+        }).dispatch()
+    }
+
+    private fun showImageDialog(url: String) {
+        val builder = AlertDialog.Builder(this)
+        val imageView = ImageView(this)
+        Glide.with(this).load(url).into(imageView)
+        builder.setView(imageView)
+        builder.create().show()
+    }
+
     private fun initIntent() {
         storeId = intent.getStringExtra("store_id")
         val storeName = intent.getStringExtra("store_name")
@@ -218,6 +286,7 @@ class EditStoreActivity : AppCompatActivity() {
         val closingTime = intent.getStringExtra("closing_time")
         val description = intent.getStringExtra("description")
         imageUrl = intent.getStringExtra("image_url")
+        businessPermitUrl = intent.getStringExtra("business_permit_url")
 
         if (storeId == null) {
             showToast("Store ID is missing.")
@@ -234,6 +303,13 @@ class EditStoreActivity : AppCompatActivity() {
 
         if (imageUrl != null) {
             Glide.with(this).load(imageUrl).into(mBinding.imageViewStore)
+        }
+
+        if (businessPermitUrl != null) {
+            mBinding.imageViewBusinessPermit.visibility = View.VISIBLE
+            mBinding.buttonViewPermit.visibility = View.VISIBLE
+            mBinding.buttonUploadBusinessPermit.visibility = View.GONE
+            Glide.with(this).load(businessPermitUrl).into(mBinding.imageViewBusinessPermit)
         }
     }
 }

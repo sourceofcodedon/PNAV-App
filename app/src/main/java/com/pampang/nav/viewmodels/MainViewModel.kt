@@ -72,14 +72,14 @@ class MainViewModel @Inject constructor(
         mainRepository.getStores()
     }
 
-    fun addStore(storeName: String, storeNumber: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?, description: String) {
+    fun addStore(storeName: String, storeNumber: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?, description: String, businessPermitUrl: String?) {
         viewModelScope.launch {
             val ownerId = FirebaseAuth.getInstance().currentUser?.uid
             if (ownerId == null) {
                 _addStoreResult.postValue(Result.failure(Exception("User not logged in")))
                 return@launch
             }
-            val result = mainRepository.addStore(storeName, storeNumber, storeCategory, openingTime, closingTime, imageBase64, ownerId, description)
+            val result = mainRepository.addStore(storeName, storeNumber, storeCategory, openingTime, closingTime, imageBase64, ownerId, description, businessPermitUrl)
             _addStoreResult.postValue(result)
         }
     }
@@ -88,9 +88,9 @@ class MainViewModel @Inject constructor(
         _addStoreResult.value = null
     }
 
-    fun updateStore(storeId: String, storeName: String, storeNumber: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?, description: String) {
+    fun updateStore(storeId: String, storeName: String, storeNumber: String, storeCategory: String, openingTime: String, closingTime: String, imageBase64: String?, description: String, businessPermitUrl: String?) {
         viewModelScope.launch {
-            val result = mainRepository.updateStore(storeId, storeName, storeNumber, storeCategory, openingTime, closingTime, imageBase64, description)
+            val result = mainRepository.updateStore(storeId, storeName, storeNumber, storeCategory, openingTime, closingTime, imageBase64, description, businessPermitUrl)
             _updateStoreResult.postValue(result)
         }
     }

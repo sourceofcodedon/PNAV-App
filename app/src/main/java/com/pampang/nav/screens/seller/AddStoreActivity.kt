@@ -7,10 +7,13 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
@@ -34,6 +37,7 @@ class AddStoreActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityAddStoreBinding
     private val mainViewModel: MainViewModel by viewModels()
     private var imageUrl: String? = null
+    private var businessPermitUrl: String? = null
     private var selectedStore: DropdownItem.StoreItem? = null
 
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -41,6 +45,15 @@ class AddStoreActivity : AppCompatActivity() {
             val data: Intent? = result.data
             data?.data?.let {
                 handleImageSelection(it)
+            }
+        }
+    }
+
+    private val businessPermitPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val data: Intent? = result.data
+            data?.data?.let {
+                handleBusinessPermitSelection(it)
             }
         }
     }
@@ -71,6 +84,16 @@ class AddStoreActivity : AppCompatActivity() {
                 openImagePicker()
             }
 
+            buttonUploadBusinessPermit.setOnClickListener {
+                openBusinessPermitPicker()
+            }
+
+            buttonViewPermit.setOnClickListener {
+                businessPermitUrl?.let { url ->
+                    showImageDialog(url)
+                }
+            }
+
             buttonCreate.setSafeOnClickListener {
                 if (!NetworkUtils.isNetworkAvailable(this@AddStoreActivity)) {
                     showToast("The network is unstable. Try again later.")
@@ -87,7 +110,7 @@ class AddStoreActivity : AppCompatActivity() {
                     showToast("Please fill all fields.")
                     return@setSafeOnClickListener
                 } else {
-                    mainViewModel.addStore(storeName, storeNumber, selectedStore!!.id, openingTime, closingTime, imageUrl, description)
+                    mainViewModel.addStore(storeName, storeNumber, selectedStore!!.id, openingTime, closingTime, imageUrl, description, businessPermitUrl)
                 }
 
             }
@@ -196,6 +219,12 @@ class AddStoreActivity : AppCompatActivity() {
         imagePickerLauncher.launch(intent)
     }
 
+    private fun openBusinessPermitPicker() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        businessPermitPickerLauncher.launch(intent)
+    }
+
     private fun handleImageSelection(uri: Uri) {
         mBinding.imageViewStore.setImageURI(uri)
         mBinding.imageUploadProgressBar.visibility = View.VISIBLE
@@ -223,5 +252,45 @@ class AddStoreActivity : AppCompatActivity() {
                 // No action needed
             }
         }).dispatch()
+    }
+
+    private fun handleBusinessPermitSelection(uri: Uri) {
+        mBinding.imageViewBusinessPermit.setImageURI(uri)
+        mBinding.imageUploadProgressBar.visibility = View.VISIBLE
+
+        MediaManager.get().upload(uri).callback(object : UploadCallback {
+            override fun onStart(requestId: String) {
+                // No action needed
+            }
+
+            override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
+                // No action needed
+            }
+
+            override fun onSuccess(requestId: String, resultData: Map<*, *>) {
+                businessPermitUrl = resultData["secure_url"].toString()
+                mBinding.imageUploadProgressBar.visibility = View.GONE
+                mBinding.imageViewBusinessPermit.visibility = View.VISIBLE
+                mBinding.buttonViewPermit.visibility = View.VISIBLE
+                mBinding.buttonUploadBusinessPermit.visibility = View.GONE
+            }
+
+            override fun onError(requestId: String, error: ErrorInfo) {
+                showToast("Upload error: ${error.description}")
+                mBinding.imageUploadProgressBar.visibility = View.GONE
+            }
+
+            override fun onReschedule(requestId: String, error: ErrorInfo) {
+                // No action needed
+            }
+        }).dispatch()
+    }
+
+    private fun showImageDialog(url: String) {
+        val builder = AlertDialog.Builder(this)
+        val imageView = ImageView(this)
+        Glide.with(this).load(url).into(imageView)
+        builder.setView(imageView)
+        builder.create().show()
     }
 }

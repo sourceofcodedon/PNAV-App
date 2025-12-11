@@ -43,199 +43,236 @@
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint_layout_main"
+        <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/margin_padding_size_medium"
-            android:layout_marginHorizontal="@dimen/margin_padding_size_medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar_layout">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_store_name"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_layout_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:errorEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:padding="@dimen/margin_padding_size_medium">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edittext_store_name"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_store_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/margin_padding_size_small"
-                    android:hint="@string/hint_enter_store_name"
-                    android:inputType="text" />
+                    app:errorEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_store_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/margin_padding_size_small"
+                        android:hint="@string/hint_enter_store_name"
+                        android:inputType="text" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_store_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_size_small"
-                app:errorEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_input_layout_store_name">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edittext_store_number"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_store_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/margin_padding_size_small"
-                    android:hint="Store Number"
-                    android:inputType="text" />
+                    android:layout_marginTop="@dimen/margin_padding_size_small"
+                    app:errorEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_input_layout_store_name">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_store_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/margin_padding_size_small"
+                        android:hint="Store Number"
+                        android:inputType="text" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_store_category"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_size_small"
-                app:errorEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_input_layout_store_number">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <AutoCompleteTextView
-                    android:id="@+id/edittext_store_category"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_store_category"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/margin_padding_size_small"
-                    android:hint="@string/hint_store_category"
-                    android:inputType="none" />
+                    android:layout_marginTop="@dimen/margin_padding_size_small"
+                    app:errorEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_input_layout_store_number">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/edittext_store_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/margin_padding_size_small"
+                        android:hint="@string/hint_store_category"
+                        android:inputType="none" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_opening_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_size_small"
-                app:errorEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_input_layout_store_category">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edittext_opening_time"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_opening_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/margin_padding_size_small"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:hint="@string/hint_opening_time"
-                    android:inputType="none" />
+                    android:layout_marginTop="@dimen/margin_padding_size_small"
+                    app:errorEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_input_layout_store_category">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_opening_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/margin_padding_size_small"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:hint="@string/hint_opening_time"
+                        android:inputType="none" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_closing_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_size_small"
-                app:errorEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_input_layout_opening_time">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edittext_closing_time"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_closing_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/margin_padding_size_small"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:hint="@string/hint_closing_time"
-                    android:inputType="none" />
+                    android:layout_marginTop="@dimen/margin_padding_size_small"
+                    app:errorEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_input_layout_opening_time">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_closing_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/margin_padding_size_small"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:hint="@string/hint_closing_time"
+                        android:inputType="none" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_size_small"
-                app:errorEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_input_layout_closing_time">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edittext_description"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/margin_padding_size_small"
-                    android:hint="Description or new update"
-                    android:inputType="text" />
+                    android:layout_marginTop="@dimen/margin_padding_size_small"
+                    app:errorEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_input_layout_closing_time">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/margin_padding_size_small"
+                        android:hint="Description or new update"
+                        android:inputType="text" />
 
-            <ImageView
-                android:id="@+id/image_view_store"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="@dimen/margin_padding_size_medium"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_input_layout_description" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <ProgressBar
-                android:id="@+id/image_upload_progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="@id/image_view_store"
-                app:layout_constraintBottom_toBottomOf="@id/image_view_store"
-                app:layout_constraintStart_toStartOf="@id/image_view_store"
-                app:layout_constraintEnd_toEndOf="@id/image_view_store"/>
+                <ImageView
+                    android:id="@+id/image_view_business_permit"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="@dimen/margin_padding_size_medium"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_input_layout_description" />
 
-            <Button
-                android:id="@+id/button_upload_image"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_size_small"
-                android:text="@string/upload_image"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image_view_store" />
+                <Button
+                    android:id="@+id/button_view_permit"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View Permit"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toEndOf="@id/image_view_business_permit"
+                    app:layout_constraintTop_toTopOf="@id/image_view_business_permit"
+                    app:layout_constraintBottom_toBottomOf="@id/image_view_business_permit"
+                    android:layout_marginStart="@dimen/margin_padding_size_medium"/>
 
-            <Button
-                android:id="@+id/button_save"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/margin_padding_size_small"
-                android:layout_marginTop="@dimen/margin_padding_size_xlarge"
-                android:text="@string/save_changes"
-                android:visibility="@{viewModel.isLoading ? View.INVISIBLE : View.VISIBLE}"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/button_upload_image" />
+                <Button
+                    android:id="@+id/button_upload_business_permit"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Upload Business Permit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_input_layout_description"
+                    android:layout_marginTop="@dimen/margin_padding_size_medium"/>
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminateTint="@color/colorPrimary"
-                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
-                app:layout_constraintBottom_toTopOf="@id/button_save"
-                app:layout_constraintEnd_toEndOf="@id/button_save"
-                app:layout_constraintStart_toStartOf="@id/button_save"
-                app:layout_constraintTop_toTopOf="@id/button_save" />
+                <ImageView
+                    android:id="@+id/image_view_store"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="@dimen/margin_padding_size_medium"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image_view_business_permit" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ProgressBar
+                    android:id="@+id/image_upload_progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@id/image_view_store"
+                    app:layout_constraintBottom_toBottomOf="@id/image_view_store"
+                    app:layout_constraintStart_toStartOf="@id/image_view_store"
+                    app:layout_constraintEnd_toEndOf="@id/image_view_store"/>
+
+                <Button
+                    android:id="@+id/button_upload_image"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_size_small"
+                    android:text="@string/upload_image"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/image_view_store" />
+
+                <Button
+                    android:id="@+id/button_save"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/margin_padding_size_small"
+                    android:layout_marginTop="@dimen/margin_padding_size_xlarge"
+                    android:text="@string/save_changes"
+                    android:visibility="@{viewModel.isLoading ? View.INVISIBLE : View.VISIBLE}"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/button_upload_image" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminateTint="@color/colorPrimary"
+                    android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toTopOf="@id/button_save"
+                    app:layout_constraintEnd_toEndOf="@id/button_save"
+                    app:layout_constraintStart_toStartOf="@id/button_save"
+                    app:layout_constraintTop_toTopOf="@id/button_save" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
