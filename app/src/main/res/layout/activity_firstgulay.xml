@@ -25,12 +25,14 @@
                 android:src="@drawable/firstgulay" />
 
             <!-- 🧭 Path Layer -->
+
+            <!-- 📍 User Location Marker -->
+
             <com.pampang.nav.MapNav.FirstGulayPath
                 android:id="@+id/firstgulay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <!-- 📍 User Location Marker -->
             <ImageView
                 android:id="@+id/user_marker"
                 android:layout_width="32dp"

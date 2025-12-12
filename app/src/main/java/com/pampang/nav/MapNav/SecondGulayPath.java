@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.pampang.nav.R;
+
 import java.util.*;
 
 public class SecondGulayPath extends View {
@@ -23,6 +25,10 @@ public class SecondGulayPath extends View {
     private Paint textPaint;
     private Paint movingDotPaint;
     private Paint markerPaint;
+
+    private Bitmap gulayLogo;
+    private Bitmap meatLogo;
+    private Bitmap fishLogo;
 
     private Map<String, float[]> baseNodes;
     private Map<String, float[]> nodes = new HashMap<>();
@@ -90,6 +96,10 @@ public class SecondGulayPath extends View {
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         textPaint.setAntiAlias(true);
         textPaint.setTextAlign(Paint.Align.CENTER);
+
+        gulayLogo = BitmapFactory.decodeResource(getResources(), R.drawable.gulaylogo);
+        meatLogo = BitmapFactory.decodeResource(getResources(), R.drawable.meatlogo);
+        fishLogo = BitmapFactory.decodeResource(getResources(), R.drawable.fishlogo);
 
         setupBaseNodes();
     }
@@ -374,7 +384,13 @@ public class SecondGulayPath extends View {
                 nodePaint.setColor(Color.TRANSPARENT);
             }
             canvas.drawCircle(point[0], point[1], 20f * scaleX, nodePaint);
-            canvas.drawText(label, point[0], point[1] + (10 * scaleY), textPaint);
+            if (label.equals("n63")) {
+                canvas.drawBitmap(fishLogo, point[0] - fishLogo.getWidth() / 2, point[1] - fishLogo.getHeight() / 2, null);
+            } else if (label.equals("n16")) {
+                canvas.drawBitmap(gulayLogo, point[0] - gulayLogo.getWidth() / 2, point[1] - gulayLogo.getHeight() / 2, null);
+            } else {
+                canvas.drawText(label, point[0], point[1] + (10 * scaleY), textPaint);
+            }
         }
 
         if (selectedNode != null && nodes.containsKey(selectedNode)) {
