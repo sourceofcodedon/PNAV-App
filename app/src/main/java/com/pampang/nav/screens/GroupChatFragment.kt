@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.pampang.nav.adapters.GroupChatAdapter
 import com.pampang.nav.databinding.FragmentGroupChatBinding
 import com.pampang.nav.viewmodels.GroupChatViewModel
@@ -61,10 +63,18 @@ class GroupChatFragment : Fragment() {
                         if (firstUnreadMessageIndex >= 0) {
                             binding.recyclerViewChat.scrollToPosition(firstUnreadMessageIndex)
                         }
+                        markVisibleMessagesAsSeen()
                     }
                 }
             }
         }
+        
+        binding.recyclerViewChat.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                markVisibleMessagesAsSeen()
+            }
+        })
 
         lifecycleScope.launch {
             viewModel.replyToMessage.collect { message ->
@@ -124,6 +134,22 @@ class GroupChatFragment : Fragment() {
                     }
                 }
                 else -> false
+            }
+        }
+    }
+    
+    private fun markVisibleMessagesAsSeen() {
+        val layoutManager = binding.recyclerViewChat.layoutManager as LinearLayoutManager
+        val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
+        val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        for (i in firstVisiblePosition..lastVisiblePosition) {
+            if (i >= 0 && i < groupChatAdapter.currentList.size) {
+                val message = groupChatAdapter.currentList[i]
+                if (message.senderId != currentUserId && !message.seenBy.contains(currentUserId)) {
+                    viewModel.markMessageAsSeen(message.id)
+                }
             }
         }
     }

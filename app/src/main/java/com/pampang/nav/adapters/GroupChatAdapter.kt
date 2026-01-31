@@ -1,6 +1,7 @@
 package com.pampang.nav.adapters
 
 import android.animation.ObjectAnimator
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,6 +76,10 @@ class GroupChatAdapter(
                     } else {
                         binding.replyLayout.visibility = View.GONE
                     }
+                    
+                    val shouldShowSeen = chatMessage.seenBy.size > 1
+                    Log.d("GroupChatAdapter", "Binding sent message ${chatMessage.id}. SeenBy size: ${chatMessage.seenBy.size}. Should show seen: $shouldShowSeen.")
+                    binding.textViewSeen.visibility = if (shouldShowSeen) View.VISIBLE else View.GONE
                 }
                 is ItemGroupChatReceivedBinding -> {
                     binding.chatMessage = chatMessage
@@ -114,7 +119,7 @@ class GroupChatAdapter(
 
     class MessageDiffCallback : DiffUtil.ItemCallback<GroupChatMessage>() {
         override fun areItemsTheSame(oldItem: GroupChatMessage, newItem: GroupChatMessage): Boolean {
-            return oldItem.timestamp == newItem.timestamp && oldItem.senderId == newItem.senderId
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: GroupChatMessage, newItem: GroupChatMessage): Boolean {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.pampang.nav.fcm.NotificationSender
@@ -33,6 +34,7 @@ class GroupChatRepository @Inject constructor(
 
                 val messages = snapshot?.documents?.mapNotNull { doc ->
                     try {
+                        val id = doc.id
                         val senderId = doc.getString("senderId") ?: ""
                         val senderName = doc.getString("senderName") ?: ""
                         val senderRole = doc.getString("senderRole") ?: "user"
@@ -44,20 +46,25 @@ class GroupChatRepository @Inject constructor(
                             is Long -> Date(timestampObject)
                             else -> null
                         }
-                        
+
                         val repliedToMessageId = doc.getString("repliedToMessageId")
                         val repliedToMessageSender = doc.getString("repliedToMessageSender")
                         val repliedToMessageText = doc.getString("repliedToMessageText")
+                        
+                        @Suppress("UNCHECKED_CAST")
+                        val seenBy = doc.get("seenBy") as? List<String> ?: emptyList()
 
                         GroupChatMessage(
-                            senderId,
-                            senderName,
-                            senderRole,
-                            text,
-                            date,
-                            repliedToMessageId,
-                            repliedToMessageSender,
-                            repliedToMessageText
+                            id = id,
+                            senderId = senderId,
+                            senderName = senderName,
+                            senderRole = senderRole,
+                            text = text,
+                            timestamp = date,
+                            repliedToMessageId = repliedToMessageId,
+                            repliedToMessageSender = repliedToMessageSender,
+                            repliedToMessageText = repliedToMessageText,
+                            seenBy = seenBy
                         )
                     } catch (e: Exception) {
                         Log.e("GROUP_CHAT_REPO", "Error parsing message", e)
@@ -88,19 +95,23 @@ class GroupChatRepository @Inject constructor(
         }
 
         val senderName = currentUser.displayName ?: "Anonymous"
+        
+        val messageRef = firestore.collection("global_chat").document()
 
         val message = GroupChatMessage(
+            id = messageRef.id,
             senderId = currentUser.uid,
             senderName = senderName,
             senderRole = userRole,
             text = text,
             repliedToMessageId = repliedToMessageId,
             repliedToMessageSender = repliedToMessageSender,
-            repliedToMessageText = repliedToMessageText
+            repliedToMessageText = repliedToMessageText,
+            seenBy = listOf(currentUser.uid)
         )
 
         try {
-            firestore.collection("global_chat").add(message).await()
+            messageRef.set(message).await()
 
             // --- SEND NOTIFICATION ---
             val notificationTitle = "New Message"
@@ -111,6 +122,17 @@ class GroupChatRepository @Inject constructor(
 
         } catch (e: Exception) {
             Log.e("GROUP_CHAT_REPO", "Error saving message", e)
+        }
+    }
+    
+    suspend fun markMessageAsSeen(messageId: String) {
+        val currentUserId = auth.currentUser?.uid ?: return
+        try {
+            firestore.collection("global_chat").document(messageId)
+                .update("seenBy", FieldValue.arrayUnion(currentUserId))
+                .await()
+        } catch (e: Exception) {
+            Log.e("GROUP_CHAT_REPO", "Error marking message as seen", e)
         }
     }
 

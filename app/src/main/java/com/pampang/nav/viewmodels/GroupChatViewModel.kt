@@ -44,7 +44,7 @@ class GroupChatViewModel @Inject constructor(
                     groupChatRepository.sendGroupChatMessage(
                         text,
                         application,
-                        replyTo.senderId,
+                        replyTo.id,
                         replyTo.senderName,
                         replyTo.text
                     )
@@ -57,6 +57,12 @@ class GroupChatViewModel @Inject constructor(
             viewModelScope.launch {
                 _networkError.emit(Unit)
             }
+        }
+    }
+
+    fun markMessageAsSeen(messageId: String) {
+        viewModelScope.launch {
+            groupChatRepository.markMessageAsSeen(messageId)
         }
     }
 
